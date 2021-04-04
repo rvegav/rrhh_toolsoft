@@ -45,7 +45,7 @@
 			<div class="x_panel">
 				<div class="x_title">
 					<h2>
-						Lista de Ciudades
+						Listado de Ciudades
 					</h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li>
@@ -101,7 +101,10 @@
 											}
 											;?>
 											<td><span class="label <?php echo $label_class;?>"><?php echo $estado2; ?></span></td>
-											<td><a href="<?php echo base_url();?>empleados/empleados/edit/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a><a href="<?php echo base_url();?>empleados/empleados/delete/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></a></td>
+											<td>
+												<a href="<?php echo base_url();?>ciudades/Ciudades/edit/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+												<a href="<?php echo base_url();?>ciudades/Ciudades/delete/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
+											</td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
@@ -145,7 +148,7 @@
 				console.log(i);
 				$(this).html( '' );
 			}else{
-				$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+				$(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
 
 				$( 'input', this ).on( 'keyup change', function () {
 					if ( table.column(i).search() !== this.value ) {
@@ -253,36 +256,17 @@
         });
 
 var base_url= "<?php echo base_url();?>";
-       // alert (base_url);
-       $(".btn-view").on("click", function(){
-       	var id= $(this).val();
-       	$.ajax({
-       		url: base_url + "ciudades/ciudades/view/" + id,
-       		type: "POST",
-       		success:function(resp){
-       			$("#modal-view .modal-body").html(resp);
-            //alert(resp);
-        }
-    });
-       })
-        	//esto lee el boton eliminar y envia via ajax
-        	$(".btn-delete").on("click", function(e){
-        		e.preventDefault();
-			//alert("borrando");
-			var ruta= $(this).attr("href");
-		//	alert(ruta);
-		$.ajax({
-			url: ruta,
-			type: "POST",
-			success:function(resp){
-					//se redirige a base url con la respuesta
-					window.location.href= base_url + resp;	
-					//alert(base_url + resp);
-				}
-			});
-	})
-        })
-
+$(".btn-view").on("click", function(){
+	var id= $(this).val();
+	$.ajax({
+		url: base_url + "ciudades/ciudades/view/" + id,
+		type: "POST",
+		success:function(resp){
+			$("#modal-view .modal-body").html(resp);
+		}
+	});
+})
+})
 
 function eliminar_Copia(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
@@ -304,7 +288,7 @@ function eliminar_Copia(id){
 
 $(".eliminar").click(function(e){
 	e.preventDefault();
-	var id = $(this).attr('id');
+	var id = $(this).attr('href');
 	swal({
 		title: "Atención",
 		text: "Esta seguro de eliminarlo de forma permanente",
@@ -314,7 +298,7 @@ $(".eliminar").click(function(e){
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
+			window.location.href = id;
 		}
 	});
 });

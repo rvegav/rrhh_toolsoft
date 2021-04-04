@@ -44,7 +44,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body" >
-      <p class="login-box-msg"><b>Identificarse para Iniciar Sesión</p>
+      <p class="login-box-msg"><b style="color:white">Identificarse para Iniciar Sesión</p>
         <?php if ($this->session->flashdata("error")): ?>
           <div class="alert alert-danger">
             <p><?php  echo $this->session->flashdata("error")?></p> 

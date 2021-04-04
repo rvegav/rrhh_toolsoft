@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Usuarios_model extends CI_Model {
 	
 	public function login($username,$password){
-		$this->db->select('U.IDEMPLEADO, U.DESUSUARIO, CONCAT (NOMBRE, APELLIDO) AS EMPLEADO, E.PERFIL ');
+		$this->db->select('U.IDEMPLEADO, U.DESUSUARIO,  CONCAT_WS(\' \',NOMBRE, APELLIDO) AS EMPLEADO, E.PERFIL ');
 		$this->db->from('usuario u');
 		$this->db->join('empleado e', 'e.idempleado = u.idempleado');
 		$this->db->where("U.desusuario", $username);

@@ -5,8 +5,8 @@
     <ul class="nav side-menu">
       <li><a><i class="fa fa-table"></i> Archivos <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="<?php echo base_url();?>ciudades/ciudades">Ciudad</a></li>
-          <li><a href="<?php echo base_url();?>paises/paises">Pais</a></li>
+          <li><a href="<?php echo base_url();?>ciudades/ciudades">Ciudades</a></li>
+          <li><a href="<?php echo base_url();?>paises/paises">Paises</a></li>
           <li><a href="<?php echo base_url();?>departamentos/departamentos">Departamentos</a></li>
           <li><a href="<?php echo base_url();?>departamentoempresas/departamentoempresas">Departamentos de la Empresa</a></li>
           <li><a href="<?php echo base_url();?>nivelestudios/nivelestudios">Nivel Estudio</a></li>
@@ -103,43 +103,14 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <!-- <img src="<?php echo $this->session->userdata("PERFIL") ?>"><?php echo $this->session->userdata("nomEmpleado") ?> -->
+            <img src="<?php echo $this->session->userdata("PERFIL") ?>">
             <span class=" fa fa-angle-down"></span>
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">
+            <li><a href="javascript:;"><?php echo  $this->session->userdata("NOMBRE")?></a></li>
             <li><a href="javascript:;"> Perfil</a></li>
             <li><a href="javascript:;">Ayuda</a></li>
             <li><a href="<?php echo base_url();?>auth/logout"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
-          </ul>
-        </li>
-
-        <li role="presentation" class="dropdown">
-          <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-envelope-o"></i>
-            <span class="badge bg-green">6</span>
-          </a>
-          <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-            <li>
-              <a>
-                <span class="image"><img src="<?php echo base_url();?>assets/template/images/user.png" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span class="time">3 mins ago</span>
-                </span>
-                <span class="message">
-                  Film festivals used to be do-or-die moments for movie makers. They were where...
-                </span>
-              </a>
-            </li>
-
-            <li>
-              <div class="text-center">
-                <a>
-                  <strong>See All Alerts</strong>
-                  <i class="fa fa-angle-right"></i>
-                </a>
-              </div>
-            </li>
           </ul>
         </li>
       </ul>

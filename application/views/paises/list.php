@@ -48,7 +48,7 @@
 			<div class="x_panel">
 				<div class="x_title">
 					<h2>
-						Lista de Paises
+						Listado de Paises
 					</h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li>
@@ -112,7 +112,7 @@
 											;?>
 											<td><span class="label <?php echo $label_class;?>"><?php echo $estado2; ?></span></td>
 
-											<td><button type="button" class="btn btn-primary btn-view" data-toggle="modal" data-target="#modal-view" value="<?php echo $pais->IDPAIS;?>"><i class="fa fa-eye"></i></button><a href="<?php echo base_url();?>paises/paises/edit/<?php echo $pais->IDPAIS;?>" class="btn btn-warning"><i class="fa fa-pencil"></i></a><a href="#" id="<?=$pais->IDPAIS;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash-o"></i></a></td>
+											<td><button type="button" class="btn btn-primary btn-view" data-toggle="modal" data-target="#modal-view" value="<?php echo $pais->IDPAIS;?>"><i class="fa fa-eye"></i></button><a href="<?php echo base_url();?>paises/paises/edit/<?php echo $pais->IDPAIS;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a><a href="<?php echo base_url();?>paises/paises/delete/<?php echo $pais->IDPAIS;?>"class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a></td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
@@ -155,7 +155,7 @@
 				console.log(i);
 				$(this).html( '' );
 			}else{
-				$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+				$(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
 
 				$( 'input', this ).on( 'keyup change', function () {
 					if ( table.column(i).search() !== this.value ) {
@@ -176,19 +176,19 @@
 				extend: 'pdfHtml5',
 				text: 'Generar PDF',
 				title:'Lista de Paises' ,
-							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
-							}, 
-							customize: function ( doc ) {
-								var d = new Date();
-								d = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+ ' ' + d.getHours()+':'+d.getMinutes()+':'+d.getSeconds() ;
-								var info = [];
-								info[0] = {text: d , alignment: 'right', margin:[20,20,20] };
-								info[1] = {text: table.page.info().page+1 +' de '+ table.page.info().pages, alignment: 'right', margin:[0,0,20] };
+				exportOptions: {
+					columns: [ 0, 1, 2, 3, 4]
+				}, 
+				customize: function ( doc ) {
+					var d = new Date();
+					d = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+ ' ' + d.getHours()+':'+d.getMinutes()+':'+d.getSeconds() ;
+					var info = [];
+					info[0] = {text: d , alignment: 'right', margin:[20,20,20] };
+					info[1] = {text: table.page.info().page+1 +' de '+ table.page.info().pages, alignment: 'right', margin:[0,0,20] };
 
-								var fechaHora = []
+					var fechaHora = []
 
-								var objFooter = {};
+					var objFooter = {};
 
 					// objFooter['columns'] = info;
 					// objHeader['columns'] = fechaHora;
@@ -280,57 +280,25 @@ var base_url= "<?php echo base_url();?>";
        		}
        	});
        })
-        //esto lee el boton eliminar y envia via ajax
-        $(".btn-delete").on("click", function(e){
-        	e.preventDefault();
-        	var ruta= $(this).attr("href");
-        	$.ajax({
-        		url: ruta,
-        		type: "POST",
-        		success:function(resp){
-					//se redirige a base url con la respuesta
-					window.location.href= base_url + resp;	
-					//alert(base_url + resp);
-				}
-			});
-        });
-        
-    });    	
-function eliminar(id){
-	if(confirm("Esta seguro que desea eliminar este registro?")){
 
-		window.location.href = "/isupport/paises/paises/delete/" + id;
-
-
-		$.ajax({
-			url: "/isupport/movimientos/movimientos/delete/" + id,
-			type: "GET",
-			success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              alert('Registro Eliminado correctamente');
-            //alert(resp);
-        }
-    });
-	}
-	$(".eliminar").click(function(e){
-		e.preventDefault();
-		var id = $(this).attr('id');
-		swal({
-			title: "Atención",
-			text: "Esta seguro de eliminarlo de forma permanente",
-			icon: "warning",
-			buttons: true,
-			dangerMode: true,
-		})
-		.then((willDelete) => {
-			if (willDelete) {
-				window.location.href = "/isupport/paises/paises/delete/" + id;
-			}
-		});
+   });    	
+$(".eliminar").click(function(e){
+	e.preventDefault();
+	var id = $(this).attr('href');
+	swal({
+		title: "Atención",
+		text: "Esta seguro de eliminarlo de forma permanente",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			window.location.href = id;
+		}
 	});
+});
 
-
-}
 
 
 

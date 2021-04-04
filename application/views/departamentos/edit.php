@@ -110,6 +110,8 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <button type="reset" class="btn btn-primary">Resetear</button>
                           <button type="submit" class="btn btn-success">Actualizar</button>
+                          <a href="<?php echo base_url();?>/departamentos/departamentos/"><button type="button" class="btn btn-warning">Cancelar</button></a>
+
                           <!--<button type="button" name="entrar" value="ENTER" onclick="verificar_campos()" class="btn btn-success" onclick="verificar_campos()">Actualizar</button>-->
 
                         </div>

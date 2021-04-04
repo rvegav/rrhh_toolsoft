@@ -38,7 +38,6 @@ class Ciudad_model extends CI_Model {
 	public function delete($id){
 		$this->db->where("idCiudad", $id);
 		return $this->db->delete("ciudad");
-
 	}
 
 	public function validarExiste($numCiudad){

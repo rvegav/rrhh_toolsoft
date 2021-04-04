@@ -18,29 +18,25 @@ class Ciudades extends CI_Controller
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		if ($this->session->userdata('login')) {
-			//cargamos un array usando el modelo
+		// if ($this->session->userdata('login')) {
 			$data = array(
 				'ciudades'=> $this->Ciudad_model->getCiudades()
 			);
-
-	//print_r($data); die();
-
 			//llamamos a las vistas para mostrar
 			$this->load->view('template/head');
 			$this->load->view('template/menu');
 			$this->load->view('ciudades/list', $data);
 			$this->load->view('template/footer');
 
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 	
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array(			
 				'maximos' => $this->Ciudad_model->ObtenerCodigo(),
 				'departamentos' => $this->Departamento_model->getDepartamentos()
@@ -51,15 +47,15 @@ class Ciudades extends CI_Controller
 			$this->load->view('ciudades/add', $data);
 			$this->load->view('template/footer');
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 	//funcion vista
 	public function view($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array (
 				'ciudad'=> $this->Ciudad_model->getCiudad($id)
 			);
@@ -68,18 +64,14 @@ class Ciudades extends CI_Controller
 			//abrimos la vista view
 			$this->load->view("ciudades/view", $data);
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
-		
-		//recibimos las variables
-
-		//print_r($_POST); die();
+		// if ($this->session->userdata('sist_conex')=="A") {
 
 			$NumCiudad   = $this->input->post("NumCiudad");
 			$desCiudad   = $this->input->post("desCiudad");
@@ -92,16 +84,8 @@ class Ciudades extends CI_Controller
 
 			$empresa = $_SESSION["Empresa"];
 			$sucursal = $_SESSION["Sucursal"];
-
-//print_r($sucursal); die();
-
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 			$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
-
-		//corremos la validacion
-
-			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
-
 			$data = array(
 				'idciudad'  => $idciudad->MAXIMO,
 				'NumCiudad'  => $NumCiudad,
@@ -110,8 +94,6 @@ class Ciudades extends CI_Controller
 				'idempresa'  => $empresa,
 				'iddepartamento' => $idDepartamento
 			);
-
-//print_r($data); die();
             //guardamos los datos en la base de datos
 			$desCiudad = trim($desCiudad);
 			if($desCiudad !="" && trim($desCiudad) !="")
@@ -120,38 +102,24 @@ class Ciudades extends CI_Controller
 				{
 				//si todo esta bien, emitimos mensaje
 					$this->session->set_flashdata('success', 'Ciudad registrado correctamente!');
-				//echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
-
-				//redireccionamos y refrescamos
 					redirect(base_url()."ciudades/ciudades", "refresh");
-
 				}
 				else
 				{
 					//si hubo errores, mostramos mensaje
-
 					$this->session->set_flashdata('error', 'Ciudad no registrado!');
-				//redirect(base_url()."servicios", "refresh");
-
-				//redireccionamos
 					redirect(base_url()."ciudades/ciudades/add", "refresh");
 				}
 			}
 			else
 			{	
-
 				$this->session->set_flashdata('error', 'Ingrese Ciudad!');
-				//redirect(base_url()."servicios", "refresh");
-
 				//redireccionamos
 				redirect(base_url()."ciudades/ciudades/add", "refresh");
-
-
-
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 		
 
 	}
@@ -159,30 +127,28 @@ class Ciudades extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 			$data = array(
 				'ciudad'=> $this->Ciudad_model->getCiudad($id),
 				'departamentos' => $this->Departamento_model->getDepartamentos()
 			);
-
-
 			$this->load->view('template/head');
 			$this->load->view('template/menu');
 			$this->load->view('ciudades/edit', $data);
 			$this->load->view('template/footer');
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 
 	//actualizamos 
 	
 	public function update()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 		
 			$idCiudad= $this->input->post("idciudad");
 			$NumCiudad= $this->input->post("NumCiudad");
@@ -215,39 +181,30 @@ class Ciudades extends CI_Controller
 			{	
 
 				$this->session->set_flashdata('error', 'Ingrese Ciudad!');
-					//redirect(base_url()."servicios", "refresh");
-
 					//redireccionamos
 				redirect(base_url()."ciudades/ciudades/edit/".$idCiudad,"refresh");
-
-
-
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 
 
 	public function delete($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
-			if($this->Ciudad_model->delete($id))
-			{
-
+		// if ($this->session->userdata('sist_conex')=="A") {
+			if($this->Ciudad_model->delete($id)){
 				$this->session->set_flashdata('success', 'Eliminado correctamente!');
-				redirect(base_url()."ciudades/ciudades", "refresh");
-			}
-			else
-			{
+				redirect(base_url()."ciudades/Ciudades/", "refresh");
+			}else{
 				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				redirect(base_url()."ciudades/ciudades/","refresh");
+				redirect(base_url()."ciudades/Ciudades/","refresh");
 			}
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 
