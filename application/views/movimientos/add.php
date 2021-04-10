@@ -46,11 +46,11 @@
             <div class="row">
                 <form action="<?php echo base_url();?>movimientos/movimientos/store" method="POST" class="form-horizontal">
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label class="control-label">Numero:</label>
                             <input type="text" class="form-control" name="NUMMOVI" readonly="readonly">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="" class="control-label">Tipo de Movimiento:</label>
                             <div class="input-group">                       
                                 <input type="text" class="form-control" disabled="disabled" id="txtTipoMovi" required>
@@ -59,10 +59,14 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-4">
                             <label for="" class="control-label">Fecha:</label>
                             <input type="date" class="form-control" name="FECHAMOVI" required>
                         </div>
+                    </div>
+                    <hr>
+                    <h3>Añadir detalles</h3>
+                    <div class="row">
                         <div class="form-group col-md-3">
                             <label for="" class="control-label">Empleado:</label>
                             <div class="input-group">                       
@@ -71,13 +75,36 @@
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#mdlEmpleados" ><span class="fa fa-search"></span> Buscar</button>
                                 </span>
                             </div>
-                        </div>
-                        <div class="col-md-1">
-                            <label class="control-label" for="btn-agg"> </label>
-                            <div class="form-group">
-                                <button class="btn btn-success mt-3" id="btn-agg" name="btn-agg" type="button"><i class="fa fa-plus"></i></button>
+                        </div>                        
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="btn-agg">&nbsp;</label>
+                            <div class="input-group mt-5">
+                                <span class="input-group-addon">Dias:</span>
+                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id= "DIAS">
                             </div>
+                        </div>
 
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="btn-agg">&nbsp;</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">Horas:</span>
+                                <input type="text" class="form-control" placeholder="Horas" name="HORAS_detalle" id="HORAS">
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label class="control-label" for="btn-agg">&nbsp;</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">Importe:</span>
+                                <input type="text" class="form-control" placeholder="Importe" name="Importe_detalle" id="IMPORTE">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label" for="btn-agg">&nbsp;</label>
+                            <div class="input-group">
+                                <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar</button>
+                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat">Guardar Movimientos</button>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -89,6 +116,7 @@
                                         <th>Dias</th>
                                         <th>Horas</th>
                                         <th>Importe</th>
+                                        <th>Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,80 +124,12 @@
                             </table>
                         </div>
                     </div>       
-                <hr>
-                <h3>Añadir detalles</h3>
+                </div>
+            </form>
 
-            </div>
-            <div class="col-md-12">
-                        <!-- <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Empleado:</span>
-                                <select name="EMPLEADO1_detalle" id="EMPLEADO1" class="form-control">
-                                <?php foreach($empleados1 as $empleado1):?>
-                                    <?php if($empleado1->IDEMPLEADO1 == $empleado1->IDEMPLEADO1):?>
-                                        <option value="<?php echo $empleado1->IDEMPLEADO1?>">
-                                            <?php echo $empleado1->EMPLEADO1;?></option>
-                                <?php else:?>
-                                    <option value="<?php echo $empleado1->IDEMPLEADO1;?>"><?php echo $empleado1->EMPLEADO1;?></option>
-                                <?php endif;?>
-                                <?php endforeach;?>
-                                </select>
-                            </div>
-                        </div> -->
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Dias:</span>
-                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id= "DIAS">
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Horas:</span>
-                                <input type="text" class="form-control" placeholder="Horas" name="HORAS_detalle" value="0.00" id="HORAS">
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Importe:</span>
-                                <input type="text" class="form-control" placeholder="Importe" name="IMPORTE_detalle" id="IMPORTE">
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="form-group col-md-3">
-                                <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar</button>
-                            </div>
-
-                            <div class="form-group col-md-3">
-                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat">Guardar</button>
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="col-md-12">
-                        <table id="tbmovimientos" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Dias</th>
-                                    <th>Horas</th>
-                                    <th>Importe</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </form>
-
-            </div>
         </div>
     </div>
+</div>
 <!-- modal -->
 <div class="modal fade" id="mdlEmpleados">
     <div class="modal-dialog">
@@ -191,20 +151,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <?php
+                         <?php
 
-                           if(!empty($empleados)):?>
+                         if(!empty($empleados)):?>
 
                             <?php
                             foreach($empleados as $empleado):?>
-                               <tr>
+                             <tr>
                                 <td><?php echo $empleado->NUMEMPLEADO;?></td>
                                 <td><?php echo $empleado->CEDULAIDENTIDAD;?></td>
                                 <td><?php echo $empleado->NOMBRE;?></td>
                                 <td><?php echo $empleado->CATEGORIA;?></td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-check" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
-
+                                    <button type="button" class="btn btn-success btn-check" id="checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -237,13 +196,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                           <?php
+                         <?php
 
-                           if(!empty($tipoMovimientos)):?>
+                         if(!empty($tipoMovimientos)):?>
 
                             <?php
                             foreach($tipoMovimientos as $tipoMovimiento):?>
-                               <tr>
+                             <tr>
                                 <td>
                                     <?php echo $tipoMovimiento->NUMTIPOMOV;?>
                                 </td>
@@ -271,74 +230,88 @@
 </div>
 </div>
 
-
+</div>
 <?php // $this->load->view('template/footer');?>
 <script type="text/javascript">
-   $(document).ready(function(){
-    var base_url= "<?php echo base_url();?>";
-       // alert (base_url);
-       $(".btn-view").on("click", function(){
+    $(document).ready(function(){
+        var base_url= "<?php echo base_url();?>";
+        $(".btn-view").on("click", function(){
           var id= $(this).val();
           $.ajax({
             url: base_url + "movimientos/movimientos/view/" + id,
             type: "POST",
             success:function(resp){
-              $("#modal-view .modal-body").html(resp);
-          }
-      });
-      })
-       $(".btn-delete").on("click", function(e){
-        e.preventDefault();
-        var ruta= $(this).attr("href");
-        $.ajax({
-            url: ruta,
-            type: "POST",
-            success:function(resp){
-
-                window.location.href= base_url + resp;  
+                $("#modal-view .modal-body").html(resp);
             }
         });
+      })
+        $(".btn-delete").on("click", function(e){
+            e.preventDefault();
+            var ruta= $(this).attr("href");
+            $.ajax({
+                url: ruta,
+                type: "POST",
+                success:function(resp){
 
-    })
-    $(".checktipo").on("click", function(){
-        tipo = $(this).val();
-        $.ajax({
-            type:'POST',
-            url:'<?php echo base_url()?>obtener_tipo_movimiento',
-            data: {tipo:tipo},
+                    window.location.href= base_url + resp;  
+                }
+            });
+
         })
-        .done(function (data){
-            var r = JSON.parse(data);
-            console.log(r);
-            $('#txtTipoMovi').val(r[0].DESC);
-            $("#mdlTipoMovimiento").modal("hide");
-        })
-        .fail(function(){
-            alert('ocurrio un error interno, contacte con Rolo');
+        $(".checktipo").on("click", function(){
+            tipo = $(this).val();
+            $.ajax({
+                type:'POST',
+                url:'<?php echo base_url()?>obtener_tipo_movimiento',
+                data: {tipo:tipo},
+            })
+            .done(function (data){
+                var r = JSON.parse(data);
+                console.log(r);
+                $('#txtTipoMovi').val(r[0].DESC);
+                $("#mdlTipoMovimiento").modal("hide");
+            })
+            .fail(function(){
+                alert('ocurrio un error interno, contacte con Rolo');
+            });
+
         });
-        // $("#txtTipoMovi").val(infoempleado[0]);
+        $(".checktip").on("click", function(){
+            tipo = $(this).val();
+            $.ajax({
+                type:'POST',
+                url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
+                data: {tipo:tipo},
+            })
+            .done(function (data){
+                var r = JSON.parse(data);
+                console.log(r);
+                $('#txtTipoMovi').val(r[0].DESC);
+                $("#mdlTipoMovimiento").modal("hide");
+            })
+            .fail(function(){
+                alert('ocurrio un error interno, contacte con Rolo');
+            });
 
-    });
-    $(".checktip").on("click", function(){
-        tipo = $(this).val();
-        $.ajax({
-            type:'POST',
-            url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
-            data: {tipo:tipo},
-        })
-        .done(function (data){
-            var r = JSON.parse(data);
-            console.log(r);
-            $('#txtTipoMovi').val(r[0].DESC);
-            $("#mdlTipoMovimiento").modal("hide");
-        })
-        .fail(function(){
-            alert('ocurrio un error interno, contacte con Rolo');
         });
-        // $("#txtTipoMovi").val(infoempleado[0]);
+        $(".checkFuncionario").on("click", function(){
+            tipo = $(this).val();
+            $.ajax({
+                type:'POST',
+                url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
+                data: {tipo:tipo},
+            })
+            .done(function (data){
+                var r = JSON.parse(data);
+                console.log(r);
+                $('#txtTipoMovi').val(r[0].DESC);
+                $("#mdlTipoMovimiento").modal("hide");
+            })
+            .fail(function(){
+                alert('ocurrio un error interno, contacte con Rolo');
+            });
 
-    });
-
+        });
 
 /*
 $("#btn-grabar").on("click", function(){
