@@ -11,8 +11,9 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
+
 			<div class="col-md-12" align="right">
-				<a href="<?php echo base_url();?>movimientos/movimientos/add" class="btn btn-dark">
+				<a href="<?php echo base_url();?>movimientos/movimientos/add"  id="prueba" class="btn btn-dark">
 					<i class="fa fa-plus">
 					</i> Agregar Movimiento
 				</a>
@@ -47,6 +48,8 @@
 			<?php endif; ?>
 			<div class="x_panel">
 				<div class="x_title">
+					<label>meses</label>
+					<input class="" type="month" name="">
 					<h2>
 						Listado de Movimientos correspondiente al mes de <b><?php echo $mes; ?></b>
 					</h2>
@@ -209,6 +212,7 @@ function eliminar(id){
             }
           });*/
 	}
-}    	
+}
+	
 
 </script>

@@ -132,7 +132,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Lita de Ciudades</h4>
+                <h4 class="modal-title">Lista de Ciudades</h4>
             </div>
             <div class="modal-body">
                 <table id="example2" class="table table-responsive table-bordered table-striped table-hover">

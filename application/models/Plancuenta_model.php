@@ -7,66 +7,79 @@ class Plancuenta_model extends CI_Model {
 	//este metodo es para mostrar todos los empleado
 	public function getPlancuentas(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("IDCUENTACONTABLE,NUMPLANCUENTA,TIPOCUENTA,(case when ASENTABLE = 0 then 'NO' else 'SI' END) AS ASENTABLE,NIVELCUENTA,SUBCUENTA,DESPLANCUENTA,FECHAGRABACION,concat(NUMPLANCUENTA,' - ',DESPLANCUENTA) as CUENTA");
-		$resultados= $this->db->get("cuentacontable");
+		$resultados= $this->db->get("plancuentas");
 		return $resultados->result();
 	}
 	
 	//esta es la parte para guardar en la bd
 	public function save($data)
 	{
-		return $this->db->insert("cuentacontable", $data);
+		return true;
+		// return $this->db->insert("", $data);
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getPlancuenta($id){
-		$this->db->select("IDCUENTACONTABLE,NUMPLANCUENTA,TIPOCUENTA,ASENTABLE,NIVELCUENTA,SUBCUENTA,DESPLANCUENTA,FECHAGRABACION, (case when asentable = 0 then 'NO' else 'SI' end) as IMPONIBLE");
-		$this->db->where("idcuentacontable",$id);
-		$resultado= $this->db->get("cuentacontable");
+		$this->db->select("IDPLANCUENTA,NUMPLANCUENTA,TIPOCUENTA,ASENTABLE,NIVELCUENTA,DESCPLANCUENTA,FECHAGRABACION, (case when asentable = 0 then 'NO' else 'SI' end) as IMPONIBLE");
+		$this->db->where("IDPLANCUENTA",$id);
+		$resultado= $this->db->get("plancuentas");
 		return $resultado->row();
 	}
 	//esto es para actualizar los empleado
 	public function update($id, $data){
-		$this->db->where("idcuentacontable", $id);
-		return $this->db->update("cuentacontable", $data);
+		$this->db->where("idplancuenta", $id);
+		return $this->db->update("plancuenta", $data);
 
 	}
 
 	public function validarExiste($numPlancuenta){
 	    $this->db->select("count(*) as cantidad");
-		$this->db->from("cuentacontable");
+		$this->db->from("plancuentas");
 		$this->db->where("numplancuenta",$numPlancuenta);
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}
 
-
     public function validarExisteCopia($idPlancuenta){
 	    $this->db->select("count(*) as cantidad");
-		$this->db->from("cuentacontable");
-		$this->db->where("idcuentacontable",$idPlancuenta);
+		$this->db->from("plancuentas");
+		$this->db->where("idplancuenta",$idPlancuenta);
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}
 
 //obtener el ultimo id mas 1
 	public function ultimoNumero(){
-	    $this->db->select("(CASE WHEN  max(idcuentacontable) IS NULL THEN '1' ELSE max(idcuentacontable) + 1 END) as MAXIMO");
-		$this->db->from("cuentacontable");
+	    $this->db->select("(CASE WHEN  max(idplancuenta) IS NULL THEN '1' ELSE max(idplancuenta) + 1 END) as MAXIMO");
+		$this->db->from("plancuentas");
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}
 
 	public function ObtenerCodigo(){
-	    $this->db->select("(CASE WHEN  max(idcuentacontable) IS NULL THEN '01' when (max(idcuentacontable) + 1) <= 9 then concat('0',(max(idcuentacontable) + 1)) ELSE max(idcuentacontable) + 1 END) as MAXIMO");
-		$this->db->from("cuentacontable");
+	    $this->db->select("(CASE WHEN  max(idplancuenta) IS NULL THEN '01' when (max(idplancuenta) + 1) <= 9 then concat('0',(max(idplancuenta) + 1)) ELSE max(idplancuenta) + 1 END) as MAXIMO");
+		$this->db->from("plancuentas");
 		$resultado= $this->db->get();
 		return $resultado->result();
 	}
 
 	public function delete($id){
-		$this->db->where("idcuentacontable", $id);
-		return $this->db->delete("cuentacontable");
+		$this->db->where("idplancuenta", $id);
+		return $this->db->delete("plancuentas");
 
+	}
+	public function obtenerCuentaPadre($cuenta_padre = false){
+		$this->db->select('DESCPLANCUENTA AS CUENTA, IDPLANCUENTA, NUMPLANCUENTA', FALSE);
+		$this->db->from('PLANCUENTAS');
+		if ($cuenta_padre) {
+			$this->db->where('IDCUENTA_PADRE' , $cuenta_padre);
+		}
+
+		$resultado= $this->db->get();
+		if ($resultado->num_rows()>0) {
+			return $resultado->result();
+		}else{
+			return false;
+		}
 	}
 }

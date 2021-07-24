@@ -79,9 +79,6 @@
 										Descripcion
 									</th>
 									<th>
-										Sub-Cuenta
-									</th>
-									<th>
 										Imputable
 									</th>
 									<th>
@@ -102,10 +99,7 @@
 										<?php echo $cuenta->NUMPLANCUENTA;?>
 									</td>
 									<td>
-										<?php echo $cuenta->DESPLANCUENTA;?>
-									</td>
-									<td>
-										<?php echo $cuenta->SUBCUENTA;?>
+										<?php echo $cuenta->DESCPLANCUENTA;?>
 									</td>
 									<td>
 										<?php echo $cuenta->ASENTABLE;?>
@@ -116,16 +110,16 @@
 									
 									<td>
 
-										<button type="button" class="btn btn-primary btn-view" data-toggle="modal" data-target="#modal-view" value="<?php echo $cuenta->IDCUENTACONTABLE;?>">
+										<button type="button" class="btn btn-primary btn-view" data-toggle="modal" data-target="#modal-view" value="<?php echo $cuenta->IDPLANCUENTA;?>">
 											<i class="fa fa-eye">
 											</i>
 										</button>
-										<a href="<?php echo base_url();?>plancuentas/plancuentas/edit/<?php echo $cuenta->IDCUENTACONTABLE;?>" class="btn btn-warning">
-											<i class="fa fa-pencil">
+										<a href="<?php echo base_url();?>plancuentas/plancuentas/edit/<?php echo $cuenta->IDPLANCUENTA;?>" class="btn btn-warning">
+											<i class="fa fa-edit">
 											</i>
 										</a>
-										<a href="#" id="<?=$cuenta->IDCUENTACONTABLE;?>" class="btn btn-danger btn-delete eliminar">
-											<i class="fa fa-trash-o">
+										<a href="#" id="<?=$cuenta->IDPLANCUENTA;?>" class="btn btn-danger btn-delete eliminar">
+											<i class="fa fa-trash">
 											</i>
 										</a>
 										
