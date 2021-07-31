@@ -65,8 +65,6 @@ class Plancuentas extends CI_Controller
 		if ($this->form_validation->run() == FALSE) {
 			$this->session->set_flashdata('error', validation_errors('<div class="error">', '</div>'));
 			redirect(base_url()."plancuentas/plancuentas/add");
-
-
 		} else {
 			$NumPlancuenta   = $this->input->post("NumCuentacontable");
 			$desPlancuenta   = $this->input->post("desPlancuenta");
@@ -76,7 +74,6 @@ class Plancuentas extends CI_Controller
 			$idPlancuenta = $this->Plancuenta_model->ultimoNumero();
 			$time = time();
 			$fechaActual = date("Y-m-d H:i:s",$time);
-
 			$empresa = $_SESSION["Empresa"];
 			$sucursal = $_SESSION["Sucursal"];
 			$usuario = $_SESSION["usuario"];		
@@ -84,16 +81,16 @@ class Plancuentas extends CI_Controller
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
 			$data = array(
-				'idcuentacontable'  => $idPlancuenta->MAXIMO,
+				'idPlancuenta'  => $idPlancuenta->MAXIMO,
 				'numplancuenta'  => $NumPlancuenta,
-				'desplancuenta'  => $desPlancuenta,
+				'descplancuenta'  => $desPlancuenta,
 				'asentable'  => $asentable,
 				'nivelcuenta' => $nivel,
 				'fechagrabacion' => $fechaActual,
 				'idempresa' => $empresa,
 				'idsucursal' => $sucursal,
 				'tipocuenta' => 0, 
-				'idcuenta_padre'=> $cuentaPadre
+				'idplancuenta_padre'=> $cuentaPadre
 
 			);
 
@@ -130,8 +127,6 @@ class Plancuentas extends CI_Controller
 		$data = array(
 			'cuenta'=> $this->Plancuenta_model->getPlancuenta($id)
 		);
-
-
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('plancuentas/edit', $data);

@@ -14,8 +14,8 @@ class Plancuenta_model extends CI_Model {
 	//esta es la parte para guardar en la bd
 	public function save($data)
 	{
-		return true;
-		// return $this->db->insert("", $data);
+		// return true;
+		return $this->db->insert("plancuentas", $data);
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id

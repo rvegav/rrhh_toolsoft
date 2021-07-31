@@ -97,11 +97,11 @@
 								</label>
 								<div class="col-md-2">
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="radio" class="form-check-input" id="materialInline1" name="rad_imputable" value="1">
+										<input type="radio" class="form-check-input" id="materialInline1" name="rad_imputable" value="S">
 										<label class="form-check-label" for="materialInline1">Si</label>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="radio" class="form-check-input" id="materialInline2" name="rad_imputable" value="0" checked>
+										<input type="radio" class="form-check-input" id="materialInline2" name="rad_imputable" value="N" checked>
 										<label class="form-check-label" for="materialInline2">No</label>
 									</div>
 								</div>

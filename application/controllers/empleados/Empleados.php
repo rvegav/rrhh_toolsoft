@@ -50,13 +50,13 @@ class Empleados extends CI_Controller
 			'categorias'=> $this->Categoria_model->getCategorias(),
 			'depatamentosempresas'=> $this->Departamentoempresa_model->getDepartamentoempresas(),
 			'estadociviles'=> $this->Estadocivil_model->getEstadociviles(),
-			'cuentabancarias'=> $this->Cuentabancaria_model->getCuentabancarias(),
+			// 'cuentabancarias'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'ciudades'=> $this->Ciudad_model->getCiudades(),
 			'profesiones'=> $this->Profesion_model->getProfesiones(),
 			'tipocuentas'=> $this->Tipocuenta_model->getTipocuentas(),
 			'tiposalarios'=> $this->Tiposalario_model->getTiposalarios(),
 			'paises'=> $this->Pais_model->getPaises(),
-			'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
+			// 'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios()
 		);
 

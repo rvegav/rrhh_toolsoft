@@ -33,11 +33,9 @@ class Auth extends CI_Controller
 			$password = $this->input->post("password");
 			$empresa = $this->input->post("Empresa");
 			$sucursal = $this->input->post("Sucursal");
-
-
             //session_start();
-            $_SESSION["Empresa"]=$empresa;
-            $_SESSION["Sucursal"]=$sucursal;
+            $_SESSION["Empresa"]=1;
+            $_SESSION["Sucursal"]=1;
 
 			//print_r($_POST); die();
 
