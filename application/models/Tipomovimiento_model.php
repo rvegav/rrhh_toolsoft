@@ -45,8 +45,8 @@ class Tipomovimiento_model extends CI_Model {
 
     public function getIdDetalle(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("max(idtipomovidetalle) as MAXIMO");
-		$this->db->from("tipomovisueldodetalle");
+		$this->db->select("max(idtipomovisueldo) as MAXIMO");
+		$this->db->from("tipomovisueldo");
 		$resultados= $this->db->get();
 		return $resultados->result();
 	}
@@ -69,7 +69,7 @@ class Tipomovimiento_model extends CI_Model {
 
 
     public function save_detalle($data){
-    	$this->db->insert("tipomovisueldodetalle",$data);
+    	$this->db->insert("tipomovisueldo",$data);
     }
 
 
@@ -99,7 +99,7 @@ public function getValidacion($id){
 
 
 public function getTipomovidetalle($id){
-		$this->db->from("tipomovisueldodetalle");
+		$this->db->from("tipomovisueldo");
 		$this->db->where("idtipomovisueldo",$id);
 		$resultados= $this->db->get();
 		return $resultados->result();

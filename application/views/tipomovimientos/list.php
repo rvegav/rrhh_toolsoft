@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="col-md-12" align="right">
-				<a href="<?php echo base_url();?>tipomovimientos/();?>tipomovimientos/add" class="btn btn-dark">
+				<a href="<?php echo base_url();?>tipomovimientos/tipomovimientos/add" class="btn btn-dark">
 					<i class="fa fa-plus">
 					</i> Agregar Tipo de Movimiento
 				</a>
