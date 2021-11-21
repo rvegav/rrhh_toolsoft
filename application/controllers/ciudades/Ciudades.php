@@ -24,7 +24,7 @@ class Ciudades extends CI_Controller
 			);
 			//llamamos a las vistas para mostrar
 			$this->load->view('template/head');
-			$this->load->view('template/menu');
+			$this->load->view('template/menu_copia');
 			$this->load->view('ciudades/list', $data);
 			$this->load->view('template/footer');
 

@@ -135,12 +135,7 @@
 											<i class="fa fa-edit">
 											</i>
 										</a>
-
-										<!--<a href="<?php echo base_url();?>paises/paises/delete/<?php echo $pais->IDPAIS;?>" class="btn btn-danger btn-delete">
-											<i class="fa fa-trash-o">
-											</i>
-										</a>-->
-										<a href="#" id="<?=$profesion->IDPROFESION;?>" class="btn btn-danger btn-delete eliminar">
+										<a href="profesiones/profesiones/delete/<?=$profesion->IDPROFESION;?>" class="btn btn-danger btn-delete eliminar">
 											<i class="fa fa-trash">
 											</i>
 										</a>

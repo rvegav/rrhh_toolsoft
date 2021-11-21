@@ -36,7 +36,15 @@
   
 
    <!-- jQuery -->
+   <style type="text/css">
+/*     .body .main_container .col-md-3 .left_col {
+      background: #343A40 !important;
+     }*/
+      .side-menu > li .active {
+          background: #343A40 !important;
+      }
 
+   </style>
 
     <script src="<?php echo base_url();?>assets/template/jquery/dist/jquery.min.js"></script>
     <script src="<?php echo base_url();?>assets/sweetalert.min.js"></script>
@@ -47,6 +55,7 @@
     <script src="<?php echo base_url();?>assets/dropzone/dist/min/dropzone.min.js"></script>
     <script src="<?php echo base_url();?>assets/vendors/validator/validator.js"></script>
 
+  
    
   <!-- PNotify 
   <link href="<?php echo base_url();?>assets/template/pnotify/dist/pnotify.css" rel="stylesheet">
@@ -67,8 +76,8 @@
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
+          <div class="bg-danger left_col scroll-view">
+            <div class="bg-danger navbar nav_title" style="border: 0;">
               <a href="<?php echo base_url()?>" class="site_title"><i class="fa fa-paw"></i> <span>RRHH</span></a>
             </div>
             <div class="clearfix"></div>

@@ -16,7 +16,7 @@ class Empleados_model extends CI_Model {
 //EJEMPLO DE CONSULTA A BASE ESPECIFICANDO COLUMNAS Y UTILIZANDO UNIONES(JOIN)
 	public function getEmpleados(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, FECHAINGRESO");
+		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, C.MONTOASIGNADO, FECHAINGRESO");
 		$this->db->from("empleado e");
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
 		$this->db->where('ESTADOEMPLEADO <> 3');
@@ -32,7 +32,7 @@ class Empleados_model extends CI_Model {
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
-	public function getEmpleado($id){
+	public function getEmpleado($id = false, $numEmpleado = false, $nombre = false, $apellido = false){
 		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO');
 		$this->db->from('empleado e');
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
@@ -43,7 +43,19 @@ class Empleados_model extends CI_Model {
 		$this->db->join('cargo car', 'car.idcargo = e.idcargo');
 		$this->db->join('estadocivil ec', 'ec.idcivil = e.idcivil');
 		$this->db->join('departamentoempresa d', 'd.iddepartemento = e.iddepartemento');
-		$this->db->where('IDEMPLEADO', $id);
+		if ($id) {
+			$this->db->where('IDEMPLEADO', $id);
+		}
+		if ($numEmpleado) {
+			$this->db->where('NUMEMPLEADO', $numEmpleado);
+		}
+		if ($nombre) {
+			$this->db->where('NOMBRE', $nombre);
+		}
+		if ($apellido) {
+			$this->db->where('APELLIDO', $apellido);
+		}
+
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}

@@ -197,7 +197,7 @@
 <div class="row">
   <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" action="<?php echo base_url()?>empleados/empleados/store" method="POST" name="dato">
     <section>
-      <div class="wizard">
+      <dxiv class="wizard">
         <div class="wizard-inner">
           <div class="connecting-line"></div>
           <ul class="nav nav-tabs" role="tablist">
@@ -291,7 +291,7 @@
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nombre">Nombres <span class="required">*</span>
                       </label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input id="Nombre" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="Nombre" placeholder="both name(s) e.g Jon Doe" type="text">
+                        <input id="Nombre" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" name="Nombre" placeholder="Nombres" type="text">
                       </div>
                     </div>
 
@@ -300,7 +300,7 @@
                         <span class="required">*</span>
                       </label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input type="text" id="Apellido" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="Apellido" class="form-control col-md-7 col-xs-12">
+                        <input type="text" id="Apellido" placeholder="Apellidos" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="Apellido" class="form-control col-md-7 col-xs-12">
                         <?php echo form_error("Apellido","<span class='help-block'>","</span>" );?>
                       </div>
                     </div>
@@ -342,7 +342,7 @@
                 </div>
 
                 <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Nacimiento  
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Nacimiento
                     <span class="required">:</span>
                   </label>
                   <div class="form-group">
@@ -463,7 +463,7 @@
                       <?php foreach($estadociviles as $estadocivil):?>
                         <?php if($estadocivil->IDCIVIL == $estadocivil->IDCIVIL):?>
                           <option value="<?php echo $estadocivil->IDCIVIL?>">
-                            <?php echo $estadocivil->DESCIVIL;?>
+                            <?php echo $estadocivil->DESCCIVIL;?>
                           </option>
                           <?php else:?>
                             <option value="<?php echo $estadocivil->IDCIVIL;?>"><?php echo $estadocivil->DESCIVIL;?>
@@ -604,7 +604,7 @@
                       <?php foreach($sucursales as $sucursal):?>
                         <?php if($sucursal->IDSUCURSAL == $sucursal->IDSUCURSAL):?>
                           <option value="<?php echo $sucursal->IDSUCURSAL?>">
-                            <?php echo $sucursal->DESSUCURSAL;?>
+                            <?php echo $sucursal->DESCSUCURSAL;?>
                           </option>
                           <?php else:?>
                             <option value="<?php echo $sucursal->IDSUCURSAL;?>"><?php echo $sucursal->DESSUCURSAL;?>
@@ -625,10 +625,10 @@
                         <?php foreach($depatamentosempresas as $departempresa):?>
                           <?php if($departempresa->IDCARGO == $departempresa->IDEMPRESA):?>
                             <option value="<?php echo $departempresa->IDEMPRESA?>">
-                              <?php echo $cargo->DESDEPARTAMENTO;?>
+                              <?php echo $cargo->DESDEPARTEMENTO;?>
                             </option>
                             <?php else:?>
-                              <option value="<?php echo $departempresa->IDDEPARTAMENTO;?>"><?php echo $departempresa->DESDEPARTAMENTO;?>
+                              <option value="<?php echo $departempresa->IDDEPARTEMENTO;?>"><?php echo $departempresa->DESCDEPARTAMENTO;?>
                             </option>
                           <?php endif;?>
                         <?php endforeach;?>
@@ -874,7 +874,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Lita de Ciudades</h4>
+          <h4 class="modal-title">Lista de Ciudades</h4>
         </div>
         <div class="modal-body">
           <table id="example2" class="table table-bordered table-striped table-hover">

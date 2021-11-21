@@ -32,13 +32,14 @@
 <script>
   var x = document.getElementById("demo");
       function getLocation() {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
         var today = new Date();
+        var position = navigator.geolocation.getCurrentPosition(showPosition, showError);
+        // console.log(posi);
         $.ajax({
           type:'POST',
           url:'<?php echo base_url()?>Marcacion/Marcacion/get',
           data: {
-            fecha: today,
+            fecha: today, position: position
           },
         })
         .done(function (html){

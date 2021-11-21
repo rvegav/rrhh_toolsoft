@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Movimientos extends CI_Controller
 {
 	//solo el constructor, para llamar a las clases
-    public $date;
+	public $date;
 	public function __construct()
 	{
 		parent::__construct();
@@ -13,7 +13,7 @@ class Movimientos extends CI_Controller
 			redirect(base_url());
 		}
         // $this->date = new Datetime();
-        $this->date = new Datetime('2020-11-11');
+		$this->date = new Datetime('2021-09-01');
 		$this->load->model("Empleados_model");
 		$this->load->model("Movimientos_model");
 	}
@@ -21,13 +21,13 @@ class Movimientos extends CI_Controller
 	public function index()
 	{	
 		//cargamos un array usando el modelo
-        $fecha = strftime("%B, %Y", $this->date->getTimestamp());
-        $mes =strftime("%m", $this->date->getTimestamp());
-        $anho = strftime("%Y", $this->date->getTimestamp()); ;
+		$fecha = strftime("%B, %Y", $this->date->getTimestamp());
+		$mes =strftime("%m", $this->date->getTimestamp());
+		$anho = strftime("%Y", $this->date->getTimestamp());
 		$data = array(
 			'movimientos'=> $this->Movimientos_model->getMovimientosCabecera($mes, $anho),
 			'empleados'=>$this->Empleados_model->getEmpleados(),
-            'mes'=> $fecha
+			'mes'=> $fecha
 		);
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
@@ -39,13 +39,11 @@ class Movimientos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-
-
 		$data = array(			
 			'empleados' => $this->Empleados_model->getEmpleados(),
 			'maximos' => $this->Movimientos_model->getIdMaximo(),
 			'empleados1' => $this->Movimientos_model->getEmpleado1(),
-            'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
+			'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
 			'maximodetalle' => $this->Movimientos_model->getIdDetalle()
 		);
 		$this->load->view('template/head');
@@ -114,21 +112,13 @@ class Movimientos extends CI_Controller
 				'IDEMPRESA' => 1
 				
 			);
-
-
-
-
 			//guardamos los datos en la base de datos
             	if($this->Movimientos_model->save($data))
             	{	
-
             		$this->save_detalle($NUMMOVI,$EMPLEADO,$DIAS,$HORAS,$IMPORTE);
-
 
 				//si todo esta bien, emitimos mensaje
             		$this->session->set_flashdata('success', 'Movimiento registrado correctamente!');
-				//echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
-
 				//redireccionamos y refrescamos
             		redirect(base_url().'movimientos/movimientos', 'refresh');
 				// 	redirect(base_url()."servicios / servicios", "refresh");
@@ -136,11 +126,8 @@ class Movimientos extends CI_Controller
             	else
             	{
 					//si hubo errores, mostramos mensaje
-
             		$this->session->set_flashdata('error', 'Movimiento no registrado!');
 				//redirect(base_url()."servicios", "refresh");
-
-				//redireccionamos
             		redirect("movimientos/list", "refresh");
             	}
             }
@@ -244,7 +231,7 @@ class Movimientos extends CI_Controller
         		'IDEMPLEADO' => $EMPLEADO,
         		'DIAS' => $DIAS,
         		'HORAS' => $HORAS,
-        		'IMPORTE' => $IMPORTE,
+        		'IMPORTE' => $IMPORTE, 
         		'IDMOVIDETALLE' => $IDMOVIDETALLE		
         	);
 
@@ -387,9 +374,74 @@ class Movimientos extends CI_Controller
         	}
         }
         public function obtenerTipoMovimiento(){
-            $codigo = $this->input->post('tipo');
-            $tipo = $this->Movimientos_model->getTipoMovimientos($codigo);
-            echo json_encode($tipo);
+        	$codigo = $this->input->post('tipo');
+        	$tipo = $this->Movimientos_model->getTipoMovimientos($codigo);
+        	echo json_encode($tipo);
         }
 
+        public function list_concepto(){
+        	$data = array(
+        		'conceptos'=> $this->Movimientos_model->getConceptoFijos()
+        	);
+        	$this->load->view('template/head');
+        	$this->load->view('template/menu');
+        	$this->load->view('movimientos/concepto_fijo_list', $data);
+        	$this->load->view('template/footer');
+        }
+
+        public function add_concepto(){
+        	$data = array(			
+        		'empleados' => $this->Empleados_model->getEmpleados(),
+        		'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
+        	);
+        	$this->load->view('template/head');
+        	$this->load->view('template/menu');
+        	$this->load->view('movimientos/concepto_fijo_add', $data);
+        	$this->load->view('template/footer');
+        }
+        public function storeConceptoFijos(){
+        	$empleados = $this->input->post('empleados', TRUE);
+        	$tipos = $this->input->post('tipo', TRUE);
+        	$importes = $this->input->post('importes', TRUE);
+        	$desde = $this->input->post('desde', TRUE);
+        	$hasta = $this->input->post('hasta', TRUE);
+    		$time = time();
+			$fechaActual = date("Y-m-d H:i:s",$time);
+        	for ($i=0; $i <count($empleados) ; $i++) { 
+        		$data['IDEMPLEADO'] = $empleados[$i];
+        		$data['IDSUCURSAL'] = 1;
+        		$data['IDEMPRESA'] = 1;
+        		$data['IDTIPOMOVISUELDO'] = $tipos[$i];
+        		$data['IDMONEDA'] = 1;
+        		$data['IMPORTE'] = $importes[$i];
+        		$data['FECDESDE'] = $desde[$i];
+        		$data['FECHASTA'] = $hasta[$i];
+        		$data['OBSERVACION'] = "";
+        		$data['FECGRABACION'] = $fechaActual;
+        		$data['ESTADO'] = 'A';
+
+        		if (!$this->Movimientos_model->insertConceptosFijos($data)) {
+        			$this->session->set_flashdata('error', 'Ha ocurrido un error durante la operacion!');					
+					redirect(base_url()."concepto_fijo", "refresh");
+        		}
+        	}
+        	$this->session->set_flashdata('success', 'Se ha registrado correctamente!');					
+			redirect(base_url()."concepto_fijo", "refresh");
+        }
+        public function getEmpleadoConceptos(){
+        	$tipo = $this->input->post('tipo', TRUE);
+        	echo json_encode($this->Movimientos_model->getEmpleadoConceptos($tipo));
+        }
+        public function editConcepto($id){
+        	
+        	$data = array(			
+        		'empleados' => $this->Empleados_model->getEmpleados(),
+        		'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
+        		'conceptoEmpleados'=> $this->Movimientos_model->getEmpleadoConceptos($id)
+        	);
+        	$this->load->view('template/head');
+        	$this->load->view('template/menu');
+        	$this->load->view('movimientos/concepto_fijo_edit', $data);
+        	$this->load->view('template/footer');
+        }
     }

@@ -60,75 +60,40 @@ class Departamentoempresas extends CI_Controller
 	public function store()
 	{
 		//recibimos las variables
+		$this->form_validation->set_rules("desDepartamento", "Descripcion", "required");
+		$this->form_validation->set_rules("NumDepartamento", "Numero", "required");
+		if ($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', validation_errors('<div class="error">', '</div>'));
+			redirect(base_url()."horario/Horario", "refresh");
 
-		//print_r($_POST); die();
-
-		$NumDepartamento  = $this->input->post("NumDepartamento");
-		$desDepartamento  = $this->input->post("desDepartamento");
-		
-		$idDepartamento = $this->Departamentoempresa_model->ultimoNumero();
-
-
-		$time = time();
-		$fechaActual = date("Y-m-d H:i:s",$time);
-
-		$empresa = $_SESSION["Empresa"];
-		$sucursal = $_SESSION["Sucursal"];
-		
-		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
-		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
-
-		//corremos la validacion
-		
-			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
-
-		$data = array(
-			'idDepartamento'  => $idDepartamento->MAXIMO,
-			'NumDepartamento'  => $NumDepartamento,
-			'desDepartamento'  => $desDepartamento,
-			'fecgrabacion' => $fechaActual,
-			'idempresa'  => $empresa
-		);
-
-//print_r($data); die();
+		}else{
+			$NumDepartamento  = $this->input->post("NumDepartamento");
+			$desDepartamento  = $this->input->post("desDepartamento");
+			$idDepartamento = $this->Departamentoempresa_model->ultimoNumero();
+			$time = time();
+			$fechaActual = date("Y-m-d H:i:s",$time);
+			$empresa = $_SESSION["Empresa"];
+			$sucursal = $_SESSION["Sucursal"];		
+			$data = array(
+				'idDepartemento'  => $idDepartamento->MAXIMO,
+				'NumDepartamento'  => $NumDepartamento,
+				'descDepartamento'  => $desDepartamento,
+				'fecgrabacion' => $fechaActual,
+				'idempresa'  => $empresa
+			);
+			
             //guardamos los datos en la base de datos
-		$desDepartamento = trim($desDepartamento);
-		if($desDepartamento !="" && trim($desDepartamento) !="")
-		{
-			if($this->Departamentoempresa_model->save($data))
-			{
-				//si todo esta bien, emitimos mensaje
+			if($this->Departamentoempresa_model->save($data)){
+					//si todo esta bien, emitimos mensaje
 				$this->session->set_flashdata('success', 'Departamento registrado correctamente!');
-				//echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
-				
-				//redireccionamos y refrescamos
+					//redireccionamos y refrescamos
 				redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");
-				
-			}
-			else
-			{
-					//si hubo errores, mostramos mensaje
-				
+			}else{
+						//si hubo errores, mostramos mensaje
 				$this->session->set_flashdata('error', 'Departamento no registrado!');
-				//redirect(base_url()."servicios", "refresh");
-				
-				//redireccionamos
 				redirect(base_url()."departamentoempresas/departamentoempresas/add", "refresh");
-			}
+			}		
 		}
-		else
-		{	
-			
-			$this->session->set_flashdata('error', 'Ingrese Departamento!');
-				//redirect(base_url()."servicios", "refresh");
-			
-				//redireccionamos
-			redirect(base_url()."departamentoempresas/departamentoempresas/add", "refresh");
-
-			
-
-		}
-		
 
 	}
 	
@@ -161,54 +126,31 @@ class Departamentoempresas extends CI_Controller
 		{
 			//indicar campos de la tabla a modificar
 			$data = array(
-				'desDepartamento' => $desDepartamento
+				'descDepartamento' => $desDepartamento
 			);
-
-
-			if($this->Departamentoempresa_model->update($idDepartamento,$data))
-			{
-				//print_r($idDepartamento); die();
+			if($this->Departamentoempresa_model->update($idDepartamento,$data)){
 				$this->session->set_flashdata('success', 'Actualizado correctamente!');
 				redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");
-			}
-			else
-			{
+			}else{
 				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
 				redirect(base_url()."departamentoempresas/departamentoempresas/edit/".$idDepartamento,"refresh");
 			}
-		}
-		else
-		{	
-			
+		}else{
 			$this->session->set_flashdata('error', 'Ingrese Departamento!');
-				//redirect(base_url()."servicios", "refresh");
-			
 				//redireccionamos
 			redirect(base_url()."departamentoempresas/departamentoempresas/edit/".$idDepartamento,"refresh");
-
-			
-
 		}
 
 	}
 
 	public function delete($id){
-   	//print_r($id); die();
-		
 		if($this->Departamentoempresa_model->delete($id)){
-
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
 			redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");
-			
-		}
-		else
-		{
+		}else{
 			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
 			redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");		
-
 		}
-
-		
 	}
 
 }

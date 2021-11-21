@@ -1,12 +1,15 @@
  <!-- footer content -->
- <footer>
-  <div class="pull-left">
+ <footer style="background-color: #343A40">
+  <div class="pull-left" >
     Hecho por <a href="https://klopez.valdez14@gmail.com" target="_blank">K.J</a>
   </div>
   <div class="pull-right">
     <p class="footer">Pagina generada en <strong>{elapsed_time}</strong> segundos. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
   </div>
   <div class="clearfix"></div>
+
+  
+
   <!-- /footer content -->
 
   <!-- Bootstrap -->
@@ -15,6 +18,7 @@
   <script src="<?php echo base_url();?>assets/template/fastclick/lib/fastclick.js"></script>
   <!-- NProgress -->
   <script src="<?php echo base_url();?>assets/template/nprogress/nprogress.js"></script>
+
 
 
 
@@ -113,5 +117,4 @@
 </style>
 </footer>
 </body>
-
 </html>

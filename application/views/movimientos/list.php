@@ -11,7 +11,6 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
-
 			<div class="col-md-12" align="right">
 				<a href="<?php echo base_url();?>movimientos/movimientos/add"  id="prueba" class="btn btn-dark">
 					<i class="fa fa-plus">
@@ -19,6 +18,21 @@
 				</a>
 				<?php
 				if($this->session->flashdata("success")): ?>
+					<div class="alert alert-success" role="alert">
+						<button type="button" class="close" data-dismiss="alert">
+							&times;
+						</button>
+						<strong>
+							¡Buen Trabajo!
+						</strong>
+						<p>
+							<?php echo $this->session->flashdata("success")?>
+						</p>
+					</div>
+				</div>
+			<?php endif; ?>
+			<?php
+			if($this->session->flashdata("error")): ?>
 				<div class="alert alert-success" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						&times;
@@ -27,55 +41,32 @@
 						¡Buen Trabajo!
 					</strong>
 					<p>
-						<?php echo $this->session->flashdata("success")?>
+						<?php echo $this->session->flashdata("error")?>
 					</p>
 				</div>
-			</div>
-			<?php endif; ?>
-			<?php
-			if($this->session->flashdata("error")): ?>
-			<div class="alert alert-success" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					&times;
-				</button>
-				<strong>
-					¡Buen Trabajo!
-				</strong>
-				<p>
-					<?php echo $this->session->flashdata("error")?>
-				</p>
-			</div>
 			<?php endif; ?>
 			<div class="x_panel">
 				<div class="x_title">
-					<label>meses</label>
-					<input class="" type="month" name="">
-					<h2>
-						Listado de Movimientos correspondiente al mes de <b><?php echo $mes; ?></b>
-					</h2>
-					<ul class="nav navbar-right panel_toolbox">
-						<li>
-							<a class="collapse-link">
-								<i class="fa fa-chevron-up">
-								</i>
-							</a>
-						</li>
-						<li>
-							<a class="close-link">
-								<i class="fa fa-close">
-								</i>
-							</a>
-						</li>
-					</ul>
+					<div class="row">
+						<div class="col-md-8">
+							<h2>
+								Listado de Movimientos correspondiente al mes de <b><?php echo $mes; ?></b>
+							</h2>
+						</div>
+						<div class="col-md-2">
+
+							<div class="form-group">
+								<input type="month" id="txtperiodo" name="txtperiodo" class="form-control"> 
+							</div>
+							
+						</div>
+						
+					</div>
 					<div class="clearfix">
 					</div>
 				</div>
-
-                  
-
 				<div class="row">
 					<div class="col-md-12">
-
 						<table id="tb_empleado" class="table table-responsive table-striped table-bordered" width="100%">
 							<thead>
 								<tr>
@@ -104,7 +95,7 @@
 											<td><?php echo $movimiento->FECHAMOVI;?></td>
 											<td><?php echo $movimiento->DESTIPOMOV;?></td>
 											<td><?php echo $movimiento->MONTO_TOTAL;?></td>
-											<td><button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Ver Empleados Asociados"><i class="fa fa-list"></i></button><a href="<?php echo base_url();?>movimientos/movimientos/edit/<?php echo $movimiento->IDMOVI ?>"><button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar Movimiento"><i class="fa fa-edit"></i></button></a></td>
+											<td><button class="btn btn-primary" data-target="modal" data-placement="top" title="Ver Empleados Asociados"><i class="fa fa-list"></i></button><a href="<?php echo base_url();?>movimientos/movimientos/edit/<?php echo $movimiento->IDMOVI ?>"><button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar Movimiento"><i class="fa fa-edit"></i></button></a></td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
@@ -120,99 +111,107 @@
 </div>
 </div>
 </div>
-	<!-- Modal -->
-<div class="modal fade" id="modal-view">
+<!-- Modal -->
+<div class="modal fade" id="mdlEmpleados">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i> Ver Detalles de Movimientos </h4>
-		  	</div>
-		  	<div class="modal-body">
-		  		<!--en esta parte se carga los datos de la vista view-->
-		  	</div>
-			 	<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-		 		</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i> Ver Detalles de Movimientos </h4>
+				</div>
+				<div class="modal-body">
+					<table id="tabEmpleado" class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Nro. Cedula</th>
+								<th>Nombre(s) y Apellido(s)</th>
+								<th>Monto</th>
+								<th>Fecha Movimiento</th>
+							</tr>
+						</thead>
+						<tbody >
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Cerrar</button>
+				</div>
 			</div>
-	  </div>
-</div>
+		</div>
+	</div>
 <?php // $this->load->view('template/footer');?>
 <script type="text/javascript">
- $(document).ready(function(){
- 	var base_url= "<?php echo base_url();?>";
-       // alert (base_url);
-        $(".btn-view").on("click", function(){
-          var id= $(this).val();
-          $.ajax({
-            url: base_url + "movimientos/movimientos/view/" + id,
-            type: "POST",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              $("#modal-view .modal-body").html(resp);
-            //alert(resp);
-            }
-          });
-        })
-        	//esto lee el boton eliminar y envia via ajax
-         $(".btn-delete").on("click", function(e){
+	$(document).ready(function(){
+		var base_url= "<?php echo base_url();?>";
+		$(".btn-view").on("click", function(){
+			var id= $(this).val();
+			$.ajax({
+				url: base_url + "movimientos/movimientos/view/" + id,
+				type: "POST",
+				success:function(resp){
+
+					$("#modal-view .modal-body").html(resp);
+
+				}
+			});
+		})
+		$(".btn-delete").on("click", function(e){
 			e.preventDefault();
-			//alert("borrando");
 			var ruta= $(this).attr("href");
-		//	alert(ruta);
 			$.ajax({
 				url: ruta,
 				type: "POST",
 				success:function(resp){
-					//se redirige a base url con la respuesta
 					window.location.href= base_url + resp;	
-					//alert(base_url + resp);
 				}
-				});
+			});
 		})
 
+	});
 
-// PROPIEDAD CLIK DE EDITAR
-  //        $(".btn-warning").on("click", function(e){
-		// 	e.preventDefault();
-		// 	//alert("borrando");
-		// 	var ruta= $(this).attr("href");
-		// //	alert(ruta);
-		// 	$.ajax({
-		// 		url: ruta,
-		// 		type: "POST",
-		// 		success:function(resp){
-		// 			//se redirige a base url con la respuesta
-		// 			window.location.href= base_url + resp;	
-		// 			//alert(base_url + resp);
+	function eliminar(id){
+		if(confirm("Esta seguro que desea eliminar este registro?")){
 
-		// 				}
-		// 		});
-		// })
-         //HASTA ACA BOTON EDITAR
-
-});
-
-
-
-
-function eliminar(id){
-	if(confirm("Esta seguro que desea eliminar este registro?")){
-		
-		window.location.href = "/isupport/movimientos/movimientos/delete/" + id;
-		
-
-		/*$.ajax({
-            url: "/isupport/movimientos/movimientos/delete/" + id,
-            type: "GET",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              alert('Registro Eliminado correctamente');
-            //alert(resp);
-            }
-          });*/
+			window.location.href = "/isupport/movimientos/movimientos/delete/" + id;
+		}
 	}
-}
-	
+	$(".listEmpleado").on("click", function(){
+		tipo = $(this).val();
+		$.ajax({
+			type:'POST',
+			url:'<?php echo base_url()?>get_empleados_conceptos',
+			data: {tipo:tipo},
+		})
+		.done(function (data){
+			var resp = JSON.parse(data);
+			console.log(resp);
+			var html ="";
+			$("#tabEmpleado tbody").html('');
+			for (var i = 0; i < resp.length; i++) {
+				html += '<tr>';
+				html += '<td>';
+				html += resp[i].CEDULAIDENTIDAD;
+				html += '</td>';
+				html += '<td>';
+				html += resp[i].EMPLEADO;
+				html += '</td>';
+				html += '<td>';
+				html += resp[i].IMPORTE;
+				html += '</td>';
+				html += '<td>';
+				html += resp[i].FECHA;
+				html += '</td>';
+				html += '</tr>';
+
+			}
+			$("#tabEmpleado tbody").append(html);
+
+		})
+		.fail(function(){
+			alert('ocurrio un error interno, contacte con Rolo');
+		});
+
+	});
 
 </script>

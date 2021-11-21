@@ -19,14 +19,14 @@ class Departamentoempresa_model extends CI_Model {
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getDepartamentoempresa($id){
-		$this->db->select("IDDEPARTAMENTO,NUMDEPARTAMENTO,DESDEPARTAMENTO,IDEMPRESA,FECGRABACION");
-		$this->db->where("iddepartamento",$id);
+		$this->db->select("IDDEPARTEMENTO,NUMDEPARTAMENTO,DESCDEPARTAMENTO,IDEMPRESA,FECGRABACION");
+		$this->db->where("iddepartemento",$id);
 		$resultado= $this->db->get("departamentoempresa");
 		return $resultado->row();
 	}
 	//esto es para actualizar los empleado
 	public function update($id, $data){
-		$this->db->where("iddepartamento", $id);
+		$this->db->where("iddepartemento", $id);
 		return $this->db->update("departamentoempresa", $data);
 
 	}
@@ -39,21 +39,21 @@ class Departamentoempresa_model extends CI_Model {
 	}
 //obtener el ultimo id mas 1
 	public function ultimoNumero(){
-	    $this->db->select("(CASE WHEN  max(iddepartamento) IS NULL THEN '1' ELSE max(iddepartamento) + 1 END) as MAXIMO");
+	    $this->db->select("(CASE WHEN  max(iddepartemento) IS NULL THEN '1' ELSE max(iddepartemento) + 1 END) as MAXIMO");
 		$this->db->from("departamentoempresa");
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}
 
 	public function ObtenerCodigo(){
-	    $this->db->select("(CASE WHEN  max(iddepartamento) IS NULL THEN '01' when (max(iddepartamento) + 1) <= 9 then concat('0',(max(iddepartamento) + 1)) ELSE max(iddepartamento) + 1 END) as MAXIMO");
+	    $this->db->select("(CASE WHEN  max(iddepartemento) IS NULL THEN '01' when (max(iddepartemento) + 1) <= 9 then concat('0',(max(iddepartemento) + 1)) ELSE max(iddepartemento) + 1 END) as MAXIMO");
 		$this->db->from("departamentoempresa");
 		$resultado= $this->db->get();
 		return $resultado->result();
 	}
 
 	public function delete($id){
-		$this->db->where("iddepartamento", $id);
+		$this->db->where("iddepartemento", $id);
 		return $this->db->delete("departamentoempresa");
 
 	}

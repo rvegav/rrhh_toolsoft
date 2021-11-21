@@ -5,8 +5,11 @@ class Plancuenta_model extends CI_Model {
 	//estos son metodos q tienen q ver con bd
 	
 	//este metodo es para mostrar todos los empleado
-	public function getPlancuentas(){
+	public function getPlancuentas($imputable = false){
 	//	$this->db->where("estempleado", "1");
+		if ($imputable) {
+			$this->db->where('ASENTABLE', 'S');
+		}
 		$resultados= $this->db->get("plancuentas");
 		return $resultados->result();
 	}
@@ -19,9 +22,11 @@ class Plancuenta_model extends CI_Model {
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
-	public function getPlancuenta($id){
+	public function getPlancuenta($id = false){
 		$this->db->select("IDPLANCUENTA,NUMPLANCUENTA,TIPOCUENTA,ASENTABLE,NIVELCUENTA,DESCPLANCUENTA,FECHAGRABACION, (case when asentable = 0 then 'NO' else 'SI' end) as IMPONIBLE");
-		$this->db->where("IDPLANCUENTA",$id);
+		if ($id) {
+			$this->db->where("IDPLANCUENTA",$id);
+		}
 		$resultado= $this->db->get("plancuentas");
 		return $resultado->row();
 	}

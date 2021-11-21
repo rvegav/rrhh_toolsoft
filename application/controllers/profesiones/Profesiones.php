@@ -6,7 +6,7 @@ class Profesiones extends CI_Controller
 	//solo el constructor, para llamar a las clases
 	public function __construct()
 	{
-        parent::__construct();
+		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
@@ -35,9 +35,9 @@ class Profesiones extends CI_Controller
 	public function add()
 	{
 
-$data = array(			
-			  'maximos' => $this->Profesion_model->ObtenerCodigo(),
-			  );
+		$data = array(			
+			'maximos' => $this->Profesion_model->ObtenerCodigo(),
+		);
 
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -63,19 +63,19 @@ $data = array(
 
 		//print_r($_POST); die();
 
-        $NumProfesion  = $this->input->post("NumProfesion");
+		$NumProfesion  = $this->input->post("NumProfesion");
 		$desProfesion  = $this->input->post("desProfesion");
 		
 		$idProfesion = $this->Profesion_model->ultimoNumero();
 
 
-        $time = time();
-        $fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-        $empresa = $_SESSION["Empresa"];
-        $sucursal = $_SESSION["Sucursal"];
-        $idusuario = $_SESSION["idusuario"];
-                
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$idusuario = $_SESSION["idusuario"];
+
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
 
@@ -83,17 +83,17 @@ $data = array(
 		
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
-			$data = array(
-				'idprofesion'  => $idProfesion->MAXIMO,
-				'numprofesion'  => $NumProfesion,
-				'desprofesion'  => $desProfesion,
-				'fecgrabacion' => $fechaActual,
-				'idempresa' => $empresa
-			);
+		$data = array(
+			'idprofesion'  => $idProfesion->MAXIMO,
+			'numprofesion'  => $NumProfesion,
+			'desprofesion'  => $desProfesion,
+			'fecgrabacion' => $fechaActual,
+			'idempresa' => $empresa
+		);
 
 //print_r($data); die();
             //guardamos los datos en la base de datos
-            $desProfesion = trim($desProfesion);
+		$desProfesion = trim($desProfesion);
 		if($desProfesion !="" && trim($desProfesion) !="")
 		{
 			if($this->Profesion_model->save($data))
@@ -109,24 +109,24 @@ $data = array(
 			else
 			{
 					//si hubo errores, mostramos mensaje
-					
+
 				$this->session->set_flashdata('error', 'Profesion no registrado!');
 				//redirect(base_url()."servicios", "refresh");
 				
 				//redireccionamos
 				redirect(base_url()."profesiones/profesiones/add", "refresh");
 			}
-	    }
+		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Profesion!');
+
+			$this->session->set_flashdata('error', 'Ingrese Profesion!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."profesiones/profesiones/add", "refresh");
 
-				
+
 
 		}
 		
@@ -148,9 +148,7 @@ $data = array(
 		$this->load->view('profesiones/edit', $data);
 		$this->load->view('template/footer');
 	}
-
 	//actualizamos 
-	
 	public function update()
 	{
 		$idProfesion= $this->input->post("idProfesion");
@@ -164,11 +162,8 @@ $data = array(
 			$data = array(
 				'desProfesion' => $desProfesion
 			);
-
-
 			if($this->Profesion_model->update($idProfesion,$data))
 			{
-				//print_r($idNivel); die();
 				$this->session->set_flashdata('success', 'Actualizado correctamente!');
 				redirect(base_url()."profesiones/profesiones", "refresh");
 			}
@@ -180,32 +175,25 @@ $data = array(
 		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Profesion!');
-				//redirect(base_url()."servicios", "refresh");
-				
-				//redireccionamos
+			$this->session->set_flashdata('error', 'Ingrese Profesion!');
 			redirect(base_url()."profesiones/profesiones/edit/".$idProfesion,"refresh");
-
-				
-
 		}
 
 	}
 
-public function delete($id){
+	public function delete($id){
 		
-	if($this->Profesion_model->delete($id)){
-		$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-		redirect(base_url()."/profesiones/profesiones", "refresh");
-	}
-	else
-	{
-		$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-		redirect(base_url()."/profesiones/profesiones", "refresh");		
-	}
+		if($this->Profesion_model->delete($id)){
+			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
+			redirect(base_url()."/profesiones/profesiones", "refresh");
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
+			redirect(base_url()."/profesiones/profesiones", "refresh");		
+		}
 
 		
-}
+	}
 
 }

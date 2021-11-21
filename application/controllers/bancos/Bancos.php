@@ -73,7 +73,7 @@ class Bancos extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$NumBanco   = $this->input->post("NumBanco");
 			$desBanco   = $this->input->post("desBanco");
 			$direccion   = $this->input->post("direccion");
@@ -96,8 +96,6 @@ class Bancos extends CI_Controller
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
 
-		//corremos la validacion
-
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
 			$data = array(
@@ -105,7 +103,6 @@ class Bancos extends CI_Controller
 				'numbanco'  => $NumBanco,
 				'desbanco'  => $desBanco,
 				'direccion'  => $direccion,
-				'telefono' => $telefono,
 				'web' => $web,
 				'email' => $email,
 				'fecgrabacion' => $fechaActual,
@@ -142,8 +139,6 @@ class Bancos extends CI_Controller
 			{	
 
 				$this->session->set_flashdata('error', 'Ingrese Banco!');
-				//redirect(base_url()."servicios", "refresh");
-
 				//redireccionamos
 				redirect(base_url()."bancos/bancos/add", "refresh");
 
@@ -151,14 +146,9 @@ class Bancos extends CI_Controller
 
 			}
 
-		}else {
-			redirect(base_url(),'refresh');
-		}
-		//recibimos las variables
-
-		//print_r($_POST); die();
-
-		
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 	

@@ -74,23 +74,19 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="desDepartamento">Codigo <span class="required">*</span>
                         </label>
-                        <!--<div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="desCiudad" required="required" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $ciudad->DESCIUDAD;?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
-                        </div>-->
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="desDepartamento" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $departamentoempresa->DESDEPARTAMENTO;?>" name="desDepartamento" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="desDepartamento" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $departamentoempresa->DESCDEPARTAMENTO;?>" name="desDepartamento" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
                       
 
-                      <input type="text" id="idDepartamento" style="visibility: hidden;" required="required"  readonly value="<?php echo $departamentoempresa->IDDEPARTAMENTO;?>" name="idDepartamento" class="form-control col-md-7 col-xs-12">
+                      <input type="text" id="idDepartamento" style="visibility: hidden;" required="required"  readonly value="<?php echo $departamentoempresa->IDDEPARTEMENTO;?>" name="idDepartamento" class="form-control col-md-7 col-xs-12">
 
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <button type="reset" class="btn btn-primary">Resetear</button>
                           <button type="submit" class="btn btn-success">Actualizar</button>
-                          <!--<button type="button" name="entrar" value="ENTER" onclick="verificar_campos()" class="btn btn-success" onclick="verificar_campos()">Actualizar</button>-->
 
                         </div>
                       </div>

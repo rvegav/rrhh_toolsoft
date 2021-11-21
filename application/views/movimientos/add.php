@@ -80,7 +80,7 @@
                             <label class="control-label" for="btn-agg">&nbsp;</label>
                             <div class="input-group mt-5">
                                 <span class="input-group-addon">Dias:</span>
-                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id= "DIAS">
+                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id="DIAS">
                             </div>
                         </div>
 
@@ -103,7 +103,7 @@
                             <label class="control-label" for="btn-agg">&nbsp;</label>
                             <div class="input-group">
                                 <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar</button>
-                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat">Guardar Movimientos</button>
+                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat"><span class="fa fa-check"></span> Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -313,54 +313,11 @@
 
         });
 
-/*
-$("#btn-grabar").on("click", function(){
-   $IDMOVI   = $this->input->post("IDMOVI");
-
-        $NUMMOVI   = $this->input->post("NUMMOVI");
-
-
-        $FECHAMOVI   = $this->input->post("FECHAMOVI");
-        $IDEMPLEADO   = $this->input->post("IDEMPLEADO"); 
-
-    });*/
-
-// PROPIEDAD CLIK DE EDITAR
-  //        $(".btn-warning").on("click", function(e){
-        //  e.preventDefault();
-        //  //alert("borrando");
-        //  var ruta= $(this).attr("href");
-        // //   alert(ruta);
-        //  $.ajax({
-        //      url: ruta,
-        //      type: "POST",
-        //      success:function(resp){
-        //          //se redirige a base url con la respuesta
-        //          window.location.href= base_url + resp;  
-        //          //alert(base_url + resp);
-
-        //              }
-        //      });
-        // })
-         //HASTA ACA BOTON EDITAR
-
-
          $("#btn-agregar").on("click", function(){
-          //data = ui.item.IDEMPLEADO1 + "*"+ ui.item.DIAS +"*"+ui.item.HORAS +"*"+ ui.item.IMPORTE; 
-   //        select:function(event, ui){
-   //   data = ui.item.id+ "*"+ ui.item.NUMMOVI+ "*"+ ui.item.label+ "*"+ ui.item.DESTIPOMOV;
-   //   $("#btn-agregar"),val(data);
-   // }
-
-//data = ui.item.IDEMPLEADO1 + "*"+ ui.item.DIAS +"*"+ui.item.HORAS +"*"+ ui.item.IMPORTE; 
-  //      $("#btn-agregar").val(data);
-
-//echo("ingreso al boton");
-          //if(data != '') {
-           // infomovimiento = data.split("*");
-
            console.log($("select#EMPLEADO1").val());
+           if (true) {
 
+           }
            html = '<tr>';
            html += '<td>';
            html += '<input type="hidden"  name="DIAS[]" value="'+ $("#DIAS").val() + '" >'

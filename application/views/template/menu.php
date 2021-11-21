@@ -13,7 +13,7 @@
           <li><a href="<?php echo base_url();?>profesiones/profesiones">Profesion</a></li>
           <li><a href="<?php echo base_url();?>bancos/bancos">Banco</a></li>
           <!-- <li><a href="<?php echo base_url();?>cuentabancarias/cuentabancarias">Cuenta Bancaria</a></li> -->
-          <li><a href="<?php echo base_url();?>tipocuentas/tipocuentas">Tipo de Cuenta</a></li>
+          <!-- <li><a href="<?php echo base_url();?>tipocuentas/tipocuentas">Tipo de Cuenta</a></li> -->
           <li><a href="<?php echo base_url();?>sucursales/sucursales">Sucursal</a></li>
           <li><a href="<?php echo base_url();?>cargos/cargos">Cargo</a></li>
           <li><a href="<?php echo base_url();?>categorias/categorias">Categoria</a></li>
@@ -23,11 +23,13 @@
           <li><a href="<?php echo base_url();?>feriados/feriados">Feriados</a></li>
           <li><a href="<?php echo base_url();?>monedas/monedas">Moneda</a></li>
           <li><a href="<?php echo base_url();?>tipomovimientos/tipomovimientos">Tipo de Movimiento</a></li>
-          <li><a href="<?php echo base_url();?>empresas/empresas">Empresa</a></li>
-<!--           <li><a href="<?php echo base_url();?>empresas/empresas">Conceptos de Salario</a></li>
+          <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Empresa</a></li> -->
+          <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Conceptos de Salario</a></li>
           <li><a href="<?php echo base_url();?>empresas/empresas">Hijos</a></li>
-          <li><a href="<?php echo base_url();?>empresas/empresas">Tipos de Incidencias</a></li>
-          <li><a href="<?php echo base_url();?>empresas/empresas">Horarios</a></li>   -->
+          <li><a href="<?php echo base_url();?>empresas/empresas">Tipos de Incidencias</a></li> -->
+          <li><a href="<?php echo base_url();?>horario/Horario">Horarios</a></li>  
+          <li><a href="<?php echo base_url();?>tipo_faltas">Tipo de Faltas</a></li>  
+
         </ul>
       </li>
       <li><a><i class="fa fa-table"></i> Empleados <span class="fa fa-chevron-down"></span></a>
@@ -38,6 +40,9 @@
       </li>
       <li><a><i class="fa fa-desktop"></i> Liquidación de Salario <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
+          <li><a href="<?php echo base_url();?>importarMarcacion">Importacion de Marcaciones</a></li>
+          <li><a href="<?php echo base_url();?>viewgenerarFaltas">Generacion de faltas</a></li>
+          <li><a href="<?php echo base_url();?>concepto_fijo">Conceptos Fijos</a></li>
           <li><a href="<?php echo base_url();?>movimientos/movimientos">Movimientos de Salario</a></li>
           <li><a href="<?php echo base_url();?>procesocierres/procesocierres/add">Generar Proceso de Cierre</a></li>     
         </ul>
@@ -94,7 +99,7 @@
 
 
 <div class="top_nav">
-  <div class="nav_menu">
+  <div class="nav_menu" style="background-color: #343A40">
 
     <nav>
       <div class="nav toggle">
@@ -108,8 +113,6 @@
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">
             <li><a href="javascript:;"><?php echo  $this->session->userdata("NOMBRE")?></a></li>
-            <li><a href="javascript:;"> Perfil</a></li>
-            <li><a href="javascript:;">Ayuda</a></li>
             <li><a href="<?php echo base_url();?>auth/logout"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
           </ul>
         </li>

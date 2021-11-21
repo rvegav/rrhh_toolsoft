@@ -92,7 +92,7 @@
 									<td>
 										<?php echo $departamentoempresa->NUMDEPARTAMENTO;?>
 									</td>
-									<td>e
+									<td>
 										<?php echo $departamentoempresa->DESCDEPARTAMENTO;?>
 									</td>
 									<td>
@@ -102,22 +102,15 @@
 									<?php
 									//$estado = $empleado->estadoEmpleado;
 									$estado = 1;
-									if($estado == 1)
-									{
+									if($estado == 1){
 										$estado2     = "Activo";$label_class = 'label-success';
-									}
-									else
-									{
-										if($estado == 2)
-										{
+									}else{
+										if($estado == 2){
 											$estado2     = "Inactivo";$label_class = 'label-warning';
-										}
-										else
-										{
+										}else{
 											$estado2     = "Anulado";$label_class = 'label-danger';
 										}
 									}
-									
 									;?>
 									<td>
 										<span class="label <?php echo $label_class;?>">
@@ -132,11 +125,11 @@
 											</i>
 										</button>
 										<a href="<?php echo base_url();?>departamentoempresas/departamentoempresas/edit/<?php echo $departamentoempresa->IDDEPARTEMENTO;?>" class="btn btn-warning">
-											<i class="fa fa-pencil">
+											<i class="fa fa-edit">
 											</i>
 										</a>
                                        <a href="#" id="<?=$departamentoempresa->IDDEPARTEMENTO;?>" class="btn btn-danger btn-delete eliminar">
-											<i class="fa fa-trash-o">
+											<i class="fa fa-trash">
 											</i>
 										</a>
 

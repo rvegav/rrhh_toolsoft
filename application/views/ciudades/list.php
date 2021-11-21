@@ -116,6 +116,7 @@
 		</div>
 	</div>
 </div>
+</div>
 <!-- </div> -->
 
 
@@ -138,7 +139,8 @@
 </div>
 <!--<?php // $this->load->view('template/footer');?>-->
 <script type="text/javascript" src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
-<script>
+
+<script type="text/javascript" >
 	$(document).ready(function(){
 		$('#tb_ciudad thead tr').clone(true).appendTo( '#tb_ciudad thead' );
 		$('#tb_ciudad thead tr:eq(1) th').each( function (i) {

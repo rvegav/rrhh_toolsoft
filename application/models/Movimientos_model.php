@@ -11,11 +11,14 @@ class Movimientos_model extends CI_Model {
 		//return $resultados->result();
 	//}
 
-	public function getTipoMovimientos($codigo= false){
+	public function getTipoMovimientos($codigo= false, $desc = false){
 		$this->db->select("idtipomovisueldo AS IDTIPOMOVI,NUMTIPOMOV,DESTIPOMOV AS DESC, SUMARESTA");
 		$this->db->from("tipomovisueldo");
 		if ($codigo) {
 			$this->db->where('idtipomovisueldo', $codigo);
+		}
+		if ($desc) {
+			$this->db->where('DESTIPOMOV', $desc);
 		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
@@ -30,16 +33,16 @@ class Movimientos_model extends CI_Model {
 		$this->db->select("(CASE WHEN  max(IDMOVI) IS NULL THEN '1' ELSE max(IDMOVI) + 1 END) as MAXIMO");
 		$this->db->from("movisueldo");
 		$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 	}
 
 
     public function getIdDetalle(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("max(idmovidetalle) as MAXIMO");
+		$this->db->select("(CASE WHEN  max(idmovidetalle) IS NULL THEN '1' ELSE max(idmovidetalle) + 1 END) as MAXIMO");
 		$this->db->from("movisueldodetalle");
 		$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 	}
 
 
@@ -74,19 +77,28 @@ class Movimientos_model extends CI_Model {
 		}
 	}
     
-
-
-	
 	//esta es la parte para guardar en la bd
 	public function save($data)
 	{
-		//echo '<pre>'.print_r($data).'</pre>'; die();
-		return $this->db->insert("movisueldo", $data);
+		$id = $this->getIdMaximo();
+		$this->db->set('IDMOVI', $id->MAXIMO);
+		if ($this->db->insert("movisueldo", $data)) {
+			return $this->db->insert_id();
+		}else{
+			return false;
+		}
 	}
 
 
     public function save_detalle($data){
-    	$this->db->insert("movisueldodetalle",$data);
+    	
+    	$id = $this->getIdDetalle();
+		$this->db->set('IDMOVIDETALLE', $id->MAXIMO);
+		if ($this->db->insert("movisueldodetalle", $data)) {
+			return $this->db->insert_id();
+		}else{
+			return false;
+		}
     }
 
 
@@ -147,11 +159,12 @@ public function getMovimientoDetalle($idMovi){
 	}
 
 
-public function getTipoMovimiento(){
+public function getTipoMovimiento($desc){
 	$this->db->select("idtipomovisueldo as IDTIPOMOVISUELDO,numtipomov as NUMTIPOMOV,destipomov as DESTIPOMOV");
 	$this->db->from("tipomovisueldo");
+	$this->db->where('destipomov', $desc);
 	$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 }
 
 public function getEmpleado(){
@@ -242,5 +255,44 @@ public function getEmpleado1(){
 		$this->db->where("idMovi", $idMovi);
 		return $this->db->update("movisueldodetalle", $data);
 
+	}
+
+	public function getConceptoFijos(){
+		$this->db->select('T.DESTIPOMOV TIPOMOVIMIENTO, SUM(C.IMPORTE) IMPORTE_TOTAL, T.IDTIPOMOVISUELDO IDTIPO');
+		$this->db->from('CONCEPTOSFIJOS C');
+		$this->db->join('TIPOMOVISUELDO T', 'T.IDTIPOMOVISUELDO = C.IDTIPOMOVISUELDO');
+		$this->db->where('C.ESTADO', 'A');
+		$this->db->group_by('T.DESTIPOMOV, T.IDTIPOMOVISUELDO');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
+		} else {
+			return false;
+		}
+	}
+	public function insertConceptosFijos($data = false){
+		$id = $this->getUltimoIdConceptoFijos();
+		$this->db->set('IDCONCEPTOFIJO', $id->MAXIMO, FALSE);
+		return $this->db->insert('CONCEPTOSFIJOS', $data);
+	}
+	public function getUltimoIdConceptoFijos(){
+		$this->db->select("(CASE WHEN  max(IDCONCEPTOFIJO) IS NULL THEN '1' ELSE max(IDCONCEPTOFIJO) + 1 END) as MAXIMO");
+		$this->db->from("CONCEPTOSFIJOS");
+		$resultados= $this->db->get();
+		return $resultados->row();
+	}
+	public function getEmpleadoConceptos($tipo){
+		$this->db->select('T.DESTIPOMOV TIPOMOVIMIENTO, C.IMPORTE, T.IDTIPOMOVISUELDO IDTIPO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO, CEDULAIDENTIDAD, DATE_FORMAT(C.FECDESDE, "%d/%m/%Y") DESDE, DATE_FORMAT(C.FECHASTA, "%d/%m/%Y") HASTA, C.IDCONCEPTOFIJO');
+		$this->db->from('CONCEPTOSFIJOS C');
+		$this->db->join('TIPOMOVISUELDO T', 'T.IDTIPOMOVISUELDO = C.IDTIPOMOVISUELDO');
+		$this->db->join('EMPLEADO E', 'E.IDEMPLEADO = C.IDEMPLEADO');
+		$this->db->where('C.ESTADO', 'A');
+		$this->db->where('C.IDTIPOMOVISUELDO', $tipo, FALSE);
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
+		} else {
+			return false;
+		}
 	}
 }

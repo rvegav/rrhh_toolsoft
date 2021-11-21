@@ -21,6 +21,7 @@ class Empleados extends CI_Controller
 		$this->load->model("Nivelestudio_model");
 		$this->load->model("Pais_model");
 		$this->load->model("Cuentabancaria_model");
+		$this->load->model("Hijos_model");
 	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
@@ -31,7 +32,7 @@ class Empleados extends CI_Controller
 
           //mostramos el contenido del array
           //print_r($data);
-        
+
 
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
@@ -87,58 +88,57 @@ class Empleados extends CI_Controller
 		$config['overwrite']           = true;
 
 		$this->load->library('upload', $config);
-		// $idEmpleado = $this->input->post("CodEmpleado");
-        $numEmpleado = $this->input->post("CodEmpleado");
+		$numEmpleado = $this->input->post("CodEmpleado");
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
 		$observacion = $this->input->post('Observacion');
 
-		if ( ! $this->upload->do_upload('userfile')){
-			$error = array('error' => $this->upload->display_errors());
-			// echo "error";
-			$perfil ="";
-		}else{
-			$perfil = $this->upload->data();
-			$data = file_get_contents('uploads/'.$perfil['file_name']);
-			$base64 = base64_encode($data);
-			$perfil = 'data:image/' . $perfil['image_type'] . ';base64,'.$base64;
-			// echo "correcto";
-		}
-		$documento = $this->input->post('Documento');
-		$direccion = $this->input->post("Direccion");
-		$telefono   = $this->input->post("Telefono");
-		$celular = $this->input->post('Celular');
-		$fecha_nacimiento = $this->input->post('Nacimiento');
-		$fechaIngreso = date("Y-m-d H:i:s");
-		$fecha_salida = $this->input->post('Salida');
-		$ruc = $this->input->post('Ruc');
-		$estado_civil = $this->input->post('EstadoCivil');
-		$pais = $this->input->post('Nacionalidad');
-		$nivel_estudio = $this->input->post('NivelEstudio');
-		$profesion = $this->input->post('Profesion');
-		$ciudad = $this->input->post('Ciudad');
-		$nro_cuenta = $this->input->post('NroCuenta');
-		$sucursal = $this->input->post('Sucursal');
-		$cargo = $this->input->post('Cargo');
-		$tipo_salario = $this->input->post('TipoSalario');
-		$deparmento = $this->input->post('Departamento');
-		$categoria = $this->input->post('Categoria');
-		$nro_ips = $this->input->post('NumeroIps');
-		$fecha_ips = $this->input->post('FechaIps');
-		$nombre_hijo = $this->input->post('nombrehijo');
-		$apellido_hijo = $this->input->post('apellidohijo');
-		$sexohijo = $this->input->post('sexohijo');
-		$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
-
-		
-
 		// //aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
-		// $this->form_validation->set_rules("username", "Username", "required|is_unique[empleado.username]");
+		$this->form_validation->set_rules("Nombre", "Nombres", "required");
+		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
+		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
+		$this->form_validation->set_rules("Observacion", "Observacion", "required");
 
-		// //corremos la validacion
-		// if($this->form_validation->run())
-		// {
-		// 	//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
+		if ($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', validation_errors());
+			redirect(base_url()."empleados/empleados/add", "refresh");
+
+		}else{
+			if ( ! $this->upload->do_upload('userfile')){
+				$error = array('error' => $this->upload->display_errors());
+				$perfil ="";
+			}else{
+				$perfil = $this->upload->data();
+				$data = file_get_contents('uploads/'.$perfil['file_name']);
+				$base64 = base64_encode($data);
+				$perfil = 'data:image/' . $perfil['image_type'] . ';base64,'.$base64;
+			}
+			$documento = $this->input->post('Documento');
+			$direccion = $this->input->post("Direccion");
+			$telefono   = $this->input->post("Telefono");
+			$celular = $this->input->post('Celular');
+			$fecha_nacimiento = $this->input->post('Nacimiento');
+			$fechaIngreso = date("Y-m-d H:i:s");
+			$fecha_salida = $this->input->post('Salida');
+			$ruc = $this->input->post('Ruc');
+			$estado_civil = $this->input->post('EstadoCivil');
+			$pais = $this->input->post('Nacionalidad');
+			$nivel_estudio = $this->input->post('NivelEstudio');
+			$profesion = $this->input->post('Profesion');
+			$ciudad = $this->input->post('Ciudad');
+			$nro_cuenta = $this->input->post('NroCuenta');
+			$sucursal = $this->input->post('Sucursal');
+			$cargo = $this->input->post('Cargo');
+			$tipo_salario = $this->input->post('TipoSalario');
+			$deparmento = $this->input->post('Departamento');
+			$categoria = $this->input->post('Categoria');
+			$nro_ips = $this->input->post('NumeroIps');
+			$fecha_ips = $this->input->post('FechaIps');
+			$nombre_hijo = $this->input->post('nombrehijo');
+			$apellido_hijo = $this->input->post('apellidohijo');
+			$sexohijo = $this->input->post('sexohijo');
+			$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
+
 			$data = array(
 				// 'idEmpleado'  => $idEmpleado,
 				'numEmpleado'  => $numEmpleado,
@@ -154,7 +154,7 @@ class Empleados extends CI_Controller
 				'fechaingreso' => $fechaIngreso,
 				'fechasalida' => $fecha_salida,
 				'idcivil' => $estado_civil,
-				'idpais' => $pais,
+				'idnacionalidad' => $pais,
 				'idnivel'=> $nivel_estudio,
 				'idprofesion' => $profesion,
 				'idciudad' => $ciudad,
@@ -167,15 +167,15 @@ class Empleados extends CI_Controller
 				'fecingresoips' => $fecha_ips,
 				'estadoempleado'  => 1,
 				'fecgrabacion'=> date("Y-m-d H:i:s")
-				
+
 			);
-			
+
 			//guardamos los datos en la base de datos
-			if($this->Empleados_model->save($data))
-			{
+			if($this->Empleados_model->save($data)){
+				$empleado = $this->Empleados_model->getEmpleados(false, $numEmpleado, $nombre, $apellido);
 				for ($i=0; $i < count($nombre_hijo) ; $i++) { 
 					$data = array(
-						'idempleado'=> $empleado_id,
+						'idempleado'=> $empleado->IDEMPLEADO,
 						// 'idempresa'=>
 						'nombre'=>$nombre_hijo[$i],
 						'apellido'=>$apellido_hijo[$i],
@@ -187,31 +187,17 @@ class Empleados extends CI_Controller
 						$correcto = "Se ha asociado correctamente los hijos";	
 					}
 				}
-				//si todo esta bien, emitimos mensaje
 				$this->session->set_flashdata('success', 'Empleado registrado correctamente!');
-				// echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
-
-				//redireccionamos y refrescamos
 				redirect('empleados/empleados', 'refresh');
-				// 	redirect(base_url()."servicios / servicios", "refresh");
 			}else{
 					//si hubo errores, mostramos mensaje
 				$this->session->set_flashdata('error', 'Empleados no registrado!');
-				
 				//redireccionamos
 				redirect("empleados/add", "refresh");
 			}
-		// }
-		// else
-		// {
-		// 	//	redirect('servicios / servicios', 'refresh');
-		// 	//si hubo errores en la validacion, rellamamos al metodo add mas arriba detallado
-		// 	// $this->add();
-		// 	echo "no corre el form validation";
-		// }
 
+		}
 	}
-	
 	//metodo para editar
 	public function edit($id)
 	{
@@ -239,12 +225,12 @@ class Empleados extends CI_Controller
 	}
 
 	//actualizamos 
-	
+
 	public function update()
 	{
 
 		$idEmpleado = $this->input->post("CodEmpleado");
-        $numEmpleado = $this->input->post("Numero");
+		$numEmpleado = $this->input->post("Numero");
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
 		$observacion = $this->input->post('Observacion');
@@ -282,7 +268,7 @@ class Empleados extends CI_Controller
 		$fecha_ips = $this->input->post('FechaIps');
 		$fechaIngreso= date("Y-m-d H:i:s");
 		$ultActualizacion= date("Y-m-d H:i:s");
-	
+
 		//traemos datos para no duplicarlos /  validacion
 		$empleado_actual = $this->Empleados_model->getEmpleados($idEmpleado);
 
@@ -298,45 +284,45 @@ class Empleados extends CI_Controller
 		// if($this->form_validation->run())
 		// {
 			//indicar campos de la tabla a modificar
-			$data = array(
-				'idEmpleado'  => $idEmpleado,
+		$data = array(
+			'idEmpleado'  => $idEmpleado,
 				// 'numEmpleado'  => $numEmpleado,
-				'nombre'  => $nombre,
-				'apellido' => $apellido, 
-				'observacion' => $observacion,
-				'perfil' => $perfil,
-				'cedulaidentidad' => $documento,
-				'direccion'  => $direccion,
-				'telefono'  => $telefono, 
-				'celular' => $celular, 
-				'fecnacimiento' => $fecha_nacimiento,
-				'fechaingreso' => $fechaIngreso,
-				'fechasalida' => $fecha_salida,
-				'idcivil' => $estado_civil,
-				'idpais' => $pais,
-				'idnivel'=> $nivel_estudio,
-				'idprofesion' => $profesion,
-				'idciudad' => $ciudad,
-				'nrocuenta' => $nro_cuenta,
-				'idsucursal' => $sucursal,
-				'idcargo' => $cargo,
-				'iddepartamento' => $deparmento,
-				'idcategoria' => $categoria,
-				'numeroips' => $nro_ips,
-				'fecingresoips' => $fecha_ips,
-				'fechaIngreso'=>  $fechaIngreso,
-				'fecgrabacion'=>  $ultActualizacion
-			);
-			if($this->Empleados_model->update($idEmpleado,$data))
-			{
-				$this->session->set_flashdata('success', 'Actualizado correctamente!');
-				redirect(base_url()."empleado/empleado", "refresh");
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				redirect(base_url()."empleados/empleados/edit/".$idEmpleado);
-			}
+			'nombre'  => $nombre,
+			'apellido' => $apellido, 
+			'observacion' => $observacion,
+			'perfil' => $perfil,
+			'cedulaidentidad' => $documento,
+			'direccion'  => $direccion,
+			'telefono'  => $telefono, 
+			'celular' => $celular, 
+			'fecnacimiento' => $fecha_nacimiento,
+			'fechaingreso' => $fechaIngreso,
+			'fechasalida' => $fecha_salida,
+			'idcivil' => $estado_civil,
+			'idpais' => $pais,
+			'idnivel'=> $nivel_estudio,
+			'idprofesion' => $profesion,
+			'idciudad' => $ciudad,
+			'nrocuenta' => $nro_cuenta,
+			'idsucursal' => $sucursal,
+			'idcargo' => $cargo,
+			'iddepartamento' => $deparmento,
+			'idcategoria' => $categoria,
+			'numeroips' => $nro_ips,
+			'fecingresoips' => $fecha_ips,
+			'fechaIngreso'=>  $fechaIngreso,
+			'fecgrabacion'=>  $ultActualizacion
+		);
+		if($this->Empleados_model->update($idEmpleado,$data))
+		{
+			$this->session->set_flashdata('success', 'Actualizado correctamente!');
+			redirect(base_url()."empleado/empleado", "refresh");
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+			redirect(base_url()."empleados/empleados/edit/".$idEmpleado);
+		}
 		// }
 		// else
 		// {	
@@ -344,28 +330,28 @@ class Empleados extends CI_Controller
 		// 	$this->edit($idEmpleado);
 		// }
 	}
-	
+
 	//funcion para borrar
 	public function delete($idEmpleado){
 		$data = array(
-		'ESTADOEMPLEADO' => '3',
+			'ESTADOEMPLEADO' => '3',
 		);
 		// var_dump($idEmpleado);
 		if($this->Empleados_model->update($idEmpleado,$data))
-			{
-				$this->session->set_flashdata('success', 'Anulado correctamente!');
+		{
+			$this->session->set_flashdata('success', 'Anulado correctamente!');
 				//retornamos a la vista para que se refresque
-				echo "empleados/empleados/";
+			echo "empleados/empleados/";
 
 				//redirect(base_url()."servicios/servicios", "refresh");
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Errores al Intentar Anular!');
-				redirect(base_url()."empleados/empleados/list/".$id);
-			}
-		
-		
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Anular!');
+			redirect(base_url()."empleados/empleados/list/".$id);
+		}
+
+
 	}
 	public function legajos($idEmpleado){
 		$data['legajos'] = $this->Empleados_model->getLegajoEmpleado($idEmpleado);
@@ -373,5 +359,9 @@ class Empleados extends CI_Controller
 		$this->load->view('template/menu');
 		$this->load->view('empleados/legajo', $data);
 		$this->load->view('template/footer');
+	}
+	public function getEmpleado(){
+		$idEmpleado = $this->input->post('funcionario', TRUE);
+		echo json_encode($this->Empleados_model->getEmpleado($idEmpleado));
 	}
 }
