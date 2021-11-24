@@ -31,7 +31,7 @@ $date_act = $cuenta->FECHAGRABACION;
 <p>
 	<strong>
 		Id Cuenta:
-	</strong><?php echo $cuenta->IDCUENTACONTABLE;?>
+	</strong><?php echo $cuenta->IDPLANCUENTA;?>
 </p>
 <p>
 	<strong>
@@ -41,7 +41,7 @@ $date_act = $cuenta->FECHAGRABACION;
 <p>
 	<strong>
 		Descripcion:
-	</strong><?php echo $cuenta->DESPLANCUENTA;?>
+	</strong><?php echo $cuenta->DESCPLANCUENTA;?>
 </p>
 <p>
 	<strong>

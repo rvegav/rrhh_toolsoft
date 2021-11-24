@@ -48,8 +48,6 @@ class Plancuentas extends CI_Controller
 			'cuenta'=> $this->Plancuenta_model->getPlancuenta($id)
 		);
 
-		//print_r($data); die();
-		//abrimos la vista view
 		$this->load->view("plancuentas/view", $data);
 	}
 	//funcion para almacenar en la bd
