@@ -1,5 +1,5 @@
 <?php
-setlocale(LC_ALL, 'es_ES');
+date_default_timezone_set('America/Santiago');
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Movimientos extends CI_Controller
@@ -433,7 +433,7 @@ class Movimientos extends CI_Controller
         	echo json_encode($this->Movimientos_model->getEmpleadoConceptos($tipo));
         }
         public function editConcepto($id){
-        	
+
         	$data = array(			
         		'empleados' => $this->Empleados_model->getEmpleados(),
         		'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
