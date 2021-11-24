@@ -20,13 +20,7 @@ class Informediarios extends CI_Controller
 		//cargamos un array usando el modelo
 		$data = array(
 			'procesocierres'=> $this->Procesocierres_model->getProcesocierre()
-			    );
-
-
-		
-          //mostramos el contenido del array
-          //print_r($data);
-        
+			    );        
 
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
@@ -43,12 +37,8 @@ class Informediarios extends CI_Controller
 
 $data = array(			
 			'cuentas' => $this->Informediarios_model->getCuentaContable(),
-			'empresas' => $this->Informediarios_model->getEmpresa()
+			// 'empresas' => $this->Informediarios_model->getEmpresa()
 			);
-
-
-
-
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('Informediarios/add', $data);

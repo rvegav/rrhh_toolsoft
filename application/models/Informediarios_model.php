@@ -228,10 +228,10 @@ public function getValidacion($idMovi){
 
 public function getInformeDiario($fechadesde,$fechahasta,$desdeempresa,$hastaempresa){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("d.iddiario as IDDIARIO,d.numasiento AS NUMASIENTO, d.fechaasiento as FECHAASIENTO,dt.idcuentacontable AS IDCUENTACONTALE,ifnull(dt.importedebe,0) AS IMPORTEDEBE,ifnull(dt.importeahaber,0) AS IMPORTEHABER,CONCAT(C.NUMPLANCUENTA,' ',C.DESPLANCUENTA) AS PLANCUENTA");
+		$this->db->select("d.iddiario as IDDIARIO,d.numasiento AS NUMASIENTO, d.fechaasiento as FECHAASIENTO,dt.IDPLANCUENTA AS IDCUENTACONTALE,ifnull(dt.importedebe,0) AS IMPORTEDEBE,ifnull(dt.importeahaber,0) AS IMPORTEHABER,CONCAT(C.NUMPLANCUENTA,' ',C.DESCPLANCUENTA) AS PLANCUENTA");
 		$this->db->from("diario d");
 		$this->db->join("diariodetalle dt","dt.iddiario = d.iddiario");
-		$this->db->join("cuentacontable c","c.IDCUENTACONTALE = dt.IDCUENTACONTABLE");
+		$this->db->join("plancuentas c","c.IDPLANCUENTA = dt.IDPLANCUENTA");
 		$this->db->join("empresa e", "e.idempresa = d.idempresa");
 		$this->db->where("e.numempresa >= $desdeempresa and e.numempresa <= $hastaempresa");
 		$this->db->where("d.fechaasiento >= '$fechadesde' and d.fechaasiento <= '$fechahasta'");
@@ -291,8 +291,8 @@ public function getEmpresa(){
 
 
 public function getCuentaContable(){
-	$this->db->select("NUMPLANCUENTA,CONCAT(NUMPLANCUENTA, ' ' ,DESPLANCUENTA) AS DESPLANCUENTA");
-	$this->db->from("cuentacontable");
+	$this->db->select("NUMPLANCUENTA,CONCAT(NUMPLANCUENTA, ' ' ,DESCPLANCUENTA) AS DESPLANCUENTA");
+	$this->db->from("plancuentas");
 	$resultados= $this->db->get();
 		return $resultados->result();
 }

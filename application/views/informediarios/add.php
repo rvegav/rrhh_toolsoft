@@ -90,29 +90,6 @@
                               </div>
                             </div>
 
-                        <div class="form-group <?php echo !empty(form_error("IDEMPRESA"))? 'has-error':'';?>">
-                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDEMPRESA">Desde Empresa <span class="required">*</span>
-                              </label>
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="EMPRESA" id="EMPRESA" class="form-control">
-                                <?php foreach($empresas as $empresa):?>
-                                    <option value="<?php echo $empresa->IDEMPRESA;?>"><?php echo $empresa->DESEMPRESA;?></option>
-                                <?php endforeach;?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group <?php echo !empty(form_error("IDEMPRESA1"))? 'has-error':'';?>">
-                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDEMPRESA1">Hasta Empresa <span class="required">*</span>
-                              </label>
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="EMPRESA1" id="EMPRESA1" class="form-control">
-                                <?php foreach($empresas as $empresa):?>
-                                    <option value="<?php echo $empresa->IDEMPRESA;?>"><?php echo $empresa->DESEMPRESA;?></option>
-                                <?php endforeach;?>
-                                </select>
-                            </div>
-                        </div>
 
                       <div class="ln_solid"></div>
                         <div class="form-group">
