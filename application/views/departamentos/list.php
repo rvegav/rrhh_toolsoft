@@ -118,7 +118,6 @@
 											</td>
 
 											<?php
-									//$estado = $empleado->estadoEmpleado;
 											$estado = 1;
 											if($estado == 1)
 											{
@@ -180,7 +179,7 @@
 	</div>
 </div>
 <script type="text/javascript" src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 		var base_url= "<?php echo base_url();?>";
        // alert (base_url);
@@ -213,7 +212,6 @@
 			}
 		});
 	});
-
 
 
 </script>

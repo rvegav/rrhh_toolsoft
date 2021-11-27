@@ -68,6 +68,7 @@
 											<th>Tipo Falta</th>
 											<th>Fecha Falta</th>
 											<th>Permisos</th>
+											<th>Fecha Presentacion</th>
 											<th>Opciones</th>
 										</tr>
 									</thead>
@@ -86,15 +87,30 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modal-view">
+<div class="modal fade" id="modal-permiso">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i>  </h4>
+				<h4 class="modal-title" id="myModalLabel">Justificacion de Faltas </h4>
 			</div>
 			<div class="modal-body">
-				<!--en esta parte se carga los datos de la vista view-->
+				<div class="row">
+					<form>
+						<div class="form-group col-md-4">
+							<label class="control-label">Permiso:</label>
+							<input type="text" class="form-control" name="permiso" id="permiso">
+						</div>
+						<div class="form-group col-md-4">
+							<label class="control-label">Fecha Falta:</label>
+							<input type="text" class="form-control" name="fechaFalta" id="fechaFalta">
+						</div>
+						<div class="form-group col-md-4">
+							<label class="control-label">Fecha Presentacion:</label>
+							<input type="text" class="form-control" name="fechaPresentacion" id="fechaPresentacion">
+						</div>
+					</form>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -125,7 +141,8 @@
 		{data:'TIPO_FALTA'},
 		{data:'FECHA_FALTA'},
 		{data:'PERMISOS'},
-		{defaultContent: '<button class="btn btn-success" id="cargar_permiso" data-toggle="modal" data-target="#modal-view"><i class="fa fa-edit"></i></button>', "width": '20%', 'sClass':'text-center'}
+		{data:'FECHA_PRESENTACION'},
+		{defaultContent: '<button class="btn btn-success cargar_permiso"  data-toggle="modal" title="Cargar permiso" data-target="#modal-permiso"><i class="fa fa-edit"></i></button>', "width": '20%', 'sClass':'text-center'}
 		],
 		"length": false,
 		'language':{
@@ -152,11 +169,11 @@
       	"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
       	"sSortDescending": ": Activar para ordenar la columna de manera descendente"
       }
-    }
-  });
+  }
+});
 	$('#btn_consultar').on('click', function(){
 		t_faltas.ajax.reload();
-
+		
 	});
 
 	$('#btn_faltas').on('click', function(){
@@ -214,4 +231,12 @@
 			console.log("complete");
 		});
 	});
+	$('#tab_faltas').on('change', function(){
+		alert();
+	});
+	$('.cargar_permiso').on('click', function(e){
+		e.preventDefault();
+		alert();
+	});
+
 </script>

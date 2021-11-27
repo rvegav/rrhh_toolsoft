@@ -307,6 +307,7 @@ class Faltas extends CI_Controller {
 							$f= date_create($fecha_desde_aux);
 							$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
 							$array['PERMISOS']='';
+							$array['FECHA_PRESENTACION']='';
 							$datos[] = $array;
 						}
 

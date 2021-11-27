@@ -266,24 +266,6 @@
 
     });
     var tipo;
-    $(".checktip").on("click", function(){
-        tipo = $(this).val();
-        $.ajax({
-            type:'POST',
-            url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
-            data: {tipo:tipo},
-        })
-        .done(function (data){
-            var r = JSON.parse(data);
-            console.log(r);
-            $('#txtTipoMovi').val(r[0].DESC);
-            $("#mdlTipoMovimiento").modal("hide");
-        })
-        .fail(function(){
-            alert('ocurrio un error interno, contacte con Rolo');
-        });
-
-    });
     var funcionario;
     $(".checkFuncionario").on("click", function(){
         funcionario = $(this).val();
@@ -351,6 +333,7 @@
         }
         $(".btn-remove-movimiento").on("click", function(){
             fila = $(this).val();
+
             document.getElementById("tbmovimientos").deleteRow(fila);
             cant--;
         });

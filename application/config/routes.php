@@ -73,4 +73,11 @@ $route['getEmpleado'] = 'empleados/Empleados/getEmpleado';
 $route['store_concepto_fijos'] = 'movimientos/Movimientos/storeConceptoFijos';
 $route['get_empleados_conceptos'] = 'movimientos/Movimientos/getEmpleadoConceptos';
 $route['edit_conceptos/(:num)'] = 'movimientos/Movimientos/editConcepto/$1';
+$route['get_concepto_fijo'] = 'movimientos/Movimientos/getConceptoFijos';
+$route['edit_concepto_fijos'] = 'movimientos/Movimientos/editConceptoFijos';
+$route['update_concepto_fijos'] = 'movimientos/Movimientos/updateConceptoFijo';
+$route['delete_concepto_fijo'] = 'movimientos/Movimientos/deleteConceptoFijo';
+$route['get_empleados_movimiento'] = 'movimientos/Movimientos/getEmpleadoMovimentos';
+
+
 

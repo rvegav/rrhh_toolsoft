@@ -44,7 +44,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="row">
-                <form action="store_concepto_fijos" method="POST" class="form-horizontal">
+                <form action="edit_concepto_fijos" method="POST" class="form-horizontal">
                     <h3>Añadir detalles</h3>
                     <div class="row">
                         <div class="form-group col-md-2">
@@ -61,7 +61,7 @@
                             <div class="input-group">                       
                                 <input type="text" class="form-control" disabled="disabled" id="txtTipoMovi" required>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#mdlTipoMovimiento" disabled><span class="fa fa-search"></span></button>
+                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#mdlTipoMovimiento"><span class="fa fa-search"></span></button>
                                 </span>
                             </div>
                         </div>
@@ -86,12 +86,15 @@
                                 <input type="date" class="form-control" name="hasta" id="hasta">
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <label class="control-label" for="btn-agg">&nbsp;</label>
-                            <div class="input-group">
-                                <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar Detalle</button>
-                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat">Guardar Concepto</button>
-                            </div>
+
+                    </div>
+                    <div class="col-md-6 col-md-offset-3">
+                        <label class="control-label" for="btn-agg">&nbsp;</label>
+                        <div class="input-group">
+                            <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar Detalle</button>
+                            <button id="btn-grabar" type="submit" class="btn btn-success btn-flat"><span class="fa fa-check"></span> Guardar Concepto</button>
+                            <button id="btn-actualizar" type="button" class="btn btn-success btn-flat"><span class="fa fa-check"></span> Actualizar Concepto</button>
+                            <button id="btn-volver" type="button" class="btn btn-success btn-flat"><span class="fa fa-arrow-left"></span>Volver al Listado</button>
                         </div>
                     </div>
                     <div class="row">
@@ -115,124 +118,126 @@
                                             <td><?php echo $conceptoEmpleado->IMPORTE?></td>
                                             <td><?php echo $conceptoEmpleado->DESDE?></td>
                                             <td><?php echo $conceptoEmpleado->HASTA?></td>
-                                            <td><button class="btn btn-primary editConcepto" value="<?php echo $conceptoEmpleado->IDCONCEPTOFIJO ?>"><i class="fa fa-edit"></i></button>
-                                                <button class="btn btn-danger btn-delete eliminar" value="<?php echo $conceptoEmpleado->IDCONCEPTOFIJO ?>"><i class="fa fa-trash"></i></td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                </tbody>
-                            </table>
+                                            <td><button type="button" class="btn btn-primary editConcepto" value="<?php echo $conceptoEmpleado->IDCONCEPTOFIJO ?>"><i class="fa fa-edit"></i></button>
+                                                <button type="button" class="btn btn-danger btn-remove-movimiento" value="<?php echo $conceptoEmpleado->IDCONCEPTOFIJO ?>"><i class="fa fa-trash"></i></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>       
                         </div>
-                    </div>       
-                </div>
-            </form>
+                    </form>
 
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
+        <div class="modal fade" id="mdlEmpleados">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Busqueda Empleados</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="tabEmpleado" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nro. Empleado</th>
+                                        <th>Nro. Cedula</th>
+                                        <th>Nombre(s) y Apellido(s)</th>
+                                        <th>Categoria</th>
+                                        <th>Opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <?php
+
+                                   if(!empty($empleados)):?>
+
+                                    <?php
+                                    foreach($empleados as $empleado):?>
+                                       <tr>
+                                        <td><?php echo $empleado->NUMEMPLEADO;?></td>
+                                        <td><?php echo $empleado->CEDULAIDENTIDAD;?></td>
+                                        <td><?php echo $empleado->NOMBRE;?></td>
+                                        <td><?php echo $empleado->CATEGORIA;?></td>
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-check checkFuncionario" id="checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<!-- modal -->
-<div class="modal fade" id="mdlEmpleados">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Busqueda Empleados</h4>
-                </div>
-                <div class="modal-body">
-                    <table id="tabEmpleado" class="table table-bordered table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nro. Empleado</th>
-                                <th>Nro. Cedula</th>
-                                <th>Nombre(s) y Apellido(s)</th>
-                                <th>Categoria</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <?php
+    <div class="modal fade" id="mdlTipoMovimiento">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Busqueda Tipos de Movimientos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table id="tabTipoMovimiento" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Descripcion</th>
+                                    <th>SumaResta</th>
+                                    <th>Opcion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               <?php
 
-                           if(!empty($empleados)):?>
+                               if(!empty($tipoMovimientos)):?>
 
-                            <?php
-                            foreach($empleados as $empleado):?>
-                               <tr>
-                                <td><?php echo $empleado->NUMEMPLEADO;?></td>
-                                <td><?php echo $empleado->CEDULAIDENTIDAD;?></td>
-                                <td><?php echo $empleado->NOMBRE;?></td>
-                                <td><?php echo $empleado->CATEGORIA;?></td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-check checkFuncionario" id="checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
-        </div>
-    </div>
-</div>
-</div>
-<div class="modal fade" id="mdlTipoMovimiento">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Busqueda Tipos de Movimientos</h4>
-                </div>
-                <div class="modal-body">
-                    <table id="tabTipoMovimiento" class="table table-bordered table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Descripcion</th>
-                                <th>SumaResta</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <?php
+                                <?php
+                                foreach($tipoMovimientos as $tipoMovimiento):?>
+                                   <tr>
+                                    <td>
+                                        <?php echo $tipoMovimiento->NUMTIPOMOV;?>
+                                    </td>
+                                    <td>
+                                        <?php echo $tipoMovimiento->DESC;?>
 
-                           if(!empty($tipoMovimientos)):?>
+                                    </td>
+                                    <td>
+                                        <?php echo $tipoMovimiento->SUMARESTA;?>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-check checktipo" value="<?php echo $tipoMovimiento->IDTIPOMOVI;?>"><span class= "fa fa-check"></span></button>
 
-                            <?php
-                            foreach($tipoMovimientos as $tipoMovimiento):?>
-                               <tr>
-                                <td>
-                                    <?php echo $tipoMovimiento->NUMTIPOMOV;?>
-                                </td>
-                                <td>
-                                    <?php echo $tipoMovimiento->DESC;?>
-
-                                </td>
-                                <td>
-                                    <?php echo $tipoMovimiento->SUMARESTA;?>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-check checktipo" value="<?php echo $tipoMovimiento->IDTIPOMOVI;?>"><span class= "fa fa-check"></span></button>
-
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 </div>
 <?php // $this->load->view('template/footer');?>
 <script type="text/javascript">
+    var nroFila;
     $(document).ready(function(){
+        $("#btn-actualizar").hide();
         var base_url= "<?php echo base_url();?>";
         $(".btn-view").on("click", function(){
           var id= $(this).val();
@@ -245,19 +250,23 @@
         });
       })
     });
-    $(".btn-delete").on("click", function(e){
-        e.preventDefault();
-        var ruta= $(this).attr("href");
+    $(".btn-remove-movimiento").on("click", function(){
+        id = $(this).val();
+        nroFila = $(this).parents('tr')[0].rowIndex;
         $.ajax({
-            url: ruta,
-            type: "POST",
-            success:function(resp){
+            type:'POST',
+            url:'<?php echo base_url()?>delete_concepto_fijo',
+            data: {id:id},
+        })
+        .done(function (data){
+            document.getElementById("tbmovimientos").deleteRow(nroFila);
 
-                window.location.href= base_url + resp;  
-            }
+        })
+        .fail(function(){
+            alert('ocurrio un error interno, contacte con Rolo');
         });
-
-    })
+        cant--;
+    });
     $(".checktipo").on("click", function(){
         tipo = $(this).val();
         $.ajax({
@@ -277,24 +286,6 @@
 
     });
     var tipo;
-    $(".checktip").on("click", function(){
-        tipo = $(this).val();
-        $.ajax({
-            type:'POST',
-            url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
-            data: {tipo:tipo},
-        })
-        .done(function (data){
-            var r = JSON.parse(data);
-            console.log(r);
-            $('#txtTipoMovi').val(r[0].DESC);
-            $("#mdlTipoMovimiento").modal("hide");
-        })
-        .fail(function(){
-            alert('ocurrio un error interno, contacte con Rolo');
-        });
-
-    });
     var funcionario;
     $(".checkFuncionario").on("click", function(){
         funcionario = $(this).val();
@@ -317,7 +308,6 @@
     });
     var cant = $("#tbmovimientos tr").length-1;
     $("#btn-agregar").on("click", function(){
-
         if ($("#importe").val()!='' && $("#txtEmpleado").val()!='' && $('#txtTipoMovi').val()!='' && $('#desde').val()!='' && $('#hasta').val()!='') {
            cant++;
            html = '<tr>';
@@ -362,17 +352,88 @@
         }
         $(".btn-remove-movimiento").on("click", function(){
             fila = $(this).val();
-            document.getElementById("tbmovimientos").deleteRow(fila);
+            var id = 
+            $.ajax({
+                type:'POST',
+                url:'<?php echo base_url()?>delete_concepto_fijo',
+                data: {id:id},
+            })
+            .done(function (data){
+                document.getElementById("tbmovimientos").deleteRow(fila);
+
+            })
+            .fail(function(){
+                alert('ocurrio un error interno, contacte con Rolo');
+            });
             cant--;
         });
     });
     $('.editConcepto').on("click", function(){
-            
-           $("#txtEmpleado").val();
-           $("#txtTipoMovi").val("");
-           $("#importe").val("");
-           $("#desde").val("");
-           $("#hasta").val(""); 
+        conceptoid = $(this).val();
+        nroFila = $(this).parents('tr')[0].rowIndex;
+        // document.getElementById("tbmovimientos").deleteRow(nroFila);
+        // var nroFila = $(this).parents('tr');
+        $("#btn-actualizar").show();
+        $("#btn-grabar").hide();
+        $("#btn-actualizar").val(conceptoid);
+        console.log(nroFila);
+        $.ajax({
+            type:'POST',
+            url:'<?php echo base_url()?>get_concepto_fijo',
+            data: {concepto:conceptoid},
+        })
+        .done(function (data){
+            var r = JSON.parse(data);
+            console.log(r);
+            $("#txtEmpleado").val(r[0].EMPLEADO);
+            $("#txtTipoMovi").val(r[0].TIPOMOVIMIENTO);
+            $("#importe").val(r[0].IMPORTE);
+            var desde = r[0].DESDE.split("/").reverse().join("-");
+            var hasta = r[0].HASTA.split("/").reverse().join("-");
+            $("#desde").val(desde);
+            $("#hasta").val(hasta); 
+        })
+        .fail(function(){
+            alert('ocurrio un error interno, contacte con Rolo');
+        });
 
     });
+    $("#btn-actualizar").on("click", function(){
+        id = $(this).val();
+        var desde = $("#desde").val();
+        var hasta = $("#hasta").val();
+        var importe = $("#importe").val();
+        $.ajax({
+            type:'POST',
+            url:'<?php echo base_url()?>update_concepto_fijos',
+            data: {id:id, desde:desde, hasta:hasta, importe:importe},
+        })
+        .done(function (data){
+            var r = JSON.parse(data);
+            row = document.getElementsByTagName('table')[0].rows;
+            var desde = $("#desde").val().split("-").reverse().join("/");
+            var hasta = $("#hasta").val().split("-").reverse().join("/");
+            row[nroFila].cells[0].innerHTML =$("#txtEmpleado").val();
+            row[nroFila].cells[1].innerHTML =$("#txtTipoMovi").val();
+            row[nroFila].cells[2].innerHTML =$("#importe").val();
+            row[nroFila].cells[3].innerHTML =desde;
+            row[nroFila].cells[4].innerHTML =hasta;
+            $("#btn-grabar").show();
+            $("#txtEmpleado").val('');
+            $("#txtTipoMovi").val('');
+            $("#importe").val('');
+            $("#desde").val('');
+            $("#desde").val('');
+            $("#btn-actualizar").hide();
+
+        })
+        .fail(function(){
+            alert('ocurrio un error interno, contacte con Rolo');
+        });
+    });
+    $("#btn-volver").on("click", function(){
+        window.location.href = "<?php echo base_url();?>concepto_fijo";
+    });
+
+
 </script>

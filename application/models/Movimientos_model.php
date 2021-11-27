@@ -22,6 +22,9 @@ class Movimientos_model extends CI_Model {
 		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
+			if ($desc) {
+				return $resultados->row();
+			}
 			return $resultados->result();
 		} else {
 			return false;
@@ -76,12 +79,29 @@ class Movimientos_model extends CI_Model {
 			return false;
 		}
 	}
-    
+	//obtiene los empleados asociados a un movimiento
+    public function getEmpleadosMovimiento($idMovi){
+    	$this->db->select('CONCAT(Nombre, " ", Apellido) as EMPLEADO, CEDULAIDENTIDAD, t.DESTIPOMOV TIPO, md.IMPORTE, DATE_FORMAT(m.fechamovi,"%d/%m/%Y") FECHAMOVI  ', FALSE);
+    	$this->db->from('movisueldo m');
+    	$this->db->join("tipomovisueldo t","m.idtipomovisueldo = t.idtipomovisueldo");
+		$this->db->join('movisueldodetalle md', 'md.idmovi = m.idmovi', 'left');
+		$this->db->join('empleado e', 'e.idempleado = md.idempleado', 'left');
+		$this->db->where('m.idmovi', $idMovi, FALSE);
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
+		} else {
+			return false;
+		}
+    }
 	//esta es la parte para guardar en la bd
 	public function save($data)
 	{
 		$id = $this->getIdMaximo();
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 		$this->db->set('IDMOVI', $id->MAXIMO);
+		$this->db->set('FECGRABACION', $fechaActual);
 		if ($this->db->insert("movisueldo", $data)) {
 			return $this->db->insert_id();
 		}else{
@@ -281,18 +301,34 @@ public function getEmpleado1(){
 		$resultados= $this->db->get();
 		return $resultados->row();
 	}
-	public function getEmpleadoConceptos($tipo){
+	public function getEmpleadoConceptos($tipo = false, $id = false){
 		$this->db->select('T.DESTIPOMOV TIPOMOVIMIENTO, C.IMPORTE, T.IDTIPOMOVISUELDO IDTIPO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO, CEDULAIDENTIDAD, DATE_FORMAT(C.FECDESDE, "%d/%m/%Y") DESDE, DATE_FORMAT(C.FECHASTA, "%d/%m/%Y") HASTA, C.IDCONCEPTOFIJO');
 		$this->db->from('CONCEPTOSFIJOS C');
 		$this->db->join('TIPOMOVISUELDO T', 'T.IDTIPOMOVISUELDO = C.IDTIPOMOVISUELDO');
 		$this->db->join('EMPLEADO E', 'E.IDEMPLEADO = C.IDEMPLEADO');
 		$this->db->where('C.ESTADO', 'A');
-		$this->db->where('C.IDTIPOMOVISUELDO', $tipo, FALSE);
+		if ($tipo) {
+			$this->db->where('C.IDTIPOMOVISUELDO', $tipo, FALSE);
+		}
+		if ($id) {
+			$this->db->where('IDCONCEPTOFIJO', $id, FALSE);
+		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
 			return $resultados->result();
 		} else {
 			return false;
 		}
+	}
+	public function updateConceptoFijo($importe, $desde, $hasta, $id){
+		$this->db->set('FECDESDE', $desde);
+		$this->db->set('FECHASTA', $hasta);
+		$this->db->set('IMPORTE', $importe);
+		$this->db->where('IDCONCEPTOFIJO', $id);
+		return $this->db->update('CONCEPTOSFIJOS');
+	}
+	public function deleteConceptoFijo($id){
+		$this->db->where('IDCONCEPTOFIJO', $id, FALSE);
+		return $this->db->delete('CONCEPTOSFIJOS');
 	}
 }

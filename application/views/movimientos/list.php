@@ -95,7 +95,7 @@
 											<td><?php echo $movimiento->FECHAMOVI;?></td>
 											<td><?php echo $movimiento->DESTIPOMOV;?></td>
 											<td><?php echo $movimiento->MONTO_TOTAL;?></td>
-											<td><button class="btn btn-primary" data-target="modal" data-placement="top" title="Ver Empleados Asociados"><i class="fa fa-list"></i></button><a href="<?php echo base_url();?>movimientos/movimientos/edit/<?php echo $movimiento->IDMOVI ?>"><button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar Movimiento"><i class="fa fa-edit"></i></button></a></td>
+											<td><button class="btn btn-primary listEmpleado" value="<?php echo $movimiento->IDMOVI ?>" data-toggle="modal" data-placement="top" data-target="#mdlEmpleados" title="Ver Empleados Asociados"><i class="fa fa-list"></i></button><a href="<?php echo base_url();?>movimientos/movimientos/edit/<?php echo $movimiento->IDMOVI ?>"><button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Editar Movimiento"><i class="fa fa-edit"></i></button></a></td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
@@ -126,6 +126,7 @@
 							<tr>
 								<th>Nro. Cedula</th>
 								<th>Nombre(s) y Apellido(s)</th>
+								<th>Tipo Movimiento</th>
 								<th>Monto</th>
 								<th>Fecha Movimiento</th>
 							</tr>
@@ -177,11 +178,11 @@
 		}
 	}
 	$(".listEmpleado").on("click", function(){
-		tipo = $(this).val();
+		idmovi = $(this).val();
 		$.ajax({
 			type:'POST',
-			url:'<?php echo base_url()?>get_empleados_conceptos',
-			data: {tipo:tipo},
+			url:'<?php echo base_url()?>get_empleados_movimiento',
+			data: {idmovi:idmovi},
 		})
 		.done(function (data){
 			var resp = JSON.parse(data);
@@ -197,10 +198,13 @@
 				html += resp[i].EMPLEADO;
 				html += '</td>';
 				html += '<td>';
+				html += resp[i].TIPO;
+				html += '</td>';
+				html += '<td>';
 				html += resp[i].IMPORTE;
 				html += '</td>';
 				html += '<td>';
-				html += resp[i].FECHA;
+				html += resp[i].FECHAMOVI;
 				html += '</td>';
 				html += '</tr>';
 

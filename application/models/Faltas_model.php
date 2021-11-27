@@ -57,17 +57,21 @@ class Faltas_model extends CI_Model {
 		}
 	}
 
-	public function getFaltasEmpleados($desde=false, $hasta=false, $mes = false){
+	public function getFaltasEmpleados($desde=false, $hasta=false, $mes = false, $permisos = false){
 		$this->db->select('e.NOMBRE, e.APELLIDO, t.descpermisos PERMISO, f.descfaltas TIPO_FALTA', FALSE);
 		$this->db->from('faltasempleados fe');
 		$this->db->join('faltas f', 'f.idfaltas = fe.idfalta');
 		$this->db->join('empleado e', 'e.idempleado = fe.idempleado');
 		$this->db->join('tipopermisos t', 't.idtipopermisos = fe.idtipopermisos', 'left');
+
 		if ($desde && $hasta) {
 			$this->db->where('STR_TO_DATE(fe.fechafalta, \'%Y-%m-%d \') between \''.$desde.'\' and \''.$hasta.'\'');
 		}
 		if ($mes) {
 			$this->db->where('DATE_FORMAT(fe.fechafalta,\'%m\')', $mes);
+		}
+		if($permiso){
+			$this->db->where('permiso is NULL', NULL, FALSE);
 		}
 		$consulta = $this->db->get();
 		if ($consulta->num_rows()>0) {

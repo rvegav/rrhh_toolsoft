@@ -53,7 +53,7 @@
                         <div class="form-group col-md-4">
                             <label for="" class="control-label">Tipo de Movimiento:</label>
                             <div class="input-group">                       
-                                <input type="text" class="form-control" disabled="disabled" id="txtTipoMovi" required>
+                                <input type="text" class="form-control" readonly="readonly" id="txtTipoMovi" name="txtTipoMovi" required>
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#mdlTipoMovimiento" ><span class="fa fa-search"></span> Buscar</button>
                                 </span>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="" class="control-label">Fecha:</label>
-                            <input type="date" class="form-control" name="FECHAMOVI" required>
+                            <input type="date" class="form-control" name="fechamovi" id="fechamovi" required>
                         </div>
                     </div>
                     <hr>
@@ -70,7 +70,7 @@
                         <div class="form-group col-md-3">
                             <label for="" class="control-label">Empleado:</label>
                             <div class="input-group">                       
-                                <input type="text" class="form-control" disabled="disabled" id="EMPLEADO" required>
+                                <input type="text" class="form-control" disabled="disabled" id="txtEmpleado" required>
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#mdlEmpleados" ><span class="fa fa-search"></span> Buscar</button>
                                 </span>
@@ -80,7 +80,7 @@
                             <label class="control-label" for="btn-agg">&nbsp;</label>
                             <div class="input-group mt-5">
                                 <span class="input-group-addon">Dias:</span>
-                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id="DIAS">
+                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id="dias">
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
                             <label class="control-label" for="btn-agg">&nbsp;</label>
                             <div class="input-group">
                                 <span class="input-group-addon">Horas:</span>
-                                <input type="text" class="form-control" placeholder="Horas" name="HORAS_detalle" id="HORAS">
+                                <input type="text" class="form-control" placeholder="Horas" name="HORAS_detalle" id="horas">
                             </div>
                         </div>
 
@@ -96,7 +96,7 @@
                             <label class="control-label" for="btn-agg">&nbsp;</label>
                             <div class="input-group">
                                 <span class="input-group-addon">Importe:</span>
-                                <input type="text" class="form-control" placeholder="Importe" name="Importe_detalle" id="IMPORTE">
+                                <input type="text" class="form-control" placeholder="Importe" name="Importe_detalle" id="importe">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -113,6 +113,7 @@
                                 <thead>
                                     <tr>
                                         <th>Empleado</th>
+                                        <th>Tipo de Movimiento</th>
                                         <th>Dias</th>
                                         <th>Horas</th>
                                         <th>Importe</th>
@@ -137,7 +138,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Busqueda Tipos de Movimientos</h4>
+                    <h4 class="modal-title">Busqueda Empleados</h4>
                 </div>
                 <div class="modal-body">
                     <table id="tabEmpleado" class="table table-bordered table-striped table-hover">
@@ -151,19 +152,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                         <?php
+                           <?php
 
-                         if(!empty($empleados)):?>
+                           if(!empty($empleados)):?>
 
                             <?php
                             foreach($empleados as $empleado):?>
-                             <tr>
+                               <tr>
                                 <td><?php echo $empleado->NUMEMPLEADO;?></td>
                                 <td><?php echo $empleado->CEDULAIDENTIDAD;?></td>
                                 <td><?php echo $empleado->NOMBRE;?></td>
                                 <td><?php echo $empleado->CATEGORIA;?></td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-check" id="checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
+                                    <button type="button" class="btn btn-success btn-check checkFuncionario" id="checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -183,7 +184,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Busqueda Empleados</h4>
+                    <h4 class="modal-title">Busqueda Tipos de Movimientos</h4>
                 </div>
                 <div class="modal-body">
                     <table id="tabTipoMovimiento" class="table table-bordered table-striped table-hover">
@@ -196,13 +197,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                         <?php
+                           <?php
 
-                         if(!empty($tipoMovimientos)):?>
+                           if(!empty($tipoMovimientos)):?>
 
                             <?php
                             foreach($tipoMovimientos as $tipoMovimiento):?>
-                             <tr>
+                               <tr>
                                 <td>
                                     <?php echo $tipoMovimiento->NUMTIPOMOV;?>
                                 </td>
@@ -245,115 +246,109 @@
             }
         });
       })
-        $(".btn-delete").on("click", function(e){
-            e.preventDefault();
-            var ruta= $(this).attr("href");
-            $.ajax({
-                url: ruta,
-                type: "POST",
-                success:function(resp){
+    });
+    $(".btn-delete").on("click", function(e){
+        e.preventDefault();
+        var ruta= $(this).attr("href");
+        $.ajax({
+            url: ruta,
+            type: "POST",
+            success:function(resp){
 
-                    window.location.href= base_url + resp;  
-                }
-            });
+                window.location.href= base_url + resp;  
+            }
+        });
 
+    })
+    $(".checktipo").on("click", function(){
+        tipo = $(this).val();
+        $.ajax({
+            type:'POST',
+            url:'<?php echo base_url()?>obtener_tipo_movimiento',
+            data: {tipo:tipo},
         })
-        $(".checktipo").on("click", function(){
-            tipo = $(this).val();
-            $.ajax({
-                type:'POST',
-                url:'<?php echo base_url()?>obtener_tipo_movimiento',
-                data: {tipo:tipo},
-            })
-            .done(function (data){
-                var r = JSON.parse(data);
-                console.log(r);
-                $('#txtTipoMovi').val(r[0].DESC);
-                $("#mdlTipoMovimiento").modal("hide");
-            })
-            .fail(function(){
-                alert('ocurrio un error interno, contacte con Rolo');
-            });
-
-        });
-        $(".checktip").on("click", function(){
-            tipo = $(this).val();
-            $.ajax({
-                type:'POST',
-                url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
-                data: {tipo:tipo},
-            })
-            .done(function (data){
-                var r = JSON.parse(data);
-                console.log(r);
-                $('#txtTipoMovi').val(r[0].DESC);
-                $("#mdlTipoMovimiento").modal("hide");
-            })
-            .fail(function(){
-                alert('ocurrio un error interno, contacte con Rolo');
-            });
-
-        });
-        $(".checkFuncionario").on("click", function(){
-            tipo = $(this).val();
-            $.ajax({
-                type:'POST',
-                url:'<?php echo base_url()?>movimientos/Movimientos/obtenerTipoMovimiento/',
-                data: {tipo:tipo},
-            })
-            .done(function (data){
-                var r = JSON.parse(data);
-                console.log(r);
-                $('#txtTipoMovi').val(r[0].DESC);
-                $("#mdlTipoMovimiento").modal("hide");
-            })
-            .fail(function(){
-                alert('ocurrio un error interno, contacte con Rolo');
-            });
-
+        .done(function (data){
+            var r = JSON.parse(data);
+            console.log(r);
+            $('#txtTipoMovi').val(r[0].DESC);
+            $("#mdlTipoMovimiento").modal("hide");
+        })
+        .fail(function(){
+            alert('ocurrio un error interno, contacte con Rolo');
         });
 
-         $("#btn-agregar").on("click", function(){
-           console.log($("select#EMPLEADO1").val());
-           if (true) {
+    });
+    var tipo;
+    var funcionario;
+    $(".checkFuncionario").on("click", function(){
+        funcionario = $(this).val();
+        console.log(funcionario);
+        $.ajax({
+            type:'POST',
+            url:'<?php echo base_url()?>getEmpleado',
+            data: {funcionario:funcionario},
+        })
+        .done(function (data){
+            var r = JSON.parse(data);
+            console.log(r);
+            $('#txtEmpleado').val(r.EMPLEADO);
+            $("#mdlEmpleados").modal("hide");
+        })
+        .fail(function(){
+            alert('ocurrio un error interno, contacte con Rolo');
+        });
 
-           }
+    });
+    var cant = 0;
+    $("#btn-agregar").on("click", function(){
+
+        if ($("#IMPORTE").val()!='' && $("#txtEmpleado").val()!='' && $('#txtTipoMovi').val()!='') {
+           cant++;
            html = '<tr>';
            html += '<td>';
-           html += '<input type="hidden"  name="DIAS[]" value="'+ $("#DIAS").val() + '" >'
-           html += $("#DIAS").val();
+           html += '<input type="hidden"  name="empleados[]" value="'+ funcionario + '" >'
+           html += $("#txtEmpleado").val();
            html += '</td>';
            html += '<td>';
-           html += '<input type="hidden" name="HORAS[]" value="'+ $("#HORAS").val() + '" >'
-           html += $("#HORAS").val();
+           html += '<input type="hidden"  name="tipo[]" value="'+ tipo + '" >'
+           html += $("#txtTipoMovi").val();
            html += '</td>';
            html += '<td>';
-           html += '<input type="hidden" name="IMPORTE[]" value="'+ $("#IMPORTE").val() + '" required>'
-           html += $("#IMPORTE").val();
+           html += '<input type="hidden" name="dias[]" value="'+ $("#dias").val() + '" required>'
+           html += $("#dias").val();
            html += '</td>';
-
-
-
-
-       /*     html += "<td>"+infomovimiento[2]+"</td>"
-            html += "<td><input type='hiden' name= 'DIAS[]' value ='"+infomovimiento[3]+"'>"+infomovimiento[3]+"</td>";
-            html += "<td>"+infomovimiento[4]+"</td>"
-            html += "<td><input type='text' name= 'HORAS[]' value=0></td>";
-            html += "<td><input type='hiden' name= 'IMPORTE[]' value='"+infomovimiento[3]+"'><p>"+infomovimiento[3]+"</p></td>";
-            html += "<td><button type = 'button' class='btn btn-danger btn-remove-movimiento'><span class = 'fa fa-remove'></span></button></td>";*/
-            html += '</tr>';
-           // console.log(html);
+           html += '<td>';
+           html += '<input type="hidden" name="horas[]" value="'+ $("#horas").val() + '" required>'
+           html += $("#horas").val();
+           html += '</td>';
+           html += '<td>';
+           html += '<input type="hidden" name="importes[]" value="'+ $("#importe").val() + '" >'
+           html += $("#importe").val();
+           html += '</td>';
+           html += "<td><button type='button' class='btn btn-danger btn-remove-movimiento' value ="+cant+"><span class='fa fa-remove'></span></button></td>";
+           html += '</tr>';
            $("#tbmovimientos tbody").append(html);
+           $('#txtEmpleado').prop("disabled", false);
+           $("#txtEmpleado").val("");
+           $('#txtEmpleado').prop("disabled", true);
+           // $("#txtTipoMovi").val("");
+           // $('#txtTipoMovi').prop("disabled", true);
+           $("#importe").val("");
+           $("#horas").val("");
+           $("#dias").val(""); 
+        }else{
+            swal({
+                title: "Atención",
+                text: "Los campos son requeridos",
+                icon: "warning",
+            });
+        }
+        $(".btn-remove-movimiento").on("click", function(){
+            fila = $(this).val();
 
-           $("select#EMPLEADO1").val("");
-           $("#DIAS").val("");
-           $("#HORAS").val("");
-           $("#IMPORTE").val("");
-          /*}else{
-            alert("seleccione un tipo movimiento")
-        }*/
+            document.getElementById("tbmovimientos").deleteRow(fila);
+            cant--;
+        });
     });
 
-     })      
-
- </script>
+</script>
