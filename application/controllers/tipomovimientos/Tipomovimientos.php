@@ -38,7 +38,7 @@ class Tipomovimientos extends CI_Controller
 	{
 
 		$data = array(			
-			'maximos' => $this->Tipomovimiento_model->getIdMaximo(),
+			'maximo' => $this->Tipomovimiento_model->getIdMaximo(),
 			'maximodetalle' => $this->Tipomovimiento_model->getIdDetalle(),
 			'cuentacontables' => $this->Plancuenta_model->getPlancuentas(true),
 			'detalles'=> $this->Tipomovimiento_model->getTipoMovimientos_Copia()

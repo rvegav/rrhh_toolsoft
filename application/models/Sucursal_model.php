@@ -22,9 +22,9 @@ class Sucursal_model extends CI_Model {
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getSucursal($id){
 		
-		$this->db->select("S.IDSUCURSAL,S.NUMSUCURSAL,S.DESSUCURSAL,IFNULL(S.DIRECCION,'') AS DIRECCION,IFNULL(S.TELEFONO,'') AS TELEFONO,S.FECGRABACION,IFNULL(S.IDZONA,0) AS IDZONA,IFNULL(Z.DESZONA,'') AS DESZONA,IFNULL(S.NROPATRONAL,'') AS NROPATRONAL");
+		$this->db->select("S.IDSUCURSAL,S.NUMSUCURSAL,S.DESCSUCURSAL,IFNULL(S.DIRECCION,'') AS DIRECCION,IFNULL(S.TELEFONO,'') AS TELEFONO,S.FECGRABACION");
 		$this->db->from("sucursal s");
-		$this->db->join("zona z", "s.idzona = z.idzona","left outer");
+		// $this->db->join("zona z", "s.idzona = z.idzona","left outer");
 		$this->db->where("s.idsucursal",$id);
 		$resultado= $this->db->get();
 		return $resultado->row();

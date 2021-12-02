@@ -77,6 +77,7 @@
 									<th>Descripcion</th>
 									<th>Direccion</th>
 									<th>E-mail</th>
+									<th>TELEFONO</th>
 									<th>Web</th>
 									<th>Estado</th>
 									<th>Opciones</th>
@@ -102,6 +103,9 @@
 									</td>
 									<td>
 										<?php echo $banco->EMAIL;?>
+									</td>
+									<td>
+										<?php echo $banco->TELEFONO;?>
 									</td>
 									<td>
 										<?php echo $banco->WEB;?>
@@ -184,7 +188,7 @@
 		$('#tb_bancos thead tr:eq(1) th').each( function (i) {
 			var title = $(this).text().trim();
 			var col = i;
-			if (col=='7' || col=='0') {
+			if (col=='8' || col=='0') {
 				console.log(i);
 				$(this).html( '' );
 			}else{
@@ -203,7 +207,7 @@
 		var table = $('#tb_bancos').DataTable({
 			dom: 'Bfrtip',
 			"columnDefs": [
-			{ "width": "20%", "targets": 7 }],
+			{ "width": "20%", "targets": 8 }],
 			"orderCellsTop": true,
 			"buttons": [{
 				extend: 'pdfHtml5',

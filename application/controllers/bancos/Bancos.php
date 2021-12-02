@@ -58,7 +58,7 @@ class Bancos extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array (
 				'banco'=> $this->Banco_model->getBanco($id)
 			);
@@ -66,9 +66,9 @@ class Bancos extends CI_Controller
 			//print_r($data); die();
 			//abrimos la vista view
 			$this->load->view("bancos/view", $data);
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 	//funcion para almacenar en la bd
 	public function store()
@@ -108,9 +108,6 @@ class Bancos extends CI_Controller
 				'fecgrabacion' => $fechaActual,
 				'idempresa'  => $empresa
 			);
-
-//print_r($data); die();
-            //guardamos los datos en la base de datos
 			$desBanco = trim($desBanco);
 			if($desBanco !="" && trim($desBanco) !="")
 			{
@@ -134,16 +131,10 @@ class Bancos extends CI_Controller
 				//redireccionamos
 					redirect(base_url()."bancos/bancos/add", "refresh");
 				}
-			}
-			else
-			{	
-
+			}else{	
 				$this->session->set_flashdata('error', 'Ingrese Banco!');
 				//redireccionamos
 				redirect(base_url()."bancos/bancos/add", "refresh");
-
-
-
 			}
 
 		// }else {
@@ -155,7 +146,7 @@ class Bancos extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array(
 				'banco'=> $this->Banco_model->getBanco($id)
 			);
@@ -165,18 +156,16 @@ class Bancos extends CI_Controller
 			$this->load->view('template/menu');
 			$this->load->view('bancos/edit', $data);
 			$this->load->view('template/footer');
-		}else {
-			redirect(base_url(),'refresh');
-		}
-		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
-
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 
 	//actualizamos 
 	
 	public function update()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 
 			$idBanco = $this->input->post("idbanco");
 			$NumBanco = $this->input->post("NumBanco");
@@ -210,27 +199,22 @@ class Bancos extends CI_Controller
 					$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
 					redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
 				}
-			}
-			else
-			{	
+			}else{	
 
 				$this->session->set_flashdata('error', 'Ingrese Banco!');
 				//redirect(base_url()."servicios", "refresh");
 
 				//redireccionamos
 				redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
-
-
-
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 
 	public function delete($id){
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			if($this->Banco_model->delete($id)){
 				$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
 				redirect(base_url()."/bancos/bancos", "refresh");
@@ -240,9 +224,9 @@ class Bancos extends CI_Controller
 				$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
 				redirect(base_url()."/bancos/bancos", "refresh");		
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 		
 
 		

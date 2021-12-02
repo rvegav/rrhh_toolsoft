@@ -19,7 +19,7 @@ class Estadocivil_model extends CI_Model {
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getEstadocivil($id){
-		$this->db->select("IDCIVIL,NUMCIVIL,DESCIVIL,FECGRABACION");
+		$this->db->select("IDCIVIL,NUMCIVIL,DESCCIVIL,FECGRABACION");
 		$this->db->where("idcivil",$id);
 		$resultado= $this->db->get("estadocivil");
 		return $resultado->row();

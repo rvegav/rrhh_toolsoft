@@ -87,7 +87,7 @@ $data = array(
 			$data = array(
 				'idcivil'  => $idCivil->MAXIMO,
 				'numcivil'  => $NumCivil,
-				'descivil'  => $desCivil,
+				'DESCCIVIL'  => $desCivil,
 				'fecgrabacion' => $fechaActual
 			);
 
@@ -162,7 +162,7 @@ $data = array(
 		{
 			//indicar campos de la tabla a modificar
 			$data = array(
-				'desCivil' => $desCivil
+				'DESCCIVIL' => $desCivil
 			);
 
 

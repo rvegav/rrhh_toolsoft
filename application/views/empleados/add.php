@@ -195,7 +195,7 @@
   </div>
 <?php endif; ?>
 <div class="row">
-  <form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" action="<?php echo base_url()?>empleados/empleados/store" method="POST" name="dato">
+  <form id="frm_empleado" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" action="" method="POST" name="dato">
     <section>
       <dxiv class="wizard">
         <div class="wizard-inner">
@@ -392,7 +392,7 @@
 
                 <div class='col-sm-6'>
                   <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Salida 
-                    <span class="required">:</span>
+                    <span>:</span>
                   </label>
                   <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -570,13 +570,7 @@
                       <div id="custom-search-input">
                         <div class="input-group col-md-12 ">
                           <input type="hidden" name="IdNroCuenta" id="IdNroCuenta">
-                          <input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta" disabled="disabled" />
-                          <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-                              <span class="fa fa-search" aria-hidden="true">
-                              </span>
-                            </button>
-                          </span>
+                          <input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta">
                         </div>
                       </div>
                     </div>
@@ -1045,5 +1039,54 @@
     } ).draw();
 
   });
+
+  $("#frm_empleado").submit(function(event) {
+        event.preventDefault();
+        var formDato = $(this).serialize();
+        // var movi = $("#movimiento option:selected").val();
+        // var desde =
+        // var hasta =  
+        $.ajax({
+            url: "<?php echo base_url()?>empleados/empleados/store",
+            type: 'POST',
+            data: formDato,
+        })
+        .done(function(result) {
+            var r = JSON.parse(result);
+            $("#mdlAguarde").modal('hide');
+            console.log(r);
+            const wrapper = document.createElement('div');
+            if (r['alerta']!="") {
+                var mensaje = r['alerta'];
+                wrapper.innerHTML = mensaje;
+                swal({
+                    // buttons: true,
+                    title: 'Atención!', 
+                    content: wrapper,
+                    icon: "warning",
+                    // dangerMode: true,
+                    columnClass: 'medium',
+                    // theme: 'modern',
+                });
+            }
+            if (r['error']!="") {
+                wrapper.innerHTML = r['error'];
+                swal({
+                    icon: "error",
+                    columnClass: 'medium',
+                    theme: 'modern',
+                    title: 'Error!',
+                    content: wrapper,
+                });
+            }
+            if (r['correcto']!="") {
+                window.location = "<?php echo base_url()?>empleados/empleados";
+            }
+        }).fail(function() {
+            alert("Se produjo un error, contacte con el soporte técnico");
+            $("#mdlAguarde").modal('hide');
+        });
+        
+    });
 
 </script>

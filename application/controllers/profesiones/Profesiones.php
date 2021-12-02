@@ -72,9 +72,9 @@ class Profesiones extends CI_Controller
 		$time = time();
 		$fechaActual = date("Y-m-d H:i:s",$time);
 
-		$empresa = $_SESSION["Empresa"];
-		$sucursal = $_SESSION["Sucursal"];
-		$idusuario = $_SESSION["idusuario"];
+		// $empresa = $_SESSION["Empresa"];
+		// $sucursal = $_SESSION["Sucursal"];
+		// $idusuario = $_SESSION["idusuario"];
 
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
@@ -185,12 +185,12 @@ class Profesiones extends CI_Controller
 		
 		if($this->Profesion_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-			redirect(base_url()."/profesiones/profesiones", "refresh");
+			redirect(base_url()."profesiones/profesiones", "refresh");
 		}
 		else
 		{
 			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-			redirect(base_url()."/profesiones/profesiones", "refresh");		
+			redirect(base_url()."profesiones/profesiones", "refresh");		
 		}
 
 		

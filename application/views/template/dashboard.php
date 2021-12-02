@@ -1,6 +1,6 @@
    
 <!-- page content -->
-<div class="right_col" role="main" style="background-image: url('<?php echo base_url()?>assets/img/9846.jpg'); background-size: 100% 100%;">
+<div class="right_col" role="main" style="background-image: url('<?php echo base_url()?>assets/img/business.jpg'); background-size: 100% 100%;">
   <div class="">
     <div class="page-title">
       <div class="title_left" style="text: white;">

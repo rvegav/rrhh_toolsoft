@@ -83,7 +83,7 @@
                         </div>
                       </div>
 
-                      <div class="container">
+                    <!--   <div class="container">
     					<label class="control-label col-md-3 col-sm-6 col-xs-12" for="IdDepartamento">Zona 
     						<span class="required">*</span>
     					</label>
@@ -101,7 +101,7 @@
                 				</div>
                 			</div>
         				</div>        
-        			</div>		
+        			</div>	 -->	
 
 
                     <div class="form-group <?php echo !empty(form_error("Direccion"))? 'has-error':'';?>">
@@ -118,20 +118,20 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Telefono">Telefono <span>*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="Telefono" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo !empty(form_error("Telefono"))? set_value("Telefono"):'';?>" name="Telefono" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="Telefono" placeholder="TELEFONO" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo !empty(form_error("Telefono"))? set_value("Telefono"):'';?>" name="Telefono" class="form-control col-md-7 col-xs-12">
                           <?php echo form_error("Telefono","<span class='help-block'>","</span>" );?>
                         </div>
                       </div>
 
 
-                       <div class="form-group <?php echo !empty(form_error("NroPatronal"))? 'has-error':'';?>">
+                       <!-- <div class="form-group <?php echo !empty(form_error("NroPatronal"))? 'has-error':'';?>">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Telefono">Nro Registro Patronal <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input type="text" id="NroPatronal" placeholder="Ingrese nro Patronal" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo !empty(form_error("NroPatronal"))? set_value("NroPatronal"):'';?>" name="NroPatronal" class="form-control col-md-7 col-xs-12">
                           <?php echo form_error("NroPatronal","<span class='help-block'>","</span>" );?>
                         </div>
-                      </div>
+                      </div> -->
 
 
                       

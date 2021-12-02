@@ -78,6 +78,9 @@ $route['edit_concepto_fijos'] = 'movimientos/Movimientos/editConceptoFijos';
 $route['update_concepto_fijos'] = 'movimientos/Movimientos/updateConceptoFijo';
 $route['delete_concepto_fijo'] = 'movimientos/Movimientos/deleteConceptoFijo';
 $route['get_empleados_movimiento'] = 'movimientos/Movimientos/getEmpleadoMovimentos';
+$route['pagos'] = 'pagos/pagos/cargarPantalla';
+$route['generar_archivo'] = 'pagos/pagos/generarArchivo';
+$route['descargar_archivo'] = 'pagos/pagos/descargaArchivo';
 
 
 

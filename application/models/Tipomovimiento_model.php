@@ -39,7 +39,7 @@ class Tipomovimiento_model extends CI_Model {
 		$this->db->select("(CASE WHEN  max(idtipomovisueldo) IS NULL THEN '1' ELSE max(idtipomovisueldo) + 1 END) as MAXIMO");
 		$this->db->from("tipomovisueldo");
 		$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 	}
 
 

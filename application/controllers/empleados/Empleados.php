@@ -7,6 +7,7 @@ class Empleados extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+    	// $this->load->model(array('Login', 'M_Empleados', 'M_Multas'));
 		$this->load->model("Empleados_model");
 		$this->load->model("Sucursal_model");
 		$this->load->model("Cargo_model");
@@ -22,6 +23,8 @@ class Empleados extends CI_Controller
 		$this->load->model("Pais_model");
 		$this->load->model("Cuentabancaria_model");
 		$this->load->model("Hijos_model");
+		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
+
 	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
@@ -29,11 +32,6 @@ class Empleados extends CI_Controller
 		//cargamos un array usando el modelo
 		$data = array(
 			'empleados'=> $this->Empleados_model->getEmpleados());
-
-          //mostramos el contenido del array
-          //print_r($data);
-
-
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -92,16 +90,18 @@ class Empleados extends CI_Controller
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
 		$observacion = $this->input->post('Observacion');
+		$mensajes = $this->data;
 
 		// //aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		$this->form_validation->set_rules("Nombre", "Nombres", "required");
 		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
 		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
+		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
 		$this->form_validation->set_rules("Observacion", "Observacion", "required");
-
 		if ($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('error', validation_errors());
-			redirect(base_url()."empleados/empleados/add", "refresh");
+			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
+			// $this->session->set_flashdata('error', validation_errors());
+			// redirect(base_url()."empleados/empleados/add", "refresh");
 
 		}else{
 			if ( ! $this->upload->do_upload('userfile')){
@@ -167,36 +167,39 @@ class Empleados extends CI_Controller
 				'fecingresoips' => $fecha_ips,
 				'estadoempleado'  => 1,
 				'fecgrabacion'=> date("Y-m-d H:i:s")
-
 			);
 
 			//guardamos los datos en la base de datos
 			if($this->Empleados_model->save($data)){
-				$empleado = $this->Empleados_model->getEmpleados(false, $numEmpleado, $nombre, $apellido);
-				for ($i=0; $i < count($nombre_hijo) ; $i++) { 
-					$data = array(
-						'idempleado'=> $empleado->IDEMPLEADO,
-						// 'idempresa'=>
-						'nombre'=>$nombre_hijo[$i],
-						'apellido'=>$apellido_hijo[$i],
-						'fecnacimiento'=> fecha_nacimiento_hijo[$i],
-						'fecgrabacion'=> date("Y-m-d H:i:s")
+				// var_dump($nombre_hijo);
+				$empleado = $this->Empleados_model->getEmpleado(false, $numEmpleado, $nombre, $apellido);
+				for ($i=0; $i < count($nombre_hijo) ; $i++) {
+					if ($nombre_hijo[$i]!='') {
+						$data = array(
+							'idempleado'=> $empleado->IDEMPLEADO,
+								// 'idempresa'=>
+							'nombre'=>$nombre_hijo[$i],
+							'apellido'=>$apellido_hijo[$i],
+							'fecnacimiento'=> $fecha_nacimiento_hijo[$i],
+							'fecgrabacion'=> date("Y-m-d H:i:s")
 
-					);
-					if ($this->Hijos_model->save($data)) {
-						$correcto = "Se ha asociado correctamente los hijos";	
-					}
+						);
+						if ($this->Hijos_model->save($data)) {
+							$correcto = "Se ha asociado correctamente los hijos";	
+						}
+					 } 
 				}
 				$this->session->set_flashdata('success', 'Empleado registrado correctamente!');
-				redirect('empleados/empleados', 'refresh');
+				$mensajes['correcto'] = 'correcto';
 			}else{
 					//si hubo errores, mostramos mensaje
 				$this->session->set_flashdata('error', 'Empleados no registrado!');
 				//redireccionamos
-				redirect("empleados/add", "refresh");
+				$mensajes['error'] = 'Empleados no registrado!';
 			}
 
 		}
+		echo json_encode($mensajes);
 	}
 	//metodo para editar
 	public function edit($id)
@@ -208,13 +211,13 @@ class Empleados extends CI_Controller
 			'categorias'=> $this->Categoria_model->getCategorias(),
 			'depatamentosempresas'=> $this->Departamentoempresa_model->getDepartamentoempresas(),
 			'estadociviles'=> $this->Estadocivil_model->getEstadociviles(),
-			'cuentabancarias'=> $this->Cuentabancaria_model->getCuentabancarias(),
+			// 'cuentabancarias'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'ciudades'=> $this->Ciudad_model->getCiudades(),
 			'profesiones'=> $this->Profesion_model->getProfesiones(),
 			'tipocuentas'=> $this->Tipocuenta_model->getTipocuentas(),
 			'tiposalarios'=> $this->Tiposalario_model->getTiposalarios(),
 			'paises'=> $this->Pais_model->getPaises(),
-			'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
+			// 'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios(), 
 			'empleado'=> $this->Empleados_model->getEmpleado($id)
 		);
@@ -229,15 +232,26 @@ class Empleados extends CI_Controller
 	public function update()
 	{
 
+		$config['upload_path']          = './uploads/';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']             = 100;
+		$config['max_width']            = 1024;
+		$config['max_height']           = 1080;
+		$config['overwrite']           = true;
+		// echo "<pre>";
+		// print_r($_POST);
+		// echo "</pre>";
+		// die();
+		$this->load->library('upload', $config);
 		$idEmpleado = $this->input->post("CodEmpleado");
 		$numEmpleado = $this->input->post("Numero");
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
 		$observacion = $this->input->post('Observacion');
-
-		if ( ! $this->upload->do_upload('userfile')){
+		if ( !$this->upload->do_upload('userfile')){
 			$error = array('error' => $this->upload->display_errors());
 			// echo "error";
+			$perfil  ='';
 		}else{
 			$perfil = $this->upload->data();
 			$data = file_get_contents('uploads/'.$perfil['file_name']);
@@ -270,14 +284,14 @@ class Empleados extends CI_Controller
 		$ultActualizacion= date("Y-m-d H:i:s");
 
 		//traemos datos para no duplicarlos /  validacion
-		$empleado_actual = $this->Empleados_model->getEmpleados($idEmpleado);
+		$empleado_actual = $this->Empleados_model->getEmpleado($idEmpleado);
 
-		if($numEmpleado == $empleado_actual->numEmpleado){
-			$unique = '';
-		}else{	
-			//si encontro datos, emitira mensaje que ya existe.. llamando a tabla y luego campo
-			$unique = '|is_unique[empleado.nomEmpleado]';
-		}
+		// if($numEmpleado == $empleado_actual->numEmpleado){
+		// 	$unique = '';
+		// }else{	
+		// 	//si encontro datos, emitira mensaje que ya existe.. llamando a tabla y luego campo
+		// 	$unique = '|is_unique[empleado.nomEmpleado]';
+		// }
 		//validar
 		// $this->form_validation->set_rules("nomEmpleado", "Nombre", "required".$unique);
 
@@ -299,14 +313,14 @@ class Empleados extends CI_Controller
 			'fechaingreso' => $fechaIngreso,
 			'fechasalida' => $fecha_salida,
 			'idcivil' => $estado_civil,
-			'idpais' => $pais,
+			// 'idnacionalidad' => $pais,
 			'idnivel'=> $nivel_estudio,
 			'idprofesion' => $profesion,
 			'idciudad' => $ciudad,
 			'nrocuenta' => $nro_cuenta,
-			'idsucursal' => $sucursal,
+			'idsucursal' => 1,
 			'idcargo' => $cargo,
-			'iddepartamento' => $deparmento,
+			'iddepartemento' => $deparmento,
 			'idcategoria' => $categoria,
 			'numeroips' => $nro_ips,
 			'fecingresoips' => $fecha_ips,
@@ -316,7 +330,7 @@ class Empleados extends CI_Controller
 		if($this->Empleados_model->update($idEmpleado,$data))
 		{
 			$this->session->set_flashdata('success', 'Actualizado correctamente!');
-			redirect(base_url()."empleado/empleado", "refresh");
+			redirect(base_url()."empleados/empleados", "refresh");
 		}
 		else
 		{

@@ -437,7 +437,7 @@
 
 														<select class="form-control select2" style="width: 100%;" name="NivelEstudio" id="NivelEstudio">
 															<optgroup label="Nivel Estudio Actual"></optgroup>
-															<option value=""><?php echo $empleado->NIVEL ?></option>
+															<option value="<?php echo $empleado->IDNIVEL ?>"><?php echo $empleado->NIVEL ?></option>
 															<optgroup label="Nivel a asignar"></optgroup>
 
 															<?php foreach($nivelestudios as $nivelestudio):?>
@@ -457,7 +457,7 @@
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<select class="form-control select2" style="width: 100%;" name="EstadoCivil" id="EstadoCivil">
 														<optgroup label="Estado Civil Actual"></optgroup>
-														<option value=""><?php echo $empleado->DESCIVIL?></option>
+														<option value="<?php echo $empleado->IDCIVIL ?>"><?php echo $empleado->DESCCIVIL?></option>
 														<optgroup label="Estado a asignar"></optgroup>
 														<?php foreach($estadociviles as $estadocivil):?>
 															<?php if($estadocivil->DESCIVIL != $empleado->DESCIVIL):?>
@@ -476,7 +476,7 @@
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<select class="form-control select2" style="width: 100%;" name="Profesion" id="Profesion">
 															<optgroup label="Profesion Actual"></optgroup>
-															<option value=""><?php echo $empleado->PROFESION ?></option>
+															<option value="<?php echo $empleado->IDPROFESION ?>"><?php echo $empleado->PROFESION ?></option>
 															<optgroup label="Profesion a Asignar"></optgroup>
 															<?php foreach($profesiones as $profesion):?>
 																<?php if($profesion->DESPROFESION != $empleado->profesion):?>
@@ -495,16 +495,11 @@
 												<div class="form-group">
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<select class="form-control select2" style="width: 100%;" name="Nacionalidad" id="Nacionalidad">
-															<optgroup label="Nacionalidad "></optgroup>
+															<optgroup label="Nacionalidad Actual"></optgroup>
+															<option value="<?php echo $empleado->IDPAIS ?>"><?php echo $empleado->DESPAIS ?></option>
+															<optgroup label="Nacionalidad a Asignar"></optgroup>
 															<?php foreach($paises as $pais):?>
-																<?php if($pais->IDPAIS == $pais->IDPAIS):?>
-																	<option value="<?php echo $pais->IDPAIS?>">
-																		<?php echo $pais->DESPAIS;?>
-																	</option>
-																	<?php else:?>
-																		<option value="<?php echo $pais->IDPAIS;?>"><?php echo $pais->DESPAIS;?>
-																	</option>
-																<?php endif;?>
+																<option value="<?php echo $pais->IDPAIS;?>"><?php echo $pais->DESPAIS;?></option>
 															<?php endforeach;?> 
 														</select>
 													</div>
@@ -519,7 +514,7 @@
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<select class="form-control select2" style="width: 100%;" name="Ciudad" id="Ciudad">
 															<optgroup label="Ciudad Actual"></optgroup>
-															<option value=""><?php echo $empleado->CIUDAD?></option>
+															<option value="<?php echo $empleado->IDCIUDAD ?>"><?php echo $empleado->CIUDAD?></option>
 															<optgroup label="Ciudad a Asignar"></optgroup>
 															<?php foreach($ciudades as $ciudad):?>
 																<?php if($ciudad->DESCIUDAD!= $empleado->CIUDAD):?>
@@ -612,7 +607,7 @@
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<select class="form-control select2" style="width: 100%;" name="Departamento" id="Departamento">
 															<optgroup label="Departamento Actual"></optgroup>
-															<option value="<?php echo $empleado->IDDEPARTAMENTO?>"><?php echo $empleado->DEPARTAMENTO ?></option>
+															<option value="<?php echo $empleado->IDDEPARTEMENTO?>"><?php echo $empleado->DEPARTAMENTO ?></option>
 															<optgroup label="Departamento a Asignar"></optgroup>
 															<?php foreach($depatamentosempresas as $departempresa):?>
 																<?php if($departempresa->DESDEPARTAMENTO != $empleado->DEPARTAMENTO):?>
@@ -652,7 +647,7 @@
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<select class="form-control select2" style="width: 100%;" name="Categoria" id="Categoria">
 															<optgroup label="Categoria Actual"></optgroup>
-															<option value=""><?php echo $empleado->CATEGORIA ?></option>
+															<option value="<?php echo $empleado->IDCATEGORIA ?>"><?php echo $empleado->CATEGORIA ?></option>
 															<optgroup label="Categoria a Asignar"></optgroup>
 															<?php foreach($categorias as $categoria):?>
 																<?php if($categoria->DESCATEGORIA != $empleado->CATEGORIA):?>

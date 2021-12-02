@@ -78,7 +78,7 @@
         <div class="col-md-3 left_col">
           <div class="bg-danger left_col scroll-view">
             <div class="bg-danger navbar nav_title" style="border: 0;">
-              <a href="<?php echo base_url()?>" class="site_title"><i class="fa fa-paw"></i> <span>RRHH</span></a>
+              <a href="<?php echo base_url()?>" class="site_title"> <img src=<?php echo base_url()?>assets/img/logo1.png width="50" height="50"> <span>RRHH</span></a>
             </div>
             <div class="clearfix"></div>
             <!-- menu profile quick info 

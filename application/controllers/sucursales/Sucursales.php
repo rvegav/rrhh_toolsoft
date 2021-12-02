@@ -6,7 +6,7 @@ class Sucursales extends CI_Controller
 	//solo el constructor, para llamar a las clases
 	public function __construct()
 	{
-        parent::__construct();
+		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
@@ -22,9 +22,6 @@ class Sucursales extends CI_Controller
 		$data = array(
 			'sucursales'=> $this->Sucursal_model->getSucursales()
 		);
-
-//print_r($data); die();
-
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -33,14 +30,11 @@ class Sucursales extends CI_Controller
 	}
 	
 	//funcion add para mostrar vistas
-	public function add()
-	{
-
-$data = array(			
-			  'maximos' => $this->Sucursal_model->ObtenerCodigo(),
-			  'zonas' => $this->Zona_model->getZonas()
-			  );
-
+	public function add(){
+		$data = array(			
+			'maximos' => $this->Sucursal_model->ObtenerCodigo(),
+			  // 'zonas' => $this->Zona_model->getZonas()
+		);
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('sucursales/add', $data);
@@ -48,24 +42,17 @@ $data = array(
 
 	}
 	//funcion vista
-	public function view($id)
-	{
+	public function view($id){
 		$data = array (
 			'sucursal'=> $this->Sucursal_model->getSucursal($id)
 		);
-
-		//print_r($data); die();
 		//abrimos la vista view
 		$this->load->view("sucursales/view", $data);
 	}
 	//funcion para almacenar en la bd
-	public function store()
-	{
+	public function store(){
 		//recibimos las variables
-
-		//print_r($_POST); die();
-
-        $numSucursal = $this->input->post("NumSucursal");
+		$numSucursal = $this->input->post("NumSucursal");
 		$desSucursal = $this->input->post("DesSucursal");
 		$direccion = $this->input->post("Direccion");
 		$telefono = $this->input->post("Telefono");
@@ -74,80 +61,53 @@ $data = array(
 		
 		$idSucursal = $this->Sucursal_model->ultimoNumero();
 
-        $time = time();
-        $fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-        $empresa = $_SESSION["Empresa"];
-        $sucursal = $_SESSION["Sucursal"];
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
 
 //print_r($sucursal); die();
-
-
-		//corremos la validacion
-		
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
-
-			$data = array(
-				'idsucursal'  => $idSucursal->MAXIMO,
-				'numsucursal'  => $numSucursal,
-				'dessucursal'  => $desSucursal,
-				'direccion'  => $direccion,
-				'telefono'  => $telefono,
-				'fecgrabacion' => $fechaActual,
-				'idempresa'  => $empresa,
-				'idzona' => $idZona
-			);
-
-//print_r($data); die();
+		$data = array(
+			'idsucursal'  => $idSucursal->MAXIMO,
+			'numsucursal'  => $numSucursal,
+			'descsucursal'  => $desSucursal,
+			'direccion'  => $direccion,
+			'telefono'  => $telefono,
+			'fecgrabacion' => $fechaActual,
+			'idempresa'  => 1,
+			// 'idzona' => $idZona
+		);
             //guardamos los datos en la base de datos
-            $desSucursal = trim($desSucursal);
+		$desSucursal = trim($desSucursal);
 		if($desSucursal !="" && trim($desSucursal) !="")
 		{
-			if($this->Sucursal_model->save($data))
-			{
+			if($this->Sucursal_model->save($data)){
 				//si todo esta bien, emitimos mensaje
-				$this->session->set_flashdata('success', 'Sucursal registrada correctamente!');
-				//echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
-				
+				$this->session->set_flashdata('success', 'Sucursal registrada correctamente!');				
 				//redireccionamos y refrescamos
 				redirect(base_url()."sucursales/sucursales", "refresh");
 				
-			}
-			else
-			{
-					//si hubo errores, mostramos mensaje
-					
+			}else{
 				$this->session->set_flashdata('error', 'Sucursal no registrada!');
-				//redirect(base_url()."servicios", "refresh");
-				
 				//redireccionamos
 				redirect(base_url()."sucursales/sucursales/add", "refresh");
 			}
-	    }
-		else
-		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Sucursal!');
-				//redirect(base_url()."servicios", "refresh");
-				
-				//redireccionamos
+		}else{	
+			$this->session->set_flashdata('error', 'Ingrese Sucursal!');
 			redirect(base_url()."sucursales/sucursales/add", "refresh");
-
-				
-
 		}
-		
 
 	}
 	
 	//metodo para editar
-	public function edit($id)
-	{
+	public function edit($id){
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
 			'sucursal'=> $this->Sucursal_model->getSucursal($id),
-			'zonas' => $this->Zona_model->getZonas()
+			// 'zonas' => $this->Zona_model->getZonas()
 		);
 
 
@@ -177,11 +137,11 @@ $data = array(
 		{
 			//indicar campos de la tabla a modificar
 			$data = array(
-				'dessucursal' => $desSucursal,
+				'descsucursal' => $desSucursal,
 				'direccion' => $direccion,
 				'telefono' => $telefono,
-				'nropatronal' => $nroPatonal,
-				'idzona' => $idZona
+				// 'nropatronal' => $nroPatonal,
+				// 'idzona' => $idZona
 			);
 
 
@@ -200,34 +160,34 @@ $data = array(
 		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Sucursal!');
+
+			$this->session->set_flashdata('error', 'Ingrese Sucursal!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."sucursales/sucursales/edit/".$idSucursal,"refresh");
 
-				
+
 
 		}
 
 	}
 
 
-public function delete($id)
+	public function delete($id)
 	{
 //print_r($id); die();
-			if($this->Sucursal_model->delete($id))
-			{
-				
-				$this->session->set_flashdata('success', 'Eliminado correctamente!');
+		if($this->Sucursal_model->delete($id))
+		{
+
+			$this->session->set_flashdata('success', 'Eliminado correctamente!');
 			redirect(base_url()."sucursales/sucursales", "refresh");
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				redirect(base_url()."sucursales/sucursales/","refresh");
-			}
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+			redirect(base_url()."sucursales/sucursales/","refresh");
+		}
 
 	}
 

@@ -17,28 +17,26 @@ class Categorias extends CI_Controller
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array(
 				'categorias'=> $this->Categoria_model->getCategorias()
 			);
-
-	//print_r($data); die();
 
 			//llamamos a las vistas para mostrar
 			$this->load->view('template/head');
 			$this->load->view('template/menu');
 			$this->load->view('categorias/list', $data);
 			$this->load->view('template/footer');
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 		//cargamos un array usando el modelo
 	}
 	
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array(			
 				'maximos' => $this->Categoria_model->ObtenerCodigo(),
 			);
@@ -47,15 +45,15 @@ class Categorias extends CI_Controller
 			$this->load->view('categorias/add', $data);
 			$this->load->view('template/footer');
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 	//funcion vista
 	public function view($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			$data = array (
 				'categoria'=> $this->Categoria_model->getCategoria($id)
 			);
@@ -64,14 +62,14 @@ class Categorias extends CI_Controller
 			//abrimos la vista view
 			$this->load->view("categorias/view", $data);
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 		
 		//recibimos las variables
 			$NumCategoria   = $this->input->post("NumCategoria");
@@ -141,9 +139,9 @@ class Categorias extends CI_Controller
 
 
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 		
 
 	}
@@ -151,7 +149,7 @@ class Categorias extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 			$data = array(
@@ -164,16 +162,16 @@ class Categorias extends CI_Controller
 			$this->load->view('categorias/edit', $data);
 			$this->load->view('template/footer');
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 	}
 
 	//actualizamos 
 	
 	public function update()
 	{
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 		
 			$idCategoria= $this->input->post("idcategoria");
 			$NumCategoria= $this->input->post("NumCargo");
@@ -212,14 +210,14 @@ class Categorias extends CI_Controller
 
 
 			}
-		}else {
-			redirect(base_url(),'refresh');
-		}
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }
 
 	}
 
 	public function delete($id){
-		if ($this->session->userdata('sist_conex')=="A") {
+		// if ($this->session->userdata('sist_conex')=="A") {
 			if($this->Categoria_model->delete($id)){
 				$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
 				redirect(base_url()."/categorias/categorias", "refresh");
@@ -230,9 +228,9 @@ class Categorias extends CI_Controller
 				redirect(base_url()."/categorias/categorias", "refresh");		
 			}
 		
-		}else {
-			redirect(base_url(),'refresh');
-		}		
+		// }else {
+		// 	redirect(base_url(),'refresh');
+		// }		
 
 		
 	}

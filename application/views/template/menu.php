@@ -55,9 +55,7 @@
       </li>
       <li><a><i class="fa fa-bar-chart-o"></i> Gestionar pagos <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="chartjs.html">Generacion de archivo de salario</a></li>
-          <li><a href="chartjs2.html">Generacion de archivo de aguinaldo</a></li>
-          <li><a href="chartjs2.html">Generacion de archivo de Ips</a></li>
+          <li><a href="<?php echo base_url();?>pagos">Generacion de archivos de Pagos</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-clone"></i>Generar informes <span class="fa fa-chevron-down"></span></a>
