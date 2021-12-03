@@ -41,7 +41,7 @@
 
 			<div class="x_title">
 				<h2>
-					Ciudad  | Agregar 
+					Horario  | Agregar 
 				</h2>
 				<ul class="nav navbar-right panel_toolbox">
 					<li>
@@ -64,44 +64,22 @@
 					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>ciudades/ciudades/store" method="POST">
 
 						<div class="form-group <?php echo !empty(form_error("NumCiudad"))? 'has-error':'';?>">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Ciudad<span class="required">*</span>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Horario<span class="required">*</span>
 							</label>
 							<div class="col-md-2 col-sm-2 col-xs-12">
-								<?php foreach($maximos as $maximo):?>
+								
 									<input type="text" class="form-control" id="NumCiudad" name="NumCiudad" readonly value="<?php echo $maximo->MAXIMO;?>">
-								<?php endforeach;?>
 							</div>
 						</div>
 
 
 						<div class="form-group <?php echo !empty(form_error("desCiudad"))? 'has-error':'';?>">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desCiudad">Ciudad <span class="required">*</span>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="descHorario">Descripcion Horario<span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo !empty(form_error("desCiudad"))? set_value("desCiudad"):'';?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
-								<?php echo form_error("desCiudad","<span class='help-block'>","</span>" );?>
+								<input type="text" id="descHorario" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo !empty(form_error("descHorario"))? set_value("descHorario"):'';?>" name="descHorario" class="form-control col-md-7 col-xs-12">
+								<?php echo form_error("descHorario","<span class='help-block'>","</span>" );?>
 							</div>
-						</div>
-
-
-						<div class="container">
-							<label class="control-label col-md-3 col-sm-6 col-xs-12" for="IdDepartamento">Departamento 
-								<span class="required">*</span>
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<div id="custom-search-input">
-									<div class="input-group col-md-12">
-										<input type="hidden" name="IdDepartamento" id="IdDepartamento">	
-										<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" />
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2">
-												<span class="fa fa-search" aria-hidden="true">
-												</span>
-											</button>
-										</span>
-									</div>
-								</div>
-							</div>        
 						</div>		
 						<div class="ln_solid"></div>
 						<br>
@@ -117,46 +95,6 @@
 		</div><!-- / content -->
 	</div>
 </div>
-</div>
-<div class="modal fade" id="modal-default2">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Lista de Ciudades</h4>
-			</div>
-			<div class="modal-body">
-				<table id="example2" class="table table-responsive table-bordered table-striped table-hover">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Nombre</th>
-							<th>Pais</th>
-							<th>Opcion</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						if(!empty($departamentos)):?>
-							<?php
-							foreach($departamentos as $departamento):?>
-								<tr>
-									<td><?php echo $departamento->NUMDEPARTAMENTO;?></td>
-									<td><?php echo $departamento->DESDEPARTAMENTO;?></td>
-									<td><?php echo $departamento->DESPAIS;?></td>
-									<?php $datadepartamento = $departamento->IDDEPARTAMENTO."*".$departamento->DESDEPARTAMENTO."*".$departamento->NUMDEPARTAMENTO."*".$departamento->DESPAIS?>
-									<td><button type = "button" class="btn btn-success btn-check2" value="<?php echo $datadepartamento;?>"><span class= "fa fa-check"></span></button></td>
-								</tr>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</tbody>
-				</table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
-			</div>
-		</div>
-	</div>
 </div>
 <!-- /.modal -->
 <script type="text/javascript">

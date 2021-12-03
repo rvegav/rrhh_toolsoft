@@ -9,8 +9,10 @@ class Faltas extends CI_Controller {
 	public function index(){	
 		// if ($this->session->userdata('login')) {
 		$data = array(
-			'tiposFaltas'=> $this->Faltas_model->getTipoFaltas()
+			'tiposFaltas'=> $this->Faltas_model->getTipoFaltas(), 
+			'maximo' => $this->Faltas_model->ObtenerCodigo()
 		);
+
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('faltas/list', $data);

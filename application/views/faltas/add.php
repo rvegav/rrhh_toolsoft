@@ -1,8 +1,8 @@
-<div class="right_col" role="main">
+}<div class="right_col" role="main">
 	<div class="page-title">
 		<div class="title_left">
 			<h3>
-				Ciudad
+				Tipo Faltas
 			</h3>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 
 			<div class="x_title">
 				<h2>
-					Ciudad  | Agregar 
+					Tipo Faltas  | Agregar 
 				</h2>
 				<ul class="nav navbar-right panel_toolbox">
 					<li>
@@ -64,45 +64,23 @@
 					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>ciudades/ciudades/store" method="POST">
 
 						<div class="form-group <?php echo !empty(form_error("NumCiudad"))? 'has-error':'';?>">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Ciudad<span class="required">*</span>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Tipo Falta<span class="required">*</span>
 							</label>
 							<div class="col-md-2 col-sm-2 col-xs-12">
-								<?php foreach($maximos as $maximo):?>
-									<input type="text" class="form-control" id="NumCiudad" name="NumCiudad" readonly value="<?php echo $maximo->MAXIMO;?>">
-								<?php endforeach;?>
+								
+								<input type="text" class="form-control" id="NumCiudad" name="NumCiudad" readonly value="<?php echo $maximo->MAXIMO;?>">
 							</div>
 						</div>
 
 
 						<div class="form-group <?php echo !empty(form_error("desCiudad"))? 'has-error':'';?>">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desCiudad">Ciudad <span class="required">*</span>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desCiudad">Descripcion Tipo Falta <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo !empty(form_error("desCiudad"))? set_value("desCiudad"):'';?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
 								<?php echo form_error("desCiudad","<span class='help-block'>","</span>" );?>
 							</div>
 						</div>
-
-
-						<div class="container">
-							<label class="control-label col-md-3 col-sm-6 col-xs-12" for="IdDepartamento">Departamento 
-								<span class="required">*</span>
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<div id="custom-search-input">
-									<div class="input-group col-md-12">
-										<input type="hidden" name="IdDepartamento" id="IdDepartamento">	
-										<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" />
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2">
-												<span class="fa fa-search" aria-hidden="true">
-												</span>
-											</button>
-										</span>
-									</div>
-								</div>
-							</div>        
-						</div>		
 						<div class="ln_solid"></div>
 						<br>
 						<div class="form-group">

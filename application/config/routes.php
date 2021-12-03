@@ -81,6 +81,5 @@ $route['get_empleados_movimiento'] = 'movimientos/Movimientos/getEmpleadoMovimen
 $route['pagos'] = 'pagos/pagos/cargarPantalla';
 $route['generar_archivo'] = 'pagos/pagos/generarArchivo';
 $route['descargar_archivo'] = 'pagos/pagos/descargaArchivo';
-
-
-
+$route['marcacion_mapa'] = 'Marcacion/Marcacion';
+$route['legajos'] = 'empleados/Empleados/legajos';

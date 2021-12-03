@@ -52,7 +52,7 @@ class Horario_model extends CI_Model {
 	    $this->db->select("(CASE WHEN  max(IDHORARIO) IS NULL THEN '01' when (max(IDHORARIO) + 1) <= 9 then concat('0',(max(IDHORARIO) + 1)) ELSE max(IDHORARIO) + 1 END) as MAXIMO");
 		$this->db->from("horario");
 		$resultado= $this->db->get();
-		return $resultado->result();
+		return $resultado->row();
 	}
 
 	public function getHorarioEmpleado($empleado = false, $dia= false){

@@ -35,7 +35,8 @@
       <li><a><i class="fa fa-table"></i> Empleados <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo base_url();?>empleados/empleados">Empleados</a></li>
-          <li><a href="<?php echo base_url();?>empleados/empleados">Legajo</a></li>
+          <li><a href="<?php echo base_url();?>legajos">Legajo</a></li>
+          <li><a href="<?php echo base_url();?>marcacion_mapa">Marcacion por GPS</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-desktop"></i> Liquidación de Salario <span class="fa fa-chevron-down"></span></a>

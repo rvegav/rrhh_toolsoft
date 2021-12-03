@@ -75,14 +75,16 @@
 							<tbody>
 								<?php
 								if(!empty($tiposFaltas)):?>
+									
 									<?php 
+									// die();
 									foreach($tiposFaltas as $tipo):?>
 										<tr>
 											<td><?php echo $tipo->idfaltas; ?></td>
 											<td><?php echo $tipo->descfaltas;?></td>
 											<td>
-												<a href="<?php echo base_url();?>ciudades/Ciudades/edit/<?php echo $tipo->idfaltas;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-												<a href="<?php echo base_url();?>ciudades/Ciudades/delete/<?php echo $tipo->idfaltas;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
+												<a href="<?php echo base_url();?>editFaltas/<?php echo $tipo->idfaltas;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+												<a href="<?php echo base_url();?>deleteFaltas/<?php echo $tipo->idfaltas;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach; ?>

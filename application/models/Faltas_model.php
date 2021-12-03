@@ -33,10 +33,10 @@ class Faltas_model extends CI_Model {
 		return $this->db->delete("horario");
 	}
 	public function ObtenerCodigo(){
-		$this->db->select("(CASE WHEN  max(idbanco) IS NULL THEN '01' when (max(idbanco) + 1) <= 9 then concat('0',(max(idbanco) + 1)) ELSE max(idbanco) + 1 END) as MAXIMO");
-		$this->db->from("banco");
+		$this->db->select("(CASE WHEN  max(idfaltas) IS NULL THEN '01' when (max(idfaltas) + 1) <= 9 then concat('0',(max(idfaltas) + 1)) ELSE max(idfaltas) + 1 END) as MAXIMO");
+		$this->db->from("faltas");
 		$resultado= $this->db->get();
-		return $resultado->result();
+		return $resultado->row();
 	}
 
 
@@ -51,7 +51,10 @@ class Faltas_model extends CI_Model {
 		}
 		$consulta = $this->db->get();
 		if ($consulta->num_rows()>0) {
-			return $consulta->row();
+			if ($id or $desc) {
+				return $consulta->row();
+			}
+			return $consulta->result();
 		}else {
 			return false;
 		}

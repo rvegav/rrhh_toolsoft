@@ -69,14 +69,18 @@ class Empleados_model extends CI_Model {
 	}
 
 	//obtiene las incidencias de los empleados
-	public function getLegajoEmpleado($id){
+	public function getLegajoEmpleado($id= false){
 		$this->db->select('em.nombre, em.apellido, l.idlegajo, td.destipodocumento documento, ti.descincidencia incidencia, l.fecha, l.observacion, l.fecgrabacion, l.imagen');
 		$this->db->from('empleado em');
 		$this->db->join('legajo l', 'em.idempleado = l.idempleado');
 		$this->db->join('tipoincidencia ti', 'l.idtipoincidencia = ti.idtipoincidencia');
 		$this->db->join('tipodocumento td', 'l.idtipodcumento = td.idtipodcumento');
 		$this->db->join('empresa e', 'l.idempresa = e.idempresa');
-		$this->db->where('em.idempleado', $id);
+		if ($id) {
+			$this->db->where('em.idempleado', $id);
+		}else{
+			$this->db->group_by('em.nombre, em.apellido, l.idlegajo, td.destipodocumento documento, ti.descincidencia incidencia, l.fecha, l.observacion, l.fecgrabacion, l.imagen');
+		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows() >0) {
 			return $resultados->result();
