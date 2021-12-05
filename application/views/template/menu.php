@@ -26,7 +26,7 @@
           <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Empresa</a></li> -->
           <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Conceptos de Salario</a></li> -->
           <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Hijos</a></li> -->
-          <li><a href="<?php echo base_url();?>empresas/empresas">Tipos de Incidencias</a></li>
+          <li><a href="<?php echo base_url();?>tipo_incidencia">Tipos de Incidencias</a></li>
           <li><a href="<?php echo base_url();?>horario/Horario">Horarios</a></li>  
           <li><a href="<?php echo base_url();?>tipo_faltas">Tipo de Faltas</a></li>  
 

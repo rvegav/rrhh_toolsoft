@@ -86,3 +86,4 @@ $route['legajos'] = 'empleados/Empleados/legajos';
 $route['agregar_incidencia/(:num)'] = 'empleados/Empleados/agregar_incidencia/$1';
 $route['getTipoIncidencia'] = 'empleados/Empleados/getTipoIncidencia';
 $route['store_incidencia'] = 'empleados/Empleados/storeIncidencia';
+$route['tipo_incidencia'] = 'tipoincidencias';
