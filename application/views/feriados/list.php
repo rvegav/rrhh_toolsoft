@@ -328,7 +328,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "/isupport/feriados/feriados/delete/" + id;
+   window.location.href = "<?php echo base_url(); ?>feriados/feriados/delete/" + id;
   }
 });
 });

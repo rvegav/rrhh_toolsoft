@@ -3,18 +3,17 @@
 	<div class="page-title">
 		<div class="title_left">
 			<h3>
-				Categoria
+				Ciudad
 			</h3>
 		</div>
 	</div>
-	<div class="clearfix">
-	</div>
+	<div class="clearfix"></div>
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="col-md-12" align="right">
-				<a href="<?php echo base_url();?>categorias/categorias/add" class="btn btn-dark">
+				<a href="<?php echo base_url();?>ciudades/ciudades/add" class="btn btn-dark">
 					<i class="fa fa-plus">
-					</i> Agregar Categoria
+					</i> Agregar Ciudad
 				</a>
 				<?php
 				if($this->session->flashdata("success")): ?>
@@ -25,9 +24,7 @@
 						<strong>
 							¡Buen Trabajo!
 						</strong>
-						<p>
-							<?php echo $this->session->flashdata("success")?>
-						</p>
+						<p><?php echo $this->session->flashdata("success")?></p>
 					</div>
 				</div>
 			<?php endif; ?>
@@ -48,19 +45,17 @@
 			<div class="x_panel">
 				<div class="x_title">
 					<h2>
-						Lista de Categorias
+						Listado de Ciudades
 					</h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li>
 							<a class="collapse-link">
-								<i class="fa fa-chevron-up">
-								</i>
+								<i class="fa fa-chevron-up"></i>
 							</a>
 						</li>
 						<li>
 							<a class="close-link">
-								<i class="fa fa-close">
-								</i>
+								<i class="fa fa-close"></i>
 							</a>
 						</li>
 					</ul>
@@ -68,13 +63,14 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12">
-						<table id="tb_categorias" class="table table-striped table-bordered btn-hover" width="100%">
+					<!-- <div class="col-md-12"> -->
+						<table id="tb_ciudad" class="table table-striped table-bordered btn-hover table-responsive" width="100%">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Código Categoria</th>
+									<th>Código Ciudad</th>
 									<th>Descripcion</th>
+									<th>Departamento</th>
 									<th>Fecha de Grabacion</th>
 									<th>Estado</th>
 									<th>Opciones</th>
@@ -82,77 +78,46 @@
 							</thead>
 							<tbody>
 								<?php
-								if(!empty($categorias)):?>
+								if(!empty($ciudades)):?>
 									<?php
-									foreach($categorias as $categoria):?>
+									foreach($ciudades as $ciudad):?>
 										<tr>
-											<td>
-												<?php echo $categoria->IDCATEGORIA; ?>
-											</td>
-											<td>
-												<?php echo $categoria->NUMCATEGORIA;?>
-											</td>
-											<td>
-												<?php echo $categoria->DESCATEGORIA;?>
-											</td>
-											<td>
-												<?php echo $categoria->FECGRABACION;?>
-											</td>
+											<td><?php echo $ciudad->IDCIUDAD; ?></td>
+											<td><?php echo $ciudad->NUMCIUDAD;?></td>
+											<td><?php echo $ciudad->DESCIUDAD;?></td>
+											<td><?php echo $ciudad->DESDEPARTAMENTO;?></td>
+											<td><?php echo $ciudad->FECGRABACION;?></td>
 
 											<?php
-									//$estado = $empleado->estadoEmpleado;
 											$estado = 1;
-											if($estado == 1)
-											{
+											if($estado == 1){
 												$estado2     = "Activo";$label_class = 'label-success';
-											}
-											else
-											{
-												if($estado == 2)
-												{
+											}else{
+												if($estado == 2){
 													$estado2     = "Inactivo";$label_class = 'label-warning';
-												}
-												else
-												{
+												}else{
 													$estado2     = "Anulado";$label_class = 'label-danger';
 												}
 											}
-
 											;?>
+											<td><span class="label <?php echo $label_class;?>"><?php echo $estado2; ?></span></td>
 											<td>
-												<span class="label <?php echo $label_class;?>">
-													<?php echo $estado2; ?>
-												</span>
-											</td>
-
-											<td>
-
-												<button type="button" class="btn btn-primary btn-view" data-toggle="modal" data-target="#modal-view" value="<?php echo $categoria->IDCATEGORIA;?>">
-													<i class="fa fa-eye">
-													</i>
-												</button>
-												<a href="<?php echo base_url();?>categorias/categorias/edit/<?php echo $categoria->IDCATEGORIA;?>" class="btn btn-warning">
-													<i class="fa fa-edit">
-													</i>
-												</a>
-												<a href="#" id="<?=$categoria->IDCATEGORIA;?>" class="btn btn-danger btn-delete eliminar">
-													<i class="fa fa-trash">
-													</i>
-												</a>
-
+												<a href="<?php echo base_url();?>ciudades/Ciudades/edit/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+												<a href="<?php echo base_url();?>ciudades/Ciudades/delete/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</tbody>
 						</table>
-					</div> <!-- /COL  12-->
-				</div><!-- /ROW -->
-			</div><!-- / content -->
+					<!-- </div>  -->
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 </div>
+<!-- </div> -->
 
 
 <!-- Modal -->
@@ -161,7 +126,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i> Ver Detalles de la Categoria </h4>
+				<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i> Ver Detalles de la Ciudad </h4>
 			</div>
 			<div class="modal-body">
 				<!--en esta parte se carga los datos de la vista view-->
@@ -174,17 +139,18 @@
 </div>
 <!--<?php // $this->load->view('template/footer');?>-->
 <script type="text/javascript" src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
-<script>
+
+<script type="text/javascript" >
 	$(document).ready(function(){
-		$('#tb_categorias thead tr').clone(true).appendTo( '#tb_categorias thead' );
-		$('#tb_categorias thead tr:eq(1) th').each( function (i) {
+		$('#tb_ciudad thead tr').clone(true).appendTo( '#tb_ciudad thead' );
+		$('#tb_ciudad thead tr:eq(1) th').each( function (i) {
 			var title = $(this).text().trim();
 			var col = i;
-			if (col=='5' || col=='0') {
+			if (col=='6' || col=='0') {
 				console.log(i);
 				$(this).html( '' );
 			}else{
-				$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+				$(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
 
 				$( 'input', this ).on( 'keyup change', function () {
 					if ( table.column(i).search() !== this.value ) {
@@ -196,17 +162,17 @@
 				} );
 			}		
 		});
-		var table = $('#tb_categorias').DataTable({
+		var table = $('#tb_ciudad').DataTable({
 			dom: 'Bfrtip',
 			"columnDefs": [
-			{ "width": "20%", "targets": 5 }],
+			{ "width": "15%", "targets": 6 }],
 			"orderCellsTop": true,
-			"buttons": [{
+			buttons: [{
 				extend: 'pdfHtml5',
 				text: 'Generar PDF',
-				title:'Lista de Categorias' ,
+				title:'Listado de Ciudades' ,
 				exportOptions: {
-					columns: [ 0, 1, 2, 3, 4 ]
+					columns: [0,1,2,3,4,5 ]
 				}, 
 				customize: function ( doc ) {
 					var d = new Date();
@@ -235,6 +201,8 @@
 						}
 					};
 					// doc.content.table.withs(100, '*', 200, '*');
+					// console.log(table.page.info());
+					// doc.content[1].table.width = ['100'];
 					var content = doc.content[1].table.body;
 					var colCount = new Array();
 					$.each(content, function(i){
@@ -257,7 +225,8 @@
 
 						}
 					});
-					doc.content[1].table.widths = ['auto', 'auto', 'auto', '*', '*'];
+					doc.content[1].table.widths = ['auto', 'auto', 'auto', '*', '*', '*'];
+					console.log(doc.content[1].table.body);
 
 					// console.log(doc.content[1].table);
 					doc.content.splice( 1, 0, {
@@ -271,7 +240,6 @@
                 // Data URL generated by http://dataurl.net/#dataurlmaker
 
             }], 
-
             "language": {
             	"lengthMenu": "Mostrar _MENU_ registros por pagina",
             	"zeroRecords": "No se encontraron Resultados!",
@@ -288,43 +256,25 @@
             	},
             }
         });
+
 var base_url= "<?php echo base_url();?>";
-       // alert (base_url);
-       $(".btn-view").on("click", function(){
-       	var id= $(this).val();
-       	$.ajax({
-       		url: base_url + "categorias/categorias/view/" + id,
-       		type: "POST",
-       		success:function(resp){
-       			$("#modal-view .modal-body").html(resp);
-            //alert(resp);
-        }
-    });
-       })
-        	//esto lee el boton eliminar y envia via ajax
-        	$(".btn-delete").on("click", function(e){
-        		e.preventDefault();
-			//alert("borrando");
-			var ruta= $(this).attr("href");
-		//	alert(ruta);
-		$.ajax({
-			url: ruta,
-			type: "POST",
-			success:function(resp){
-					//se redirige a base url con la respuesta
-					window.location.href= base_url + resp;	
-					//alert(base_url + resp);
-				}
-			});
-	})
-        })    	
+$(".btn-view").on("click", function(){
+	var id= $(this).val();
+	$.ajax({
+		url: base_url + "ciudades/ciudades/view/" + id,
+		type: "POST",
+		success:function(resp){
+			$("#modal-view .modal-body").html(resp);
+		}
+	});
+})
+})
 
-
-function eliminar__(id){
+function eliminar_Copia(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
-		
-		window.location.href = "/isupport/categorias/categorias/delete/" + id;
-		
+
+		window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
+
 
 		/*$.ajax({
             url: "/isupport/movimientos/movimientos/delete/" + id,
@@ -340,7 +290,7 @@ function eliminar__(id){
 
 $(".eliminar").click(function(e){
 	e.preventDefault();
-	var id = $(this).attr('id');
+	var id = $(this).attr('href');
 	swal({
 		title: "Atención",
 		text: "Esta seguro de eliminarlo de forma permanente",
@@ -350,7 +300,7 @@ $(".eliminar").click(function(e){
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			window.location.href = "<?php echo base_url();?>categorias/categorias/delete/" + id;
+			window.location.href = id;
 		}
 	});
 });

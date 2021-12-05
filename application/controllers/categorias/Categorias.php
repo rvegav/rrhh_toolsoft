@@ -220,12 +220,10 @@ class Categorias extends CI_Controller
 		// if ($this->session->userdata('sist_conex')=="A") {
 			if($this->Categoria_model->delete($id)){
 				$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-				redirect(base_url()."/categorias/categorias", "refresh");
-			}
-			else
-			{
+				redirect(base_url()."categorias/categorias", "refresh");
+			}else{
 				$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-				redirect(base_url()."/categorias/categorias", "refresh");		
+				redirect(base_url()."categorias/categorias", "refresh");		
 			}
 		
 		// }else {

@@ -24,9 +24,9 @@
           <li><a href="<?php echo base_url();?>monedas/monedas">Moneda</a></li>
           <li><a href="<?php echo base_url();?>tipomovimientos/tipomovimientos">Tipo de Movimiento</a></li>
           <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Empresa</a></li> -->
-          <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Conceptos de Salario</a></li>
-          <li><a href="<?php echo base_url();?>empresas/empresas">Hijos</a></li>
-          <li><a href="<?php echo base_url();?>empresas/empresas">Tipos de Incidencias</a></li> -->
+          <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Conceptos de Salario</a></li> -->
+          <!-- <li><a href="<?php echo base_url();?>empresas/empresas">Hijos</a></li> -->
+          <li><a href="<?php echo base_url();?>empresas/empresas">Tipos de Incidencias</a></li>
           <li><a href="<?php echo base_url();?>horario/Horario">Horarios</a></li>  
           <li><a href="<?php echo base_url();?>tipo_faltas">Tipo de Faltas</a></li>  
 
@@ -35,7 +35,6 @@
       <li><a><i class="fa fa-table"></i> Empleados <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo base_url();?>empleados/empleados">Empleados</a></li>
-          <li><a href="<?php echo base_url();?>legajos">Legajo</a></li>
           <li><a href="<?php echo base_url();?>marcacion_mapa">Marcacion por GPS</a></li>
         </ul>
       </li>
