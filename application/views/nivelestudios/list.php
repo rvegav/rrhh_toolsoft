@@ -322,7 +322,7 @@ var base_url= "<?php echo base_url();?>";
 
 function eliminar(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){		
-		window.location.href = "/isupport/nivelestudios/nivelestudios/delete/" + id;	
+		window.location.href = "<?php echo base_url(); ?>/nivelestudios/nivelestudios/delete/" + id;	
 	}
 }
 
@@ -338,7 +338,7 @@ $(".eliminar").click(function(e){
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			window.location.href = "/isupport/nivelestudios/nivelestudios/delete/" + id;
+			window.location.href = "<?php echo base_url(); ?>/nivelestudios/nivelestudios/delete/" + id;
 		}
 	});
 });

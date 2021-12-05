@@ -312,7 +312,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "/isupport/cuentabancarias/cuentabancarias/delete/" + id;
+   window.location.href = "<?php echo base_url(); ?>/cuentabancarias/cuentabancarias/delete/" + id;
   }
 });
 });

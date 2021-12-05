@@ -273,7 +273,7 @@ $(".btn-view").on("click", function(){
 function eliminar_Copia(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
 
-		window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
+		window.location.href = "<?php echo base_url(); ?>/ciudades/ciudades/delete/" + id;
 
 
 		/*$.ajax({

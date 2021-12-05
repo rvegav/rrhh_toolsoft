@@ -323,7 +323,7 @@
  function eliminar__(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
 		
-		window.location.href = "/isupport/estadociviles/estadociviles/delete/" + id;
+		window.location.href = "<?php echo base_url(); ?>/estadociviles/estadociviles/delete/" + id;
 		
 
 		/*$.ajax({
@@ -350,7 +350,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "/isupport/estadociviles/estadociviles/delete/" + id;
+   window.location.href = "<?php echo base_url(); ?>/estadociviles/estadociviles/delete/" + id;
   }
 });
 });

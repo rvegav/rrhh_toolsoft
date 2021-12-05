@@ -185,23 +185,19 @@
             type: "POST",
             success:function(resp){
               $("#modal-view .modal-body").html(resp);
-            //alert(resp);
             }
           });
         })
         	//esto lee el boton eliminar y envia via ajax
          $(".btn-delete").on("click", function(e){
 			e.preventDefault();
-			//alert("borrando");
 			var ruta= $(this).attr("href");
-		//	alert(ruta);
 			$.ajax({
 				url: ruta,
 				type: "POST",
 				success:function(resp){
 					//se redirige a base url con la respuesta
 					window.location.href= base_url + resp;	
-					//alert(base_url + resp);
 				}
 				});
 		})
@@ -211,7 +207,7 @@
  function eliminar__(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
 		
-		window.location.href = "/isupport/cargos/cargos/delete/" + id;
+		window.location.href = "<?php echo base_url(); ?>/cargos/cargos/delete/" + id;
 		
 
 		/*$.ajax({
@@ -238,7 +234,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "/isupport/cargos/cargos/delete/" + id;
+   window.location.href = "<?php echo base_url(); ?>/cargos/cargos/delete/" + id;
   }
 });
 });

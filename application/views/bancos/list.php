@@ -329,7 +329,7 @@
  function eliminar__(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
 		
-		window.location.href = "/isupport/bancos/bancos/delete/" + id;
+		window.location.href = "<?php echo base_url(); ?>/bancos/bancos/delete/" + id;
 		
 
 		/*$.ajax({
@@ -356,7 +356,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "/isupport/bancos/bancos/delete/" + id;
+   window.location.href = "<?php echo base_url(); ?>/bancos/bancos/delete/" + id;
   }
 });
 });

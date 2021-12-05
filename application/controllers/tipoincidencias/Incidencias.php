@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Ciudades extends CI_Controller
+class Incidencias extends CI_Controller
 {
 	//solo el constructor, para llamar a las clases
 	public function __construct()
@@ -8,9 +8,7 @@ class Ciudades extends CI_Controller
 		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
-		}
-
-		
+		}	
 		$this->load->model("Incidencia_model");
 		$this->load->model("Departamento_model");
 	}

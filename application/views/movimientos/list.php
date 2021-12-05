@@ -174,7 +174,7 @@
 	function eliminar(id){
 		if(confirm("Esta seguro que desea eliminar este registro?")){
 
-			window.location.href = "/isupport/movimientos/movimientos/delete/" + id;
+			window.location.href = "<?php echo base_url(); ?>/movimientos/movimientos/delete/" + id;
 		}
 	}
 	$(".listEmpleado").on("click", function(){
