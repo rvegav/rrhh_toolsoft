@@ -69,20 +69,37 @@ class Empleados_model extends CI_Model {
 	}
 
 	//obtiene las incidencias de los empleados
-	public function getLegajoEmpleado($id= false){
-		$this->db->select('em.nombre, em.apellido, l.idlegajo, td.destipodocumento documento, ti.descincidencia incidencia, l.fecha, l.observacion, l.fecgrabacion, l.imagen');
+	public function getLegajoEmpleado($id){
+		$this->db->select('em.nombre, em.apellido, l.idlegajo, ti.descincidencia incidencia, DATE_FORMAT(l.fecha,"%d/%m/%Y") fecha, l.observacion, DATE_FORMAT(l.fecgrabacion,"%d/%m/%Y")fecgrabacion, l.imagen');
 		$this->db->from('empleado em');
 		$this->db->join('legajo l', 'em.idempleado = l.idempleado');
 		$this->db->join('tipoincidencia ti', 'l.idtipoincidencia = ti.idtipoincidencia');
-		$this->db->join('tipodocumento td', 'l.idtipodcumento = td.idtipodcumento');
 		$this->db->join('empresa e', 'l.idempresa = e.idempresa');
-		if ($id) {
-			$this->db->where('em.idempleado', $id);
+		$this->db->where('em.idempleado', $id);
+		$resultados= $this->db->get();
+		if ($resultados->num_rows() >0) {
+			return $resultados->result();
 		}else{
-			$this->db->group_by('em.nombre, em.apellido, l.idlegajo, td.destipodocumento documento, ti.descincidencia incidencia, l.fecha, l.observacion, l.fecgrabacion, l.imagen');
+			return false;
+		}
+	}
+	public function save_incidencias($data){
+		return $this->db->insert('legajo', $data);
+	}
+	public function getTipoIncidencias($id = false, $desc = false){
+		$this->db->select('IDTIPOINCIDENCIA, NUMINCIDENCIA, DESCINCIDENCIA');
+		$this->db->from('tipoincidencia');
+		if ($id) {
+			$this->db->where('IDTIPOINCIDENCIA', $id);
+		}
+		if ($desc) {
+			$this->db->where('DESCINCIDENCIA', $desc);
 		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows() >0) {
+			if ($id or $desc) {
+				return $resultados->row();
+			}
 			return $resultados->result();
 		}else{
 			return false;

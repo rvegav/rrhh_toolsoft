@@ -3,7 +3,7 @@
 	<div class="page-title">
 		<div class="title_left">
 			<h3>
-				Legajo del Empleado: <?php echo $legajos[0]->nombre.' '.$legajos[0]->apellido ?>
+				Legajo del Empleado: <?php echo $empleado->EMPLEADO ?>
 			</h3>
 		</div>
 	</div>
@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="col-md-12" align="right">
-				<a href="<?php echo base_url();?>empleados/empleados/add" class="btn btn-dark">
+				<a href="<?php echo base_url();?>agregar_incidencia/<?php echo $empleado->IDEMPLEADO ?>" class="btn btn-dark">
 					<i class="fa fa-plus">
 					</i> Agregar nueva incidencia
 				</a>
@@ -73,7 +73,6 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Tipo Documento</th>
 									<th>Tipo Incidencia</th>
 									<th>Fecha de Incidencia</th>
 									<th>Agregado el</th>
@@ -88,7 +87,6 @@
 										<!-- SIRVE PARA MOSTRAR LOS DATOS DE UN ARRAY -->
 										<tr>
 											<td><?php echo $legajo->idlegajo;?></td>
-											<td><?php echo $legajo->documento;?></td>
 											<td><?php echo $legajo->incidencia;?></td>
 											<td><?php echo $legajo->fecha;?></td>
 											<td><?php echo $legajo->fecgrabacion;?></td>

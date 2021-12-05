@@ -369,6 +369,7 @@ class Empleados extends CI_Controller
 	}
 	public function legajos($idEmpleado){
 		$data['legajos'] = $this->Empleados_model->getLegajoEmpleado($idEmpleado);
+		$data['empleado'] = $this->Empleados_model->getEmpleado($idEmpleado);
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('empleados/legajo', $data);
@@ -377,5 +378,40 @@ class Empleados extends CI_Controller
 	public function getEmpleado(){
 		$idEmpleado = $this->input->post('funcionario', TRUE);
 		echo json_encode($this->Empleados_model->getEmpleado($idEmpleado));
+	}
+	public function agregar_incidencia($idEmpleado){
+		$data['empleado'] = $this->Empleados_model->getEmpleado($idEmpleado);
+		$data['tipoIncidencias'] = $this->Empleados_model->getTipoIncidencias();
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('empleados/add_incidencia', $data);
+		$this->load->view('template/footer');
+	}
+
+	public function getTipoIncidencia(){
+		$idTipoIncidencia = $this->input->post('id');
+		echo json_encode($this->Empleados_model->getTipoIncidencias($idTipoIncidencia));
+	}
+
+	public function storeIncidencia(){
+		$tipo = $this->input->post('txtTipoIncidencia', TRUE);
+		var_dump($tipo);
+		$tipo = $this->Empleados_model->getTipoIncidencias(false, $tipo);
+		$empleado = $this->input->post('empleado', TRUE);
+		$fecha = $this->input->post('fecha_incidencia', TRUE);
+		$obs = $this->input->post('observacion', TRUE);
+		$data = array('IDEMPLEADO'=> $empleado,
+					  'IDEMPRESA'=>1,
+					  'IDTIPOINCIDENCIA' => $tipo->IDTIPOINCIDENCIA,
+					  'OBSERVACION'=>$obs, 
+					  'FECHA'=>$fecha,
+					  'FECGRABACION' =>date("Y-m-d H:i:s"));
+		if ($this->Empleados_model->save_incidencias($data)) {
+			$this->session->set_flashdata('success', 'Agregado correctamente!');
+			redirect(base_url()."empleados/empleados/legajos/".$empleado, "refresh");
+		}else{
+			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+			redirect(base_url()."empleados/empleados/legajos/".$empleado);
+		}
 	}
 }
