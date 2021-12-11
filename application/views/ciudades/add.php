@@ -61,8 +61,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>ciudades/ciudades/store" method="POST">
-
+					<form id="frm_ciudad" data-parsley-validate="" class="form-horizontal form-label-left" action="" method="POST">
 						<div class="form-group <?php echo !empty(form_error("NumCiudad"))? 'has-error':'';?>">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Ciudad<span class="required">*</span>
 							</label>
@@ -92,7 +91,7 @@
 								<div id="custom-search-input">
 									<div class="input-group col-md-12">
 										<input type="hidden" name="IdDepartamento" id="IdDepartamento">	
-										<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" />
+										<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" required="required"/>
 										<span class="input-group-btn">
 											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2">
 												<span class="fa fa-search" aria-hidden="true">
@@ -168,5 +167,48 @@
 		$("#Departamento").val(infodepartamento[2]+" - "+infodepartamento[1]);
 		$("#modal-default2").modal("hide");
 	});
+
+	$("#frm_ciudad").submit(function(event) {
+		console.log();
+		event.preventDefault();		
+		var formDato = $(this).serialize();
+        $.ajax({
+        	url: "<?php echo base_url()?>ciudades/ciudades/store",
+        	type: 'POST',
+        	data: formDato,
+        })
+        .done(function(result) {
+        	var r = JSON.parse(result);
+        	$("#mdlAguarde").modal('hide');
+        	console.log(r);
+        	const wrapper = document.createElement('div');
+        	if (r['alerta']!="") {
+        		var mensaje = r['alerta'];
+        		wrapper.innerHTML = mensaje;
+        		swal({
+                    title: 'Atención!', 
+                    content: wrapper,
+                    icon: "warning",
+                    columnClass: 'medium',
+                });
+        	}
+        	if (r['error']!="") {
+        		wrapper.innerHTML = r['error'];
+        		swal({
+        			icon: "error",
+        			columnClass: 'medium',
+        			theme: 'modern',
+        			title: 'Error!',
+        			content: wrapper,
+        		});
+        	}
+        	if (r['correcto']!="") {
+        		window.location = "<?php echo base_url()?>ciudades/ciudades";
+        	}
+        }).fail(function() {
+        	alert("Se produjo un error, contacte con el soporte técnico");
+        	// $("#mdlAguarde").modal('hide');
+        });
+    })
 
 </script>

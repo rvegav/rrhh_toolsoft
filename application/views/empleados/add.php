@@ -442,396 +442,396 @@
                             <option value="<?php echo $nivelestudio->IDNIVEL?>">
                               <?php echo $nivelestudio->DESNIVEL;?>
                             </option>
-                            <?php else:?>
-                              <option value="<?php echo $nivelestudio->IDNIVEL;?>"><?php echo $nivelestudio->DESNIVEL;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Estado Civil  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <select class="form-control select2" style="width: 100%;" name="EstadoCivil" id="EstadoCivil">
-                      <?php foreach($estadociviles as $estadocivil):?>
-                        <?php if($estadocivil->IDCIVIL == $estadocivil->IDCIVIL):?>
-                          <option value="<?php echo $estadocivil->IDCIVIL?>">
-                            <?php echo $estadocivil->DESCCIVIL;?>
-                          </option>
                           <?php else:?>
-                            <option value="<?php echo $estadocivil->IDCIVIL;?>"><?php echo $estadocivil->DESCIVIL;?>
+                            <option value="<?php echo $nivelestudio->IDNIVEL;?>"><?php echo $nivelestudio->DESNIVEL;?>
                           </option>
                         <?php endif;?>
                       <?php endforeach;?>
                     </select>
                   </div>
                 </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Profesion  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Profesion" id="Profesion">
-                        <?php foreach($profesiones as $profesion):?>
-                          <?php if($profesion->IDPROFESION == $profesion->IDPROFESION):?>
-                            <option value="<?php echo $profesion->IDPROFESION?>">
-                              <?php echo $profesion->DESPROFESION;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $profesion->IDPROFESION;?>"><?php echo $profesion->DESPROFESION;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Nacionalidad  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Pais" id="Pais">
-                        <?php foreach($paises as $pais):?>
-                          <?php if($pais->IDPAIS == $pais->IDPAIS):?>
-                            <option value="<?php echo $pais->IDPAIS?>">
-                              <?php echo $pais->DESPAIS;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $pais->IDPAIS;?>"><?php echo $pais->DESPAIS;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?> 
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Ciudad  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Ciudad" id="Ciudad">
-                        <?php foreach($ciudades as $ciudad):?>
-                          <?php if($ciudad->IDCIUDAD == $ciudad->IDCIUDAD):?>
-                            <option value="<?php echo $ciudad->IDCIUDAD?>">
-                              <?php echo $ciudad->DESCIUDAD;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $ciudad->IDCIUDAD;?>"><?php echo $ciudad->DESCIUDAD;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?> 
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Sexo  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control" id="sexo" name="sexo">
-                        <option value="1">MASCULINO</option>
-                        <option value="2">FEMENINO</option>
-                      </select>
-                      <?php echo form_error("Sexo","<span class='help-block'>","</span>" );?>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="ln_solid"></div>
-
-              <div class="row">
-
-
-                <div class='col-sm-6'>
-                  <div class="container">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NroCuenta">Nro. Cuenta 
-                      <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <div id="custom-search-input">
-                        <div class="input-group col-md-12 ">
-                          <input type="hidden" name="IdNroCuenta" id="IdNroCuenta">
-                          <input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
 
 
 
-              <ul class="list-inline pull-right">
-                <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-                <li><button type="button" class="btn btn-primary next-step">Siguiente</button></li>
-              </ul>
-            </div>
-            <div class="tab-pane" role="tabpanel" id="step3">
-              <h3>Paso 3 - Laborales</h3>
-              <div class="row">
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Sucursal 
-                    <span class="required">:</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <select class="form-control select2" style="width: 100%;" name="Sucursal" id="Sucursal">
-                      <?php foreach($sucursales as $sucursal):?>
-                        <?php if($sucursal->IDSUCURSAL == $sucursal->IDSUCURSAL):?>
-                          <option value="<?php echo $sucursal->IDSUCURSAL?>">
-                            <?php echo $sucursal->DESCSUCURSAL;?>
-                          </option>
-                          <?php else:?>
-                            <option value="<?php echo $sucursal->IDSUCURSAL;?>"><?php echo $sucursal->DESSUCURSAL;?>
-                          </option>
-                        <?php endif;?>
-                      <?php endforeach;?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Departamento  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Departamento" id="Departamento">
-                        <?php foreach($depatamentosempresas as $departempresa):?>
-                          <?php if($departempresa->IDCARGO == $departempresa->IDEMPRESA):?>
-                            <option value="<?php echo $departempresa->IDEMPRESA?>">
-                              <?php echo $cargo->DESDEPARTEMENTO;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $departempresa->IDDEPARTEMENTO;?>"><?php echo $departempresa->DESCDEPARTAMENTO;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Cargo  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Cargo" id="Cargo">
-                        <?php foreach($cargos as $cargo):?>
-                          <?php if($cargo->IDCARGO == $cargo->IDCARGO):?>
-                            <option value="<?php echo $cargo->IDCARGO?>">
-                              <?php echo $cargo->DESCARGO;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $cargo->IDCARGO;?>"><?php echo $cargo->DESCARGO;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoria  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="Categoria" id="Categoria">
-                        <?php foreach($categorias as $categoria):?>
-                          <?php if($categoria->IDCATEGORIA == $categoria->IDCATEGORIA):?>
-                            <option value="<?php echo $categoria->IDCATEGORIA?>">
-                              <?php echo $categoria->DESCATEGORIA;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $categoria->IDCATEGORIA;?>"><?php echo $categoria->DESCATEGORIA;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de Salario  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control select2" style="width: 100%;" name="TipoSalario" id="TipoSalario">
-                        <?php foreach($tiposalarios as $tiposalario):?>
-                          <?php if($tiposalario->IDTIPOSALARIO == $tiposalario->IDTIPOSALARIO):?>
-                            <option value="<?php echo $tiposalario->IDTIPOSALARIO?>">
-                              <?php echo $tiposalario->DESTIPOSALARIO;?>
-                            </option>
-                            <?php else:?>
-                              <option value="<?php echo $tiposalario->IDTIPOSALARIO;?>"><?php echo $tiposalario->DESTIPOSALARIO;?>
-                            </option>
-                          <?php endif;?>
-                        <?php endforeach;?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
+              <div class='col-sm-6'>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Estado Civil  
+                  <span class="required">:</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control select2" style="width: 100%;" name="EstadoCivil" id="EstadoCivil">
+                    <?php foreach($estadociviles as $estadocivil):?>
+                      <?php if($estadocivil->IDCIVIL == $estadocivil->IDCIVIL):?>
+                        <option value="<?php echo $estadocivil->IDCIVIL?>">
+                          <?php echo $estadocivil->DESCCIVIL;?>
+                        </option>
+                      <?php else:?>
+                        <option value="<?php echo $estadocivil->IDCIVIL;?>"><?php echo $estadocivil->DESCIVIL;?>
+                      </option>
+                    <?php endif;?>
+                  <?php endforeach;?>
+                </select>
               </div>
-
-              <ul class="list-inline pull-right">
-                <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-                <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-              </ul>
             </div>
 
-            <div class="tab-pane" role="tabpanel" id="step4">
-              <h3>Paso 4 - IPS</h3>
-              <div class="row">
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Numero  
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIps" class="form-control col-md-7 col-xs-12">
-                      <?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
-                    </div>
-                  </div>
-                </div>
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso 
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="date" id="FechaIps" placeholder="Fecha de Ingreso en IPS" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="FechaIps" class="form-control col-md-7 col-xs-12">
-                      <?php echo form_error("FechaIps","<span class='help-block'>","</span>" );?>
-                    </div>
-                  </div>
-                </div>
-
-                <div class='col-sm-6'>
-                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Bonificacion 
-                    <span class="required">:</span>
-                  </label>
-                  <div class="form-group">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <input type="checkbox" class="flat" name="Bonificacion" value="1" class="form-control col-md-7 col-xs-12">
-                    </div>
-                  </div>
-                </div>
-
+            <div class='col-sm-6'>
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Profesion  
+                <span class="required">:</span>
+              </label>
+              <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control select2" style="width: 100%;" name="Profesion" id="Profesion">
+                    <?php foreach($profesiones as $profesion):?>
+                      <?php if($profesion->IDPROFESION == $profesion->IDPROFESION):?>
+                        <option value="<?php echo $profesion->IDPROFESION?>">
+                          <?php echo $profesion->DESPROFESION;?>
+                        </option>
+                      <?php else:?>
+                        <option value="<?php echo $profesion->IDPROFESION;?>"><?php echo $profesion->DESPROFESION;?>
+                      </option>
+                    <?php endif;?>
+                  <?php endforeach;?>
+                </select>
               </div>
-
-              <ul class="list-inline pull-right">
-                <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-                <li><button type="button" class="btn btn-default next-step">Omitir</button></li>
-                <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-              </ul>
             </div>
-
-            <div class="tab-pane" role="tabpanel" id="step5">
-              <h3>Paso 5 - Hijos</h3>
-              <div class="row">
-
-                <div class="container">
-                  <div class="row clearfix">
-                    <div class="col-md-12 column">
-                      <table class="table table-bordered table-hover" id="tab_logic">
-                        <thead>
-                          <tr >
-                            <th class="text-center">
-                              #
-                            </th>
-                            <th class="text-center">
-                              Nombre(s)
-                            </th>
-                            <th class="text-center">
-                              Apellido(s)
-                            </th>
-                            <th class="text-center">
-                              Sexo
-                            </th>
-                            <th class="text-center">
-                              Fecha de Nacimiento
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr id='addr0'>
-                            <td>
-                              1
-                            </td>
-                            <td>
-                              <input type="text" name='nombrehijo[]'  placeholder='Nombre(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
-                            </td>
-                            <td>
-                              <input type="text" name='apellidohijo[]'  placeholder='Apellido(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
-                            </td>
-                            <td>
-                              <select class="form-control" id="sexohijo[]" name="sexohijo[]">
-                                <option value="1">MASCULINO</option>
-                                <option value="2">FEMENINO</option>
-                              </select>
-                            </td>
-                            <td>
-                              <input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
-                            </td>
-                          </tr>
-                          <tr id='addr1'></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <ul class="list-inline pull-right">
-                   <li><a id="add_row" class="btn btn-default pull-left">Agregar Registro</a></li>
-                   <li><a id='delete_row' class="pull-right btn btn-default">Eliminar Registro</a></li>
-                 </ul>
-               </div>
-
-             </div>
-             <ul class="list-inline pull-right">
-              <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-              <li><button type="button" class="btn btn-default next-step">Omitir</button></li>
-              <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-            </ul>
           </div>
 
-          <div class="tab-pane" role="tabpanel" id="complete">
-            <h3>Completado</h3>
-            <p>Se comppleto con exito todos los pasos!.</p>
-            <ul class="list-inline pull-right">                                
-              <li>
-                <button type="submit" class="btn btn-success">Guardar</button>
-              </button>
-            </li>
-          </ul>
+          <div class='col-sm-6'>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nacionalidad  
+              <span class="required">:</span>
+            </label>
+            <div class="form-group">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <select class="form-control select2" style="width: 100%;" name="Pais" id="Pais">
+                  <?php foreach($paises as $pais):?>
+                    <?php if($pais->IDPAIS == $pais->IDPAIS):?>
+                      <option value="<?php echo $pais->IDPAIS?>">
+                        <?php echo $pais->DESPAIS;?>
+                      </option>
+                    <?php else:?>
+                      <option value="<?php echo $pais->IDPAIS;?>"><?php echo $pais->DESPAIS;?>
+                    </option>
+                  <?php endif;?>
+                <?php endforeach;?> 
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="clearfix"></div>
+
+        <div class='col-sm-6'>
+          <label class="control-label col-md-3 col-sm-3 col-xs-12">Ciudad  
+            <span class="required">:</span>
+          </label>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <select class="form-control select2" style="width: 100%;" name="Ciudad" id="Ciudad">
+                <?php foreach($ciudades as $ciudad):?>
+                  <?php if($ciudad->IDCIUDAD == $ciudad->IDCIUDAD):?>
+                    <option value="<?php echo $ciudad->IDCIUDAD?>">
+                      <?php echo $ciudad->DESCIUDAD;?>
+                    </option>
+                  <?php else:?>
+                    <option value="<?php echo $ciudad->IDCIUDAD;?>"><?php echo $ciudad->DESCIUDAD;?>
+                  </option>
+                <?php endif;?>
+              <?php endforeach;?> 
+            </select>
+          </div>
+        </div>
       </div>
-    </form>
+
+      <div class='col-sm-6'>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Sexo  
+          <span class="required">:</span>
+        </label>
+        <div class="form-group">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <select class="form-control" id="sexo" name="sexo">
+              <option value="1">MASCULINO</option>
+              <option value="2">FEMENINO</option>
+            </select>
+            <?php echo form_error("Sexo","<span class='help-block'>","</span>" );?>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ln_solid"></div>
+
+    <div class="row">
+
+
+      <div class='col-sm-6'>
+        <div class="container">
+          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NroCuenta">Nro. Cuenta 
+            <span class="required">*</span>
+          </label>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <div id="custom-search-input">
+              <div class="input-group col-md-12 ">
+                <input type="hidden" name="IdNroCuenta" id="IdNroCuenta">
+                <input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <ul class="list-inline pull-right">
+      <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+      <li><button type="button" class="btn btn-primary next-step">Siguiente</button></li>
+    </ul>
   </div>
+  <div class="tab-pane" role="tabpanel" id="step3">
+    <h3>Paso 3 - Laborales</h3>
+    <div class="row">
+      <div class='col-sm-6'>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Sucursal 
+          <span class="required">:</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <select class="form-control select2" style="width: 100%;" name="Sucursal" id="Sucursal">
+            <?php foreach($sucursales as $sucursal):?>
+              <?php if($sucursal->IDSUCURSAL == $sucursal->IDSUCURSAL):?>
+                <option value="<?php echo $sucursal->IDSUCURSAL?>">
+                  <?php echo $sucursal->DESCSUCURSAL;?>
+                </option>
+              <?php else:?>
+                <option value="<?php echo $sucursal->IDSUCURSAL;?>"><?php echo $sucursal->DESSUCURSAL;?>
+              </option>
+            <?php endif;?>
+          <?php endforeach;?>
+        </select>
+      </div>
+    </div>
+
+    <div class='col-sm-6'>
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Departamento  
+        <span class="required">:</span>
+      </label>
+      <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <select class="form-control select2" style="width: 100%;" name="Departamento" id="Departamento">
+            <?php foreach($depatamentosempresas as $departempresa):?>
+              <?php if($departempresa->IDCARGO == $departempresa->IDEMPRESA):?>
+                <option value="<?php echo $departempresa->IDEMPRESA?>">
+                  <?php echo $cargo->DESDEPARTEMENTO;?>
+                </option>
+              <?php else:?>
+                <option value="<?php echo $departempresa->IDDEPARTEMENTO;?>"><?php echo $departempresa->DESCDEPARTAMENTO;?>
+              </option>
+            <?php endif;?>
+          <?php endforeach;?>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class='col-sm-6'>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Cargo  
+      <span class="required">:</span>
+    </label>
+    <div class="form-group">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <select class="form-control select2" style="width: 100%;" name="Cargo" id="Cargo">
+          <?php foreach($cargos as $cargo):?>
+            <?php if($cargo->IDCARGO == $cargo->IDCARGO):?>
+              <option value="<?php echo $cargo->IDCARGO?>">
+                <?php echo $cargo->DESCARGO;?>
+              </option>
+            <?php else:?>
+              <option value="<?php echo $cargo->IDCARGO;?>"><?php echo $cargo->DESCARGO;?>
+            </option>
+          <?php endif;?>
+        <?php endforeach;?>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class='col-sm-6'>
+  <label class="control-label col-md-3 col-sm-3 col-xs-12">Categoria  
+    <span class="required">:</span>
+  </label>
+  <div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <select class="form-control select2" style="width: 100%;" name="Categoria" id="Categoria">
+        <?php foreach($categorias as $categoria):?>
+          <?php if($categoria->IDCATEGORIA == $categoria->IDCATEGORIA):?>
+            <option value="<?php echo $categoria->IDCATEGORIA?>">
+              <?php echo $categoria->DESCATEGORIA;?>
+            </option>
+          <?php else:?>
+            <option value="<?php echo $categoria->IDCATEGORIA;?>"><?php echo $categoria->DESCATEGORIA;?>
+          </option>
+        <?php endif;?>
+      <?php endforeach;?>
+    </select>
+  </div>
+</div>
+</div>
+
+<div class='col-sm-6'>
+  <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo de Salario  
+    <span class="required">:</span>
+  </label>
+  <div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <select class="form-control select2" style="width: 100%;" name="TipoSalario" id="TipoSalario">
+        <?php foreach($tiposalarios as $tiposalario):?>
+          <?php if($tiposalario->IDTIPOSALARIO == $tiposalario->IDTIPOSALARIO):?>
+            <option value="<?php echo $tiposalario->IDTIPOSALARIO?>">
+              <?php echo $tiposalario->DESTIPOSALARIO;?>
+            </option>
+          <?php else:?>
+            <option value="<?php echo $tiposalario->IDTIPOSALARIO;?>"><?php echo $tiposalario->DESTIPOSALARIO;?>
+          </option>
+        <?php endif;?>
+      <?php endforeach;?>
+    </select>
+  </div>
+</div>
+</div>
+
+</div>
+
+<ul class="list-inline pull-right">
+  <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+  <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
+</ul>
+</div>
+
+<div class="tab-pane" role="tabpanel" id="step4">
+  <h3>Paso 4 - IPS</h3>
+  <div class="row">
+    <div class='col-sm-6'>
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Numero  
+        <span class="required">:</span>
+      </label>
+      <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIps" class="form-control col-md-7 col-xs-12">
+          <?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
+        </div>
+      </div>
+    </div>
+    <div class='col-sm-6'>
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso 
+        <span class="required">:</span>
+      </label>
+      <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input type="date" id="FechaIps" placeholder="Fecha de Ingreso en IPS" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="FechaIps" class="form-control col-md-7 col-xs-12">
+          <?php echo form_error("FechaIps","<span class='help-block'>","</span>" );?>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-sm-6'>
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">Bonificacion 
+        <span class="required">:</span>
+      </label>
+      <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <input type="checkbox" class="flat" name="Bonificacion" value="1" class="form-control col-md-7 col-xs-12">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ul class="list-inline pull-right">
+    <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+    <li><button type="button" class="btn btn-default next-step">Omitir</button></li>
+    <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
+  </ul>
+</div>
+
+<div class="tab-pane" role="tabpanel" id="step5">
+  <h3>Paso 5 - Hijos</h3>
+  <div class="row">
+
+    <div class="container">
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <table class="table table-bordered table-hover" id="tab_logic">
+            <thead>
+              <tr >
+                <th class="text-center">
+                  #
+                </th>
+                <th class="text-center">
+                  Nombre(s)
+                </th>
+                <th class="text-center">
+                  Apellido(s)
+                </th>
+                <th class="text-center">
+                  Sexo
+                </th>
+                <th class="text-center">
+                  Fecha de Nacimiento
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id='addr0'>
+                <td>
+                  1
+                </td>
+                <td>
+                  <input type="text" name='nombrehijo[]'  placeholder='Nombre(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+                </td>
+                <td>
+                  <input type="text" name='apellidohijo[]'  placeholder='Apellido(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+                </td>
+                <td>
+                  <select class="form-control" id="sexohijo[]" name="sexohijo[]">
+                    <option value="1">MASCULINO</option>
+                    <option value="2">FEMENINO</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
+                </td>
+              </tr>
+              <tr id='addr1'></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ul class="list-inline pull-right">
+       <li><a id="add_row" class="btn btn-default pull-left">Agregar Registro</a></li>
+       <li><a id='delete_row' class="pull-right btn btn-default">Eliminar Registro</a></li>
+     </ul>
+   </div>
+
+ </div>
+ <ul class="list-inline pull-right">
+  <li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+  <li><button type="button" class="btn btn-default next-step">Omitir</button></li>
+  <li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
+</ul>
+</div>
+
+<div class="tab-pane" role="tabpanel" id="complete">
+  <h3>Completado</h3>
+  <p>Se comppleto con exito todos los pasos!.</p>
+  <ul class="list-inline pull-right">                                
+    <li>
+      <button type="submit" class="btn btn-success">Guardar</button>
+    </button>
+  </li>
+</ul>
+</div>
+<div class="clearfix"></div>
+</div>
+</form>
+</div>
 </section>
 </form>
 </div>
@@ -1041,25 +1041,22 @@
   });
 
   $("#frm_empleado").submit(function(event) {
-        event.preventDefault();
-        var formDato = $(this).serialize();
-        // var movi = $("#movimiento option:selected").val();
-        // var desde =
-        // var hasta =  
-        $.ajax({
-            url: "<?php echo base_url()?>empleados/empleados/store",
-            type: 'POST',
-            data: formDato,
-        })
-        .done(function(result) {
-            var r = JSON.parse(result);
-            $("#mdlAguarde").modal('hide');
-            console.log(r);
-            const wrapper = document.createElement('div');
-            if (r['alerta']!="") {
-                var mensaje = r['alerta'];
-                wrapper.innerHTML = mensaje;
-                swal({
+    event.preventDefault();
+    var formDato = $(this).serialize();
+    $.ajax({
+      url: "<?php echo base_url()?>empleados/empleados/store",
+      type: 'POST',
+      data: formDato,
+    })
+    .done(function(result) {
+      var r = JSON.parse(result);
+      $("#mdlAguarde").modal('hide');
+      console.log(r);
+      const wrapper = document.createElement('div');
+      if (r['alerta']!="") {
+        var mensaje = r['alerta'];
+        wrapper.innerHTML = mensaje;
+        swal({
                     // buttons: true,
                     title: 'Atención!', 
                     content: wrapper,
@@ -1067,26 +1064,26 @@
                     // dangerMode: true,
                     columnClass: 'medium',
                     // theme: 'modern',
-                });
-            }
-            if (r['error']!="") {
-                wrapper.innerHTML = r['error'];
-                swal({
-                    icon: "error",
-                    columnClass: 'medium',
-                    theme: 'modern',
-                    title: 'Error!',
-                    content: wrapper,
-                });
-            }
-            if (r['correcto']!="") {
-                window.location = "<?php echo base_url()?>empleados/empleados";
-            }
-        }).fail(function() {
-            alert("Se produjo un error, contacte con el soporte técnico");
-            $("#mdlAguarde").modal('hide');
+                  });
+      }
+      if (r['error']!="") {
+        wrapper.innerHTML = r['error'];
+        swal({
+          icon: "error",
+          columnClass: 'medium',
+          theme: 'modern',
+          title: 'Error!',
+          content: wrapper,
         });
-        
+      }
+      if (r['correcto']!="") {
+        window.location = "<?php echo base_url()?>empleados/empleados";
+      }
+    }).fail(function() {
+      alert("Se produjo un error, contacte con el soporte técnico");
+      $("#mdlAguarde").modal('hide');
     });
+    
+  });
 
 </script>

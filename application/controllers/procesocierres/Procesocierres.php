@@ -318,10 +318,6 @@ class Procesocierres extends CI_Controller
 		}
 	}
 
-
-
-
-
 	public function update1()
 	{
 		$IDMOVI= $this->input->post("IDMOVI");
@@ -360,9 +356,6 @@ class Procesocierres extends CI_Controller
 
 		$this->edit1($IDMOVIDETALLE);
 	}
-
-
-
 
 	public function buscar(){       
 		$search_data = $this->input->post('nombre');
@@ -403,9 +396,6 @@ class Procesocierres extends CI_Controller
 
 
 	}
-
-
-
 	public function deleteView($id){
 
 		if($this->Movimientos_model->deleteDetalleView($id)){
