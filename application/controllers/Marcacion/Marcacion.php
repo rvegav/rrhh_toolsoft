@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-date_default_timezone_set('America/Santiago');
+date_default_timezone_set('America/Asuncion');
 class Marcacion extends CI_Controller {
 
 	public function __construct()
