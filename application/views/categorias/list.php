@@ -75,6 +75,7 @@
 									<th>#</th>
 									<th>Código Categoria</th>
 									<th>Descripcion</th>
+									<th>Monto Asignado</th>
 									<th>Fecha de Grabacion</th>
 									<th>Estado</th>
 									<th>Opciones</th>
@@ -96,11 +97,13 @@
 												<?php echo $categoria->DESCATEGORIA;?>
 											</td>
 											<td>
+												<?php echo $categoria->MONTOASIGNADO;?>
+											</td>
+											<td>
 												<?php echo $categoria->FECGRABACION;?>
 											</td>
 
 											<?php
-									//$estado = $empleado->estadoEmpleado;
 											$estado = 1;
 											if($estado == 1)
 											{
@@ -180,7 +183,7 @@
 		$('#tb_categorias thead tr:eq(1) th').each( function (i) {
 			var title = $(this).text().trim();
 			var col = i;
-			if (col=='5' || col=='0') {
+			if (col=='6' || col=='0') {
 				console.log(i);
 				$(this).html( '' );
 			}else{
@@ -199,7 +202,7 @@
 		var table = $('#tb_categorias').DataTable({
 			dom: 'Bfrtip',
 			"columnDefs": [
-			{ "width": "20%", "targets": 5 }],
+			{ "width": "20%", "targets": 6 }],
 			"orderCellsTop": true,
 			"buttons": [{
 				extend: 'pdfHtml5',

@@ -275,16 +275,6 @@ function eliminar_Copia(id){
 
 		window.location.href = "<?php echo base_url(); ?>/ciudades/ciudades/delete/" + id;
 
-
-		/*$.ajax({
-            url: "/isupport/movimientos/movimientos/delete/" + id,
-            type: "GET",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              alert('Registro Eliminado correctamente');
-            //alert(resp);
-            }
-        });*/
     }
 }
 

@@ -187,7 +187,7 @@ class Empleados extends CI_Controller
 						if ($this->Hijos_model->save($data)) {
 							$correcto = "Se ha asociado correctamente los hijos";	
 						}
-					 } 
+					} 
 				}
 				$this->session->set_flashdata('success', 'Empleado registrado correctamente!');
 				$mensajes['correcto'] = 'correcto';
@@ -327,8 +327,29 @@ class Empleados extends CI_Controller
 			'fechaIngreso'=>  $fechaIngreso,
 			'fecgrabacion'=>  $ultActualizacion
 		);
+		$nombre_hijo = $this->input->post('nombrehijo');
+		$apellido_hijo = $this->input->post('apellidohijo');
+		$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
+
 		if($this->Empleados_model->update($idEmpleado,$data))
 		{
+			for ($i=0; $i < count($nombre_hijo) ; $i++) {
+				if ($nombre_hijo[$i]!='') {
+					$data = array(
+						'idempleado'=> $idEmpleado,
+						'idempresa'=>1,
+						'nombre'=>$nombre_hijo[$i],
+						'apellido'=>$apellido_hijo[$i],
+						'fecnacimiento'=> $fecha_nacimiento_hijo[$i],
+						'fecgrabacion'=> date("Y-m-d H:i:s")
+
+					);
+					if ($this->Hijos_model->save($data)) {
+						$correcto = "Se ha asociado correctamente los hijos";	
+					}
+				} 
+			}
+
 			$this->session->set_flashdata('success', 'Actualizado correctamente!');
 			redirect(base_url()."empleados/empleados", "refresh");
 		}
@@ -401,11 +422,11 @@ class Empleados extends CI_Controller
 		$fecha = $this->input->post('fecha_incidencia', TRUE);
 		$obs = $this->input->post('observacion', TRUE);
 		$data = array('IDEMPLEADO'=> $empleado,
-					  'IDEMPRESA'=>1,
-					  'IDTIPOINCIDENCIA' => $tipo->IDTIPOINCIDENCIA,
-					  'OBSERVACION'=>$obs, 
-					  'FECHA'=>$fecha,
-					  'FECGRABACION' =>date("Y-m-d H:i:s"));
+			'IDEMPRESA'=>1,
+			'IDTIPOINCIDENCIA' => $tipo->IDTIPOINCIDENCIA,
+			'OBSERVACION'=>$obs, 
+			'FECHA'=>$fecha,
+			'FECGRABACION' =>date("Y-m-d H:i:s"));
 		if ($this->Empleados_model->save_incidencias($data)) {
 			$this->session->set_flashdata('success', 'Agregado correctamente!');
 			redirect(base_url()."empleados/empleados/legajos/".$empleado, "refresh");

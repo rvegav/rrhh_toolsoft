@@ -480,7 +480,7 @@
 															<optgroup label="Profesion a Asignar"></optgroup>
 															<?php foreach($profesiones as $profesion):?>
 																<?php if($profesion->DESPROFESION != $empleado->profesion):?>
-																		<option value="<?php echo $profesion->IDPROFESION;?>"><?php echo $profesion->DESPROFESION;?></option>
+																	<option value="<?php echo $profesion->IDPROFESION;?>"><?php echo $profesion->DESPROFESION;?></option>
 																<?php endif;?>
 															<?php endforeach;?>
 														</select>
@@ -671,149 +671,155 @@
 																	<option value="<?php echo $tiposalario->IDTIPOSALARIO?>">
 																		<?php echo $tiposalario->DESTIPOSALARIO;?>
 																	</option>
-																	<?php else:?>
-																		<option value="<?php echo $tiposalario->IDTIPOSALARIO;?>"><?php echo $tiposalario->DESTIPOSALARIO;?>
-																	</option>
-																<?php endif;?>
-															<?php endforeach;?>
-														</select>
-													</div>
+																<?php else:?>
+																	<option value="<?php echo $tiposalario->IDTIPOSALARIO;?>"><?php echo $tiposalario->DESTIPOSALARIO;?>
+																</option>
+															<?php endif;?>
+														<?php endforeach;?>
+													</select>
 												</div>
 											</div>
-
 										</div>
 
-										<ul class="list-inline pull-right">
-											<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-											<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-										</ul>
 									</div>
 
-									<div class="tab-pane" role="tabpanel" id="step4">
-										<h3>Paso 4 - IPS</h3>
-										<div class="row">
-											<div class='col-sm-6'>
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Numero  
-													<span class="required">:</span>
-												</label>
-												<div class="form-group">
-													<div class="col-md-6 col-sm-6 col-xs-12">
-														<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="Numero" class="form-control col-md-7 col-xs-12">
-														<?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
-													</div>
-												</div>
-											</div>
-											<div class='col-sm-6'>
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso 
-													<span class="required">:</span>
-												</label>
-												<div class="form-group">
-													<div class="col-md-6 col-sm-6 col-xs-12">
-														<input type="date" id="FechaIps" placeholder="Fecha de Ingreso en IPS" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="FechaIps" class="form-control col-md-7 col-xs-12">
-														<?php echo form_error("FechaIps","<span class='help-block'>","</span>" );?>
-													</div>
-												</div>
-											</div>
-
-											<div class='col-sm-6'>
-												<label class="control-label col-md-3 col-sm-3 col-xs-12">Bonificacion 
-													<span class="required">:</span>
-												</label>
-												<div class="form-group">
-													<div class="col-md-6 col-sm-6 col-xs-12">
-														<input type="checkbox" class="flat" name="Bonificacion" value="1" class="form-control col-md-7 col-xs-12">
-													</div>
-												</div>
-											</div>
-
-										</div>
-
-										<ul class="list-inline pull-right">
-											<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-											<li><button type="button" class="btn btn-default next-step">Omitir</button></li>
-											<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-										</ul>
-									</div>
-
-									<div class="tab-pane" role="tabpanel" id="step5">
-										<h3>Paso 5 - Hijos</h3>
-										<div class="row">
-
-											<div class="container">
-												<div class="row clearfix">
-													<div class="col-md-12 column">
-														<table class="table table-bordered table-hover" id="tab_logic">
-															<thead>
-																<tr >
-																	<th class="text-center">
-																		#
-																	</th>
-																	<th class="text-center">
-																		Nombres
-																	</th>
-																	<th class="text-center">
-																		Sexo
-																	</th>
-																	<th class="text-center">
-																		Fecha de Nacimiento
-																	</th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr id='addr0'>
-																	<td>
-																		1
-																	</td>
-																	<td>
-																		<input type="text" name='nombrehijo[]'  placeholder='Nombres' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
-																	</td>
-																	<td>
-																		<select class="form-control" id="sexohijo[]" name="sexohijo[]">
-																			<option value="1">MASCULINO</option>
-																			<option value="2">FEMENINO</option>
-																		</select>
-																	</td>
-																	<td>
-																		<input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
-																	</td>
-																</tr>
-																<tr id='addr1'></tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-												<ul class="list-inline pull-right">
-													<li><a id="add_row" class="btn btn-default pull-left">Agregar Registro</a></li>
-													<li><a id='delete_row' class="pull-right btn btn-default">Eliminar Registro</a></li>
-												</ul>
-											</div>
-
-										</div>
-										<ul class="list-inline pull-right">
-											<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
-											<li><button type="button" class="btn btn-default next-step">Omitir</button></li>
-											<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
-										</ul>
-									</div>
-
-									<div class="tab-pane" role="tabpanel" id="complete">
-										<h3>Completado</h3>
-										<p>Se comppleto con exito todos los pasos!.</p>
-										<ul class="list-inline pull-right">                                
-											<li>
-												<button type="submit" class="btn btn-success">Guardar</button>
-											</button>
-										</li>
+									<ul class="list-inline pull-right">
+										<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+										<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
 									</ul>
 								</div>
-								<div class="clearfix"></div>
+
+								<div class="tab-pane" role="tabpanel" id="step4">
+									<h3>Paso 4 - IPS</h3>
+									<div class="row">
+										<div class='col-sm-6'>
+											<label class="control-label col-md-3 col-sm-3 col-xs-12">Numero  
+												<span class="required">:</span>
+											</label>
+											<div class="form-group">
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="Numero" class="form-control col-md-7 col-xs-12">
+													<?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
+												</div>
+											</div>
+										</div>
+										<div class='col-sm-6'>
+											<label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso 
+												<span class="required">:</span>
+											</label>
+											<div class="form-group">
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="date" id="FechaIps" placeholder="Fecha de Ingreso en IPS" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="FechaIps" class="form-control col-md-7 col-xs-12">
+													<?php echo form_error("FechaIps","<span class='help-block'>","</span>" );?>
+												</div>
+											</div>
+										</div>
+
+										<div class='col-sm-6'>
+											<label class="control-label col-md-3 col-sm-3 col-xs-12">Bonificacion 
+												<span class="required">:</span>
+											</label>
+											<div class="form-group">
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<input type="checkbox" class="flat" name="Bonificacion" value="1" class="form-control col-md-7 col-xs-12">
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<ul class="list-inline pull-right">
+										<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+										<li><button type="button" class="btn btn-default next-step">Omitir</button></li>
+										<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
+									</ul>
+								</div>
+
+								<div class="tab-pane" role="tabpanel" id="step5">
+									<h3>Paso 5 - Hijos</h3>
+									<div class="row">
+
+										<div class="container">
+											<div class="row clearfix">
+												<div class="col-md-12 column">
+													<table class="table table-bordered table-hover" id="tab_logic">
+														<thead>
+															<tr >
+																<th class="text-center">
+																	#
+																</th>
+																<th class="text-center">
+																	Nombre(s)
+																</th>
+																<th class="text-center">
+																	Apellido(s)
+																</th>
+																<th class="text-center">
+																	Sexo
+																</th>
+																<th class="text-center">
+																	Fecha de Nacimiento
+																</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr id='addr0'>
+																<td>
+																	1
+																</td>
+																<td>
+																	<input type="text" name='nombrehijo[]'  placeholder='Nombre(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+																</td>
+																<td>
+																	<input type="text" name='apellidohijo[]'  placeholder='Apellido(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+																</td>
+																<td>
+																	<select class="form-control" id="sexohijo[]" name="sexohijo[]">
+																		<option value="1">MASCULINO</option>
+																		<option value="2">FEMENINO</option>
+																	</select>
+																</td>
+																<td>
+																	<input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
+																</td>
+															</tr>
+															<tr id='addr1'></tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<ul class="list-inline pull-right">
+												<li><a id="add_row" class="btn btn-default pull-left">Agregar Registro</a></li>
+												<li><a id='delete_row' class="pull-right btn btn-default">Eliminar Registro</a></li>
+											</ul>
+										</div>
+
+									</div>
+									<ul class="list-inline pull-right">
+										<li><button type="button" class="btn btn-default prev-step">Anterior</button></li>
+										<li><button type="button" class="btn btn-default next-step">Omitir</button></li>
+										<li><button type="button" class="btn btn-primary btn-info-full next-step">Siguiente</button></li>
+									</ul>
+								</div>
+
+								<div class="tab-pane" role="tabpanel" id="complete">
+									<h3>Completado</h3>
+									<p>Se comppleto con exito todos los pasos!.</p>
+									<ul class="list-inline pull-right">                                
+										<li>
+											<button type="submit" class="btn btn-success">Guardar</button>
+										</button>
+									</li>
+								</ul>
 							</div>
-						</form>
-					</div>
-				</section>
-			</form>
-		</div>
+							<div class="clearfix"></div>
+						</div>
+					</form>
+				</div>
+			</section>
+		</form>
 	</div>
+</div>
 </div>
 </div>
 <style type="text/css">

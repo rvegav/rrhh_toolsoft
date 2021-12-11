@@ -72,8 +72,9 @@ class Categorias extends CI_Controller
 		// if ($this->session->userdata('sist_conex')=="A") {
 		
 		//recibimos las variables
-			$NumCategoria   = $this->input->post("NumCategoria");
-			$desCategoria   = $this->input->post("desCategoria");
+			$NumCategoria  = $this->input->post("NumCategoria");
+			$desCategoria  = $this->input->post("desCategoria");
+			$montoAsignado = $this->input->post("montoAsignado");
 
 			$idCategoria = $this->Categoria_model->ultimoNumero();
 
@@ -89,14 +90,11 @@ class Categorias extends CI_Controller
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
 
-		//corremos la validacion
-
-			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
-
 			$data = array(
 				'idcategoria'  => $idCategoria->MAXIMO,
 				'numcategoria'  => $NumCategoria,
 				'descategoria'  => $desCategoria,
+				'montoasignado'  => $montoAsignado,
 				'fecgrabacion' => $fechaActual,
 				'idempresa'  => $empresa
 			);
@@ -176,13 +174,15 @@ class Categorias extends CI_Controller
 			$idCategoria= $this->input->post("idcategoria");
 			$NumCategoria= $this->input->post("NumCargo");
 			$desCategoria= $this->input->post("desCategoria");
+			$montoAsignado = $this->input->post("montoAsignado");
 			
 			$desCategoria = trim($desCategoria);
 			if($desCategoria !="" && trim($desCategoria) !="")
 			{
 				//indicar campos de la tabla a modificar
 				$data = array(
-					'desCategoria' => $desCategoria
+					'desCategoria' => $desCategoria,
+					'montoasignado' => $montoAsignado
 				);
 
 

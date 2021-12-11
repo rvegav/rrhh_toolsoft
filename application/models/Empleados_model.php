@@ -16,10 +16,10 @@ class Empleados_model extends CI_Model {
 //EJEMPLO DE CONSULTA A BASE ESPECIFICANDO COLUMNAS Y UTILIZANDO UNIONES(JOIN)
 	public function getEmpleados(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, C.MONTOASIGNADO, FECHAINGRESO");
+		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, C.MONTOASIGNADO, DATE_FORMAT(FECHAINGRESO,'%d/%m/%Y') FECHAINGRESO, ESTADOEMPLEADO ESTADO");
 		$this->db->from("empleado e");
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
-		$this->db->where('ESTADOEMPLEADO <> 3');
+		// $this->db->where('ESTADOEMPLEADO <> 3');
 		$resultados= $this->db->get();
 		return $resultados->result();
 	}
@@ -33,7 +33,7 @@ class Empleados_model extends CI_Model {
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getEmpleado($id = false, $numEmpleado = false, $nombre = false, $apellido = false){
-		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO');
+		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, PA.IDPAIS, PA.DESPAIS');
 		$this->db->from('empleado e');
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
 		$this->db->join('nivelestudio n', 'n.idnivel = e.idnivel');
@@ -41,7 +41,7 @@ class Empleados_model extends CI_Model {
 		$this->db->join('ciudad ciu', 'ciu.idciudad = e.idciudad');
 		$this->db->join('sucursal s', 's.idsucursal = e.idsucursal');
 		$this->db->join('cargo car', 'car.idcargo = e.idcargo');
-		// $this->db->join('pais', 'pa.field = table2.field', 'left');
+		$this->db->join('pais pa', 'pa.IDPAIS = e.IDNACIONALIDAD', 'left');
 		$this->db->join('estadocivil ec', 'ec.idcivil = e.idcivil');
 		$this->db->join('departamentoempresa d', 'd.iddepartemento = e.iddepartemento');
 		if ($id) {
@@ -59,6 +59,41 @@ class Empleados_model extends CI_Model {
 
 		$resultado= $this->db->get();
 		return $resultado->row();
+	}
+
+	public function getEmpleadosInforme($parametros = false){
+		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  NUMEMPLEADO, OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, DATE_FORMAT(FECHAINGRESO,"%d/%m/%Y") FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, ESTADOEMPLEADO ESTADO');
+		$this->db->from('empleado e');
+		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
+		$this->db->join('nivelestudio n', 'n.idnivel = e.idnivel');
+		$this->db->join('profesion p', 'p.idprofesion = e.idprofesion');
+		$this->db->join('ciudad ciu', 'ciu.idciudad = e.idciudad');
+		$this->db->join('sucursal s', 's.idsucursal = e.idsucursal');
+		$this->db->join('cargo car', 'car.idcargo = e.idcargo');
+		// $this->db->join('pais', 'pa.field = table2.field', 'left');
+		$this->db->join('estadocivil ec', 'ec.idcivil = e.idcivil');
+		$this->db->join('departamentoempresa d', 'd.iddepartemento = e.iddepartemento');
+		if ($parametros['empleado']!='') {
+			$this->db->where('IDEMPLEADO', $parametros['empleado']);
+		}
+		if ($parametros['ingreso']!='') {
+			$this->db->where('FECHAINGRESO',$parametros['ingreso']);
+		}
+		if ($parametros['salida']!='') {
+			$this->db->where('FECHASALIDA',$parametros['salida']);
+		}
+		if ($parametros['sucursal']!='') {
+			$this->db->where('s.idsucursal', $parametros['sucursal']);
+		}
+		if ($parametros['estado']!=''){
+			$this->db->where('ESTADOEMPLEADO', $parametros['estado']);
+		}
+		$resultados= $this->db->get();
+		if ($resultados->num_rows() >0) {
+			return $resultados->result();
+		}else{
+			return false;
+		}
 	}
 	
 	//esto es para actualizar los empleado

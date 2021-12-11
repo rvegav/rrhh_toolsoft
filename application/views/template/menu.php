@@ -60,11 +60,11 @@
       </li>
       <li><a><i class="fa fa-clone"></i>Generar informes <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
-          <li><a href="fixed_sidebar.html">Lista de Empleados</a></li>
-          <li><a href="fixed_footer.html">Listado de Sueldos y Jornales</a></li>
-          <li><a href="fixed_footer.html">Resumen de personas ocupadas</a></li>
-          <li><a href="fixed_footer.html">Listado de Hijos</a></li>
-          <li><a href="fixed_footer.html">Salario Resumen</a></li>
+          <li><a href="<?php echo base_url();?>lista_empleados">Lista de Empleados</a></li>
+          <li><a href="<?php echo base_url();?>listado_sueldos">Listado de Sueldos y Jornales</a></li>
+          <li><a href="<?php echo base_url();?>resumen_ocupadas">Resumen de personas ocupadas</a></li>
+          <li><a href="<?php echo base_url();?>listado_hijos">Listado de Hijos</a></li>
+          <li><a href="<?php echo base_url();?>resumen_sueldos">Salario Resumen</a></li>
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart-o"></i>Gestionar Contabilidad <span class="fa fa-chevron-down"></span></a>

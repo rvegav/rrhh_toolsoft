@@ -19,7 +19,7 @@ class Categoria_model extends CI_Model {
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getCategoria($id){
-		$this->db->select("IDCATEGORIA,NUMCATEGORIA,DESCATEGORIA,FECGRABACION");
+		$this->db->select("IDCATEGORIA,NUMCATEGORIA,DESCATEGORIA,FECGRABACION, MONTOASIGNADO");
 		$this->db->where("idcategoria",$id);
 		$resultado= $this->db->get("categoria");
 		return $resultado->row();
