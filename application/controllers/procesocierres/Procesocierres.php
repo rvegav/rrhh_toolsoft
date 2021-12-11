@@ -113,15 +113,11 @@ class Procesocierres extends CI_Controller
 			if (count($valores1) == 3 && checkdate($valores1[1], $valores1[2], $valores1[0])){
 			//print_r($valores1); die();
 				return true;
-			}
-			else
-			{
+			}else{
 				return false;			
 			}
 
-		}
-		else
-		{
+		}else{
 			return false;	
 		}
 

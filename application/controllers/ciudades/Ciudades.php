@@ -10,7 +10,7 @@ class Ciudades extends CI_Controller
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
-
+		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
 		
 		$this->load->model("Ciudad_model");
 		$this->load->model("Departamento_model");
@@ -70,7 +70,7 @@ class Ciudades extends CI_Controller
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
 
-
+		$mensajes= $this->data;
 		$empresa = $_SESSION["Empresa"];
 		$sucursal = $_SESSION["Sucursal"];
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
@@ -105,9 +105,8 @@ class Ciudades extends CI_Controller
 				$this->session->set_flashdata('error', 'Ciudad no registrado!');
 					// redirect(base_url()."ciudades/ciudades/add", "refresh");
 			}
-			
-
 		}
+		echo json_encode($mensajes);
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }
@@ -140,41 +139,43 @@ class Ciudades extends CI_Controller
 	public function update()
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
-		
+		$mensajes = $this->data;
 		$idCiudad= $this->input->post("idciudad");
 		$NumCiudad= $this->input->post("NumCiudad");
 		$desCiudad= $this->input->post("desCiudad");
 		$idDepartamento= $this->input->post("IdDepartamento");
-
+		$this->form_validation->set_rules("IdDepartamento", "Departamento", "required");
+		$this->form_validation->set_rules("desCiudad", "Descripcion", "required");
 		$desCiudad = trim($desCiudad);
-		if($desCiudad !="" && trim($desCiudad) !="")
-		{
-				//indicar campos de la tabla a modificar
-			$data = array(
-				'desCiudad' => $desCiudad,
-				'iddepartamento' => $idDepartamento
-			);
+		if ($this->form_validation->run() == FALSE){
+			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
+
+		}else{
+			if($desCiudad !="" && trim($desCiudad) !="")
+			{
+					//indicar campos de la tabla a modificar
+				$data = array(
+					'desCiudad' => $desCiudad,
+					'iddepartamento' => $idDepartamento
+				);
 
 
-			if($this->Ciudad_model->update($idCiudad,$data))
-			{
-					//print_r($idCiudad); die();
-				$this->session->set_flashdata('success', 'Actualizado correctamente!');
-				redirect(base_url()."ciudades/ciudades", "refresh");
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+				if($this->Ciudad_model->update($idCiudad,$data)){
+					$mensajes['correcto'] = 'correcto';
+					$this->session->set_flashdata('success', 'Actualizado correctamente!');
+				}else{
+					$mensajes['error'] = 'Errores al intentar Actualizar!';
+					$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+					// redirect(base_url()."ciudades/ciudades/edit/".$idCiudad,"refresh");
+				}
+			}else{	
+
+				$this->session->set_flashdata('error', 'Ingrese Ciudad!');
+
 				redirect(base_url()."ciudades/ciudades/edit/".$idCiudad,"refresh");
 			}
 		}
-		else
-		{	
-
-			$this->session->set_flashdata('error', 'Ingrese Ciudad!');
-					//redireccionamos
-			redirect(base_url()."ciudades/ciudades/edit/".$idCiudad,"refresh");
-		}
+		echo json_encode($mensajes);
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }

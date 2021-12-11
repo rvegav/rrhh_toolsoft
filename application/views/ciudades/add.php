@@ -77,7 +77,7 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desCiudad">Ciudad <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo !empty(form_error("desCiudad"))? set_value("desCiudad"):'';?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
+								<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  value="<?php echo !empty(form_error("desCiudad"))? set_value("desCiudad"):'';?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
 								<?php echo form_error("desCiudad","<span class='help-block'>","</span>" );?>
 							</div>
 						</div>
@@ -169,17 +169,15 @@
 	});
 
 	$("#frm_ciudad").submit(function(event) {
-		console.log();
 		event.preventDefault();		
 		var formDato = $(this).serialize();
         $.ajax({
         	url: "<?php echo base_url()?>ciudades/ciudades/store",
         	type: 'POST',
-        	data: formDato,
+        	data: formDato
         })
         .done(function(result) {
         	var r = JSON.parse(result);
-        	$("#mdlAguarde").modal('hide');
         	console.log(r);
         	const wrapper = document.createElement('div');
         	if (r['alerta']!="") {
@@ -207,7 +205,6 @@
         	}
         }).fail(function() {
         	alert("Se produjo un error, contacte con el soporte técnico");
-        	// $("#mdlAguarde").modal('hide');
         });
     })
 
