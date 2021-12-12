@@ -269,11 +269,20 @@ public function getSucursal(){
 		return $resultados->result();
 }
 
-public function getEmpleado(){
-	$this->db->select("IDEMPLEADO,CONCAT(Nombre, ' ', Apellido) as NOMBRE,NUMEMPLEADO");
-	$this->db->from("empleado");
+public function getEmpleado($parametros = false){
+	$this->db->select("IDEMPLEADO,CONCAT(Nombre, ' ', Apellido) as NOMBRE,NUMEMPLEADO, c.MONTOASIGNADO");
+	$this->db->from("empleado e");
+	$this->db->join('sucursal s', 's.IDSUCURSAL = e.IDSUCURSAL');
+	$this->db->join('departamentoempresa d', 'd.IDDEPARTEMENTO = e.IDDEPARTEMENTO');
+	$this->db->join('categoria c', 'c.IDCATEGORIA = e.IDCATEGORIA');
+	if ($parametros['DESDESUCURSAL'] != '' && $parametros['HASTASUCURSAL']!= '') {
+		$this->db->where('s.IDSUCURSAL BETWEEN '.$parametros['DESDESUCURSAL']. ' AND '. $parametros['HASTASUCURSAL']);
+	}
+	if ($parametros['DESDEDEPARTAMENTO'] != '' && $parametros['HASTADEPARTAMENTO']!= '') {
+		$this->db->where('d.IDDEPARTEMENTO BETWEEN '.$parametros['DESDEDEPARTAMENTO']. ' AND '. $parametros['HASTADEPARTAMENTO']);
+	}
 	$resultados= $this->db->get();
-		return $resultados->result();
+	return $resultados->result();
 }
 
 public function getEmpleado1(){

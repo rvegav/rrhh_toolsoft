@@ -91,9 +91,6 @@
 
 									<?php
 									foreach($empleados as $empleado):?>
-
-										<!-- SIRVE PARA MOSTRAR LOS DATOS DE UN ARRAY -->
-
 										<tr>
 											<td><?php echo $empleado->NUMEMPLEADO;?></td>
 											<td><?php echo $empleado->CEDULAIDENTIDAD;?></td>
@@ -103,8 +100,7 @@
 											<td><?php echo $empleado->CATEGORIA;?></td>
 
 											<?php
-									//$estado = $empleado->estadoEmpleado;
-											$estado = 1;
+											$estado = $empleado->ESTADO;
 											if($estado == 1)
 											{
 												$estado2     = "Activo";$label_class = 'label-success';
@@ -120,8 +116,6 @@
 													$estado2     = "Anulado";$label_class = 'label-danger';
 												}
 											}
-									//$date_added = $empleado->fechaIngreso;
-									//$date_added = date('d-M-Y H:i:s', strtotime($date_added));
 											?>
 											<td><span class="label <?php echo $label_class;?>"><?php echo $estado2; ?></span></td>
 											<td><?php echo $empleado->FECHAINGRESO;?></td>

@@ -569,7 +569,6 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div id="custom-search-input">
               <div class="input-group col-md-12 ">
-                <input type="hidden" name="IdNroCuenta" id="IdNroCuenta">
                 <input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta">
               </div>
             </div>
@@ -714,7 +713,7 @@
       </label>
       <div class="form-group">
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIps" class="form-control col-md-7 col-xs-12">
+          <input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIPS" class="form-control col-md-7 col-xs-12">
           <?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
         </div>
       </div>
@@ -1083,7 +1082,7 @@
       alert("Se produjo un error, contacte con el soporte técnico");
       $("#mdlAguarde").modal('hide');
     });
-    
+
   });
 
 </script>

@@ -98,6 +98,8 @@ class Empleados extends CI_Controller
 		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
 		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
 		$this->form_validation->set_rules("Observacion", "Observacion", "required");
+		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
+		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
 		if ($this->form_validation->run() == FALSE){
 			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
 			// $this->session->set_flashdata('error', validation_errors());
@@ -132,7 +134,7 @@ class Empleados extends CI_Controller
 			$tipo_salario = $this->input->post('TipoSalario');
 			$deparmento = $this->input->post('Departamento');
 			$categoria = $this->input->post('Categoria');
-			$nro_ips = $this->input->post('NumeroIps');
+			$nro_ips = $this->input->post('NumeroIPS');
 			$fecha_ips = $this->input->post('FechaIps');
 			$nombre_hijo = $this->input->post('nombrehijo');
 			$apellido_hijo = $this->input->post('apellidohijo');
@@ -231,139 +233,127 @@ class Empleados extends CI_Controller
 
 	public function update()
 	{
-
+		$mensajes = $this->data;
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png';
 		$config['max_size']             = 100;
 		$config['max_width']            = 1024;
 		$config['max_height']           = 1080;
 		$config['overwrite']           = true;
-		// echo "<pre>";
-		// print_r($_POST);
-		// echo "</pre>";
-		// die();
 		$this->load->library('upload', $config);
 		$idEmpleado = $this->input->post("CodEmpleado");
 		$numEmpleado = $this->input->post("Numero");
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
 		$observacion = $this->input->post('Observacion');
-		if ( !$this->upload->do_upload('userfile')){
-			$error = array('error' => $this->upload->display_errors());
-			// echo "error";
-			$perfil  ='';
+		$this->form_validation->set_rules("Nombre", "Nombres", "required");
+		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
+		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
+		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
+		$this->form_validation->set_rules("Observacion", "Observacion", "required");
+		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
+		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
+		if ($this->form_validation->run() == FALSE){
+			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
+			// $this->session->set_flashdata('error', validation_errors());
+			// redirect(base_url()."empleados/empleados/edit", "refresh");
+
 		}else{
-			$perfil = $this->upload->data();
-			$data = file_get_contents('uploads/'.$perfil['file_name']);
-			$base64 = base64_encode($data);
-			$perfil = 'data:image/' . $perfil['image_type'] . ';base64,'.$base64;
-			// echo "correcto";
-		}
-		$documento = $this->input->post('Documento');
-		$direccion = $this->input->post("Direccion");
-		$telefono   = $this->input->post("Telefono");
-		$celular = $this->input->post('Celular');
-		$fecha_nacimiento = $this->input->post('Nacimiento');
-		$fechaIngreso = date("Y-m-d H:i:s");
-		$fecha_salida = $this->input->post('Salida');
-		$ruc = $this->input->post('Ruc');
-		$estado_civil = $this->input->post('EstadoCivil');
-		$pais = $this->input->post('Nacionalidad');
-		$nivel_estudio = $this->input->post('NivelEstudio');
-		$profesion = $this->input->post('Profesion');
-		$ciudad = $this->input->post('Ciudad');
-		$nro_cuenta = $this->input->post('NroCuenta');
-		$sucursal = $this->input->post('Sucursal');
-		$cargo = $this->input->post('Cargo');
-		$tipo_salario = $this->input->post('TipoSalario');
-		$deparmento = $this->input->post('Departamento');
-		$categoria = $this->input->post('Categoria');
-		$nro_ips = $this->input->post('NumeroIps');
-		$fecha_ips = $this->input->post('FechaIps');
-		$fechaIngreso= date("Y-m-d H:i:s");
-		$ultActualizacion= date("Y-m-d H:i:s");
+			if ( !$this->upload->do_upload('userfile')){
+				$error = array('error' => $this->upload->display_errors());
+				$perfil  ='';
+			}else{
+				$perfil = $this->upload->data();
+				$data = file_get_contents('uploads/'.$perfil['file_name']);
+				$base64 = base64_encode($data);
+				$perfil = 'data:image/' . $perfil['image_type'] . ';base64,'.$base64;
+			}
+			$documento = $this->input->post('Documento');
+			$direccion = $this->input->post("Direccion");
+			$telefono   = $this->input->post("Telefono");
+			$celular = $this->input->post('Celular');
+			$fecha_nacimiento = $this->input->post('Nacimiento');
+			$fechaIngreso = date("Y-m-d H:i:s");
+			$fecha_salida = $this->input->post('Salida');
+			$ruc = $this->input->post('Ruc');
+			$estado_civil = $this->input->post('EstadoCivil');
+			$pais = $this->input->post('Nacionalidad');
+			$nivel_estudio = $this->input->post('NivelEstudio');
+			$profesion = $this->input->post('Profesion');
+			$ciudad = $this->input->post('Ciudad');
+			$nro_cuenta = $this->input->post('NroCuenta');
+			$sucursal = $this->input->post('Sucursal');
+			$cargo = $this->input->post('Cargo');
+			$tipo_salario = $this->input->post('TipoSalario');
+			$deparmento = $this->input->post('Departamento');
+			$categoria = $this->input->post('Categoria');
+			$nro_ips = $this->input->post('NumeroIPS');
+			$fecha_ips = $this->input->post('FechaIps');
+			$fechaIngreso= date("Y-m-d H:i:s");
+			$ultActualizacion= date("Y-m-d H:i:s");
+			$empleado_actual = $this->Empleados_model->getEmpleado($idEmpleado);
 
-		//traemos datos para no duplicarlos /  validacion
-		$empleado_actual = $this->Empleados_model->getEmpleado($idEmpleado);
 
-		// if($numEmpleado == $empleado_actual->numEmpleado){
-		// 	$unique = '';
-		// }else{	
-		// 	//si encontro datos, emitira mensaje que ya existe.. llamando a tabla y luego campo
-		// 	$unique = '|is_unique[empleado.nomEmpleado]';
-		// }
-		//validar
-		// $this->form_validation->set_rules("nomEmpleado", "Nombre", "required".$unique);
-
-		// if($this->form_validation->run())
-		// {
 			//indicar campos de la tabla a modificar
-		$data = array(
-			'idEmpleado'  => $idEmpleado,
+			$data = array(
+				'idEmpleado'  => $idEmpleado,
 				// 'numEmpleado'  => $numEmpleado,
-			'nombre'  => $nombre,
-			'apellido' => $apellido, 
-			'observacion' => $observacion,
-			'perfil' => $perfil,
-			'cedulaidentidad' => $documento,
-			'direccion'  => $direccion,
-			'telefono'  => $telefono, 
-			'celular' => $celular, 
-			'fecnacimiento' => $fecha_nacimiento,
-			'fechaingreso' => $fechaIngreso,
-			'fechasalida' => $fecha_salida,
-			'idcivil' => $estado_civil,
-			// 'idnacionalidad' => $pais,
-			'idnivel'=> $nivel_estudio,
-			'idprofesion' => $profesion,
-			'idciudad' => $ciudad,
-			'nrocuenta' => $nro_cuenta,
-			'idsucursal' => 1,
-			'idcargo' => $cargo,
-			'iddepartemento' => $deparmento,
-			'idcategoria' => $categoria,
-			'numeroips' => $nro_ips,
-			'fecingresoips' => $fecha_ips,
-			'fechaIngreso'=>  $fechaIngreso,
-			'fecgrabacion'=>  $ultActualizacion
-		);
-		$nombre_hijo = $this->input->post('nombrehijo');
-		$apellido_hijo = $this->input->post('apellidohijo');
-		$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
+				'nombre'  => $nombre,
+				'apellido' => $apellido, 
+				'observacion' => $observacion,
+				'perfil' => $perfil,
+				'cedulaidentidad' => $documento,
+				'direccion'  => $direccion,
+				'telefono'  => $telefono, 
+				'celular' => $celular, 
+				'fecnacimiento' => $fecha_nacimiento,
+				'fechaingreso' => $fechaIngreso,
+				'fechasalida' => $fecha_salida,
+				'idcivil' => $estado_civil,
+				'idnacionalidad' => $pais,
+				'idnivel'=> $nivel_estudio,
+				'idprofesion' => $profesion,
+				'idciudad' => $ciudad,
+				'nrocuenta' => $nro_cuenta,
+				'idsucursal' => $sucursal,
+				'idcargo' => $cargo,
+				'iddepartemento' => $deparmento,
+				'idcategoria' => $categoria,
+				'numeroips' => $nro_ips,
+				'fecingresoips' => $fecha_ips,
+				'fechaIngreso'=>  $fechaIngreso,
+				'fecgrabacion'=>  $ultActualizacion
+			);
+			$nombre_hijo = $this->input->post('nombrehijo');
+			$apellido_hijo = $this->input->post('apellidohijo');
+			$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
 
-		if($this->Empleados_model->update($idEmpleado,$data))
-		{
-			for ($i=0; $i < count($nombre_hijo) ; $i++) {
-				if ($nombre_hijo[$i]!='') {
-					$data = array(
-						'idempleado'=> $idEmpleado,
-						'idempresa'=>1,
-						'nombre'=>$nombre_hijo[$i],
-						'apellido'=>$apellido_hijo[$i],
-						'fecnacimiento'=> $fecha_nacimiento_hijo[$i],
-						'fecgrabacion'=> date("Y-m-d H:i:s")
+			if($this->Empleados_model->update($idEmpleado,$data)){
+				for ($i=0; $i < count($nombre_hijo) ; $i++) {
+					if ($nombre_hijo[$i]!='') {
+						$data = array(
+							'idempleado'=> $idEmpleado,
+							'idempresa'=>1,
+							'nombre'=>$nombre_hijo[$i],
+							'apellido'=>$apellido_hijo[$i],
+							'fecnacimiento'=> $fecha_nacimiento_hijo[$i],
+							'fecgrabacion'=> date("Y-m-d H:i:s")
 
-					);
-					if ($this->Hijos_model->save($data)) {
-						$correcto = "Se ha asociado correctamente los hijos";	
-					}
-				} 
+						);
+						if ($this->Hijos_model->save($data)) {
+							$correcto = "Se ha asociado correctamente los hijos";	
+						}
+					} 
+				}
+				$this->session->set_flashdata('success', 'Actualizado correctamente!');
+				$mensajes['correcto'] = 'correcto';
+			}else{
+				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+				$mensajes['error'] = 'Empleados no registrado!';
 			}
 
-			$this->session->set_flashdata('success', 'Actualizado correctamente!');
-			redirect(base_url()."empleados/empleados", "refresh");
 		}
-		else
-		{
-			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-			redirect(base_url()."empleados/empleados/edit/".$idEmpleado);
-		}
-		// }
-		// else
-		// {	
-		// 	//si hubieron errores, recargamos la funcion que esta mas arriba, editar y enviamos nuevamente el id como parametro
-		// 	$this->edit($idEmpleado);
-		// }
+		echo json_encode($mensajes);
 	}
 
 	//funcion para borrar

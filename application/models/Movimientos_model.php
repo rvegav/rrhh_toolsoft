@@ -331,4 +331,20 @@ public function getEmpleado1(){
 		$this->db->where('IDCONCEPTOFIJO', $id, FALSE);
 		return $this->db->delete('CONCEPTOSFIJOS');
 	}
+	public function getTotalMovimientosSuma($empleado, $fechaDesde, $fechaHasta){
+		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN '0' ELSE SUM(ms.IMPORTE) END) as IMPORTE");
+		$this->db->from('movisueldodetalle ms');
+		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
+		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
+		$this->db->where('ms.IDEMPLEADO', $empleado);
+		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		// $this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$this->db->where('tm.SUMARESTA', '+');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->row();
+		} else {
+			return false;
+		}
+	}
 }

@@ -193,7 +193,7 @@
 				</div>
 			<?php endif; ?>
 			<div class="row">
-				<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" action="<?php echo base_url();?>empleados/empleados/update" method="POST" name="dato">
+				<form id="frm_empleado" data-parsley-validate="" class="form-horizontal form-label-left" enctype="multipart/form-data" action="" method="POST" name="dato">
 					<section>
 						<div class="wizard">
 							<div class="wizard-inner">
@@ -307,7 +307,7 @@
 														<label class="control-label col-md-3 col-sm-3 col-xs-12">Observacion <span class="required">*</span>
 														</label>
 														<div class="col-md-9 col-sm-9 col-xs-12">
-															<textarea class="form-control" rows="3" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" id="Observacion" name="Observacion" placeholder="Observacion"></textarea>
+															<textarea class="form-control" rows="3" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" id="Observacion" name="Observacion" placeholder="Observacion"><?php echo $empleado->OBSERVACION ?></textarea>
 														</div>
 													</div>
 
@@ -494,7 +494,7 @@
 												</label>
 												<div class="form-group">
 													<div class="col-md-6 col-sm-6 col-xs-12">
-														<select class="form-control select2" style="width: 100%;" name="Nacionalidad" id="Nacionalidad">
+														<select class="form-control select2" style="width: 100%;" name="pais" id="Nacionalidad">
 															<optgroup label="Nacionalidad Actual"></optgroup>
 															<option value="<?php echo $empleado->IDPAIS ?>"><?php echo $empleado->DESPAIS ?></option>
 															<optgroup label="Nacionalidad a Asignar"></optgroup>
@@ -545,8 +545,6 @@
 										<div class="ln_solid"></div>
 
 										<div class="row">
-
-
 											<div class='col-sm-6'>
 												<div class="container">
 													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NroCuenta">Nro. Cuenta 
@@ -555,14 +553,7 @@
 													<div class="col-md-6 col-sm-6 col-xs-12">
 														<div id="custom-search-input">
 															<div class="input-group col-md-12 ">
-																<input type="hidden" name="IdNroCuenta" id="IdNroCuenta">
-																<input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7 col-xs-12" placeholder="Buscar Numero de Cuenta" disabled="disabled" />
-																<span class="input-group-btn">
-																	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-																		<span class="fa fa-search" aria-hidden="true">
-																		</span>
-																	</button>
-																</span>
+																<input type="text" name="NroCuenta" id="NroCuenta" class="form-control col-md-7" value="<?php echo $empleado->NROCUENTA ?>" placeholder="Numero de Cuenta">
 															</div>
 														</div>
 													</div>
@@ -588,11 +579,11 @@
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<select class="form-control select2" style="width: 100%;" name="Sucursal" id="Sucursal">
 														<optgroup label="Sucursal Actual"></optgroup>
-														<option value=""><?php echo $empleado->SUCURSAL ?></option>
+														<option value="<?php echo $empleado->IDSUCURSAL ?>"><?php echo $empleado->SUCURSAL ?></option>
 														<optgroup label="Sucursal a Asignar"></optgroup>
 														<?php foreach($sucursales as $sucursal):?>
 															<?php if($sucursal->DESSUCURSAL != $empleado->SUCURSAL):?>
-																<option value="<?php echo $sucursal->IDSUCURSAL?>"><?php echo $sucursal->DESSUCURSAL;?></option>
+																<option value="<?php echo $sucursal->IDSUCURSAL?>"><?php echo $sucursal->DESCSUCURSAL;?></option>
 															<?php endif;?>
 														<?php endforeach;?>
 													</select>
@@ -698,7 +689,7 @@
 											</label>
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="Numero" class="form-control col-md-7 col-xs-12">
+													<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIPS" class="form-control col-md-7 col-xs-12">
 													<?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
 												</div>
 											</div>
@@ -919,49 +910,48 @@
 
 	<script>
 		$(document).ready(function () {
-    //Initialize tooltips
-    $('.nav-tabs > li a[title]').tooltip();
-    
-    //Wizard
-    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 
-    	var $target = $(e.target);
+			$('.nav-tabs > li a[title]').tooltip();
 
-    	if ($target.parent().hasClass('disabled')) {
-    		return false;
-    	}
-    });
+			$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 
-    $(".next-step").click(function (e) {
+				var $target = $(e.target);
 
-    	var $active = $('.wizard .nav-tabs li.active');
-    	$active.next().removeClass('disabled');
-    	nextTab($active);
+				if ($target.parent().hasClass('disabled')) {
+					return false;
+				}
+			});
 
-    });
-    $(".prev-step").click(function (e) {
+			$(".next-step").click(function (e) {
 
-    	var $active = $('.wizard .nav-tabs li.active');
-    	prevTab($active);
+				var $active = $('.wizard .nav-tabs li.active');
+				$active.next().removeClass('disabled');
+				nextTab($active);
 
-    });
+			});
+			$(".prev-step").click(function (e) {
+
+				var $active = $('.wizard .nav-tabs li.active');
+				prevTab($active);
+
+			});
 
 
-    var i=1;
-    $("#add_row").click(function(){
-    	$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='nombrehijo[]' type='text' placeholder='Nombres' class='form-control input-md' font style='text-transform: uppercase;' onkeyup='javascript:this.value = this.value.toUpperCase ();'  /> </td><td><select class='form-control' id='sexohijo[]' name='sexohijo[]'><option>Masculino</option><option>Femenino</option></select></td><td><input  name='fechanachijo[]' type='date' placeholder='Fecha de Nacimiento'  class='form-control input-md'></td>");
+			var i=1;
+			$("#add_row").click(function(){
+				$('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='nombrehijo[]' type='text' placeholder='Nombres' class='form-control input-md' font style='text-transform: uppercase;' onkeyup='javascript:this.value = this.value.toUpperCase ();'  /> </td><td><select class='form-control' id='sexohijo[]' name='sexohijo[]'><option>Masculino</option><option>Femenino</option></select></td><td><input  name='fechanachijo[]' type='date' placeholder='Fecha de Nacimiento'  class='form-control input-md'></td>");
 
-    	$('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
-    	i++; 
-    });
-    $("#delete_row").click(function(){
-    	if(i>1){
-    		$("#addr"+(i-1)).html('');
-    		i--;
-    	}
-    });
+				$('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
+				i++; 
+			});
+			$("#delete_row").click(function(){
+				if(i>1){
+					$("#addr"+(i-1)).html('');
+					i--;
+				}
+			});
 
-});
+		});
 
 		function nextTab(elem) {
 			$(elem).next().find('a[data-toggle="tab"]').click();
@@ -1022,6 +1012,51 @@
 					cell.innerHTML = i+1;
 				} );
 			} ).draw();
+
+		});
+		$("#frm_empleado").submit(function(event) {
+			event.preventDefault();
+			var formDato = $(this).serialize();
+			$.ajax({
+				url: "<?php echo base_url();?>empleados/empleados/update",
+				type: 'POST',
+				data: formDato,
+			})
+			.done(function(result) {
+				var r = JSON.parse(result);
+				$("#mdlAguarde").modal('hide');
+				console.log(r);
+				const wrapper = document.createElement('div');
+				if (r['alerta']!="") {
+					var mensaje = r['alerta'];
+					wrapper.innerHTML = mensaje;
+					swal({
+                    // buttons: true,
+                    title: 'Atención!', 
+                    content: wrapper,
+                    icon: "warning",
+                    // dangerMode: true,
+                    columnClass: 'medium',
+                    // theme: 'modern',
+                });
+				}
+				if (r['error']!="") {
+					wrapper.innerHTML = r['error'];
+					swal({
+						icon: "error",
+						columnClass: 'medium',
+						theme: 'modern',
+						title: 'Error!',
+						content: wrapper,
+					});
+				}
+				if (r['correcto']!="") {
+					window.location = "<?php echo base_url()?>empleados/empleados";
+				}
+			}).fail(function() {
+				alert("Se produjo un error, contacte con el soporte técnico");
+				$("#mdlAguarde").modal('hide');
+			});
 
 		});
 

@@ -75,7 +75,8 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDSUCURSAL">Desde Sucursal <span class="required">*</span>
                               </label>
                             <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="SUCURSAL" id="SUCURSAL" class="form-control">
+                              <select name="SUCURSAL_DESDE" id="SUCURSAL" class="form-control">
+                                <option value="">Seleccione una sucursal</option>
                                 <?php foreach($sucursales as $sucursal):?>
                                     <option value="<?php echo $sucursal->NUMSUCURSAL;?>"><?php echo $sucursal->DESSUCURSAL;?></option>
                                 <?php endforeach;?>
@@ -87,7 +88,8 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDSUCURSAL1">Hasta Sucursal <span class="required">*</span>
                               </label>
                             <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="SUCURSAL1" id="SUCURSAL1" class="form-control">
+                              <select name="SUCURSAL_HASTA" id="SUCURSAL1" class="form-control">
+                                <option value="">Seleccione una sucursal</option>
                                 <?php foreach($sucursales as $sucursal):?>
                                     <option value="<?php echo $sucursal->NUMSUCURSAL;?>"><?php echo $sucursal->DESSUCURSAL;?></option>
                                 <?php endforeach;?>
@@ -99,7 +101,8 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDDEPARTAMENTO">Desde Departamento <span class="required">*</span>
                               </label>
                             <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="DEPARTAMENTO" id="DEPARTAMENTO" class="form-control">
+                              <select name="DEPARTAMENTO_DESDE" id="DEPARTAMENTO" class="form-control">
+                                <option value="">Seleccione un departamento</option>
                                 <?php foreach($departamentos as $departamento):?>
                                     <option value="<?php echo $departamento->NUMDEPARTAMENTO;?>"><?php echo $departamento->DESDEPARTAMENTO;?></option>
                                 <?php endforeach;?>
@@ -112,7 +115,8 @@
                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDDEPARTAMENTO1">Hasta Departamento <span class="required">*</span>
                               </label>
                             <div class="col-md-4 col-sm-6 col-xs-12">
-                              <select name="DEPARTAMENTO1" id="DEPARTAMENTO1" class="form-control">
+                              <select name="DEPARTAMENTO_HASTA" id="DEPARTAMENTO1" class="form-control">
+                                <option value="">Seleccione un departamento</option>
                                 <?php foreach($departamentos as $departamento):?>
                                     <option value="<?php echo $departamento->NUMDEPARTAMENTO;?>"><?php echo $departamento->DESDEPARTAMENTO;?></option>
                                 <?php endforeach;?>

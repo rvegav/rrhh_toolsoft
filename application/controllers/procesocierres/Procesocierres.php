@@ -13,6 +13,8 @@ class Procesocierres extends CI_Controller
 
 		//$this->load->model("Empleados_model");
 		$this->load->model("Procesocierres_model");
+		$this->load->model(array('Procesocierres_model', 'Movimientos_model'));
+
 	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
@@ -48,7 +50,7 @@ class Procesocierres extends CI_Controller
 	{
 		$data = array (
 			'movimientos'=> $this->Movimientos_model->getMovimientoDetalle($idMovi),
-			'empleados'=>$this->Movimientos_model->getEmpleado()
+			'empleados'=>$this->Procesocierres_model->getEmpleado()
 		);
 		//abrimos la vista view
 		$this->load->view("movimientos/view", $data);
@@ -57,50 +59,107 @@ class Procesocierres extends CI_Controller
 	}
 	//funcion para almacenar en la bd
 	public function store(){
-		$IDCIERRE   = $this->input->post("IDCIERRE");
-		$DESDESUCURSAL   = $this->input->post("SUCURSAL");
-		$HASTASUCURSAL   = $this->input->post("SUCURSAL1");
-		$DESDEDEPARTAMENTO   = $this->input->post("DEPARTAMENTO");
-		$HASTADEPARTAMENTO   = $this->input->post("DEPARTAMENTO1");
-		$FECHADESDE   = $this->input->post("FECHADESDE");
-		$FECHAHASTA   = $this->input->post("FECHAHASTA");
-		$DESDEEMPRESA   = $this->input->post("EMPRESA");
-		$HASTAEMPRESA   = $this->input->post("EMPRESA1");
-		if ($IDCIERRE == 1){
-			$IDCIERRE = $IDCIERRE + 100;
-		}
-		if ($this->validar_fecha_espanol($FECHADESDE,$FECHAHASTA)){
-			$existe = $this->Procesocierres_model->existeCierre($DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA);
-			$variableexiste = $existe[0]['CANTIDAD'];
-			if($variableexiste == 0){
-				if($this->save_procesocierre($IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){	
-					$maximo = $this->Procesocierres_model->getIdAsiento();
-					$idmaximo = $maximo[0]['MAXIMO'];
-					$data = array('iddiario'  =>   $idmaximo,
-						'idcierre'  =>  $IDCIERRE,
-						'idusuario' => 1,
-						'idempresa' => 1,
-						'numasiento' => 0 + $idmaximo,
-						'fechaasiento' => $FECHAHASTA,
-						'generado'	 => 1);
-					if($this->Procesocierres_model->saveAsiento($data)){ //CABECERA DE ASIENTOS CONTABLES 16/08/2018
-						if($this->save_asientoDetalle($idmaximo,$IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){ //DETALLES DE ASIENTOS CONTABLES 16/08/2018
-							$this->session->set_flashdata('success', 'Proceso generado correctamente!');
-							redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
-						}
-					}
-				}else{
-					$this->session->set_flashdata('error', 'Movimiento no registrado!');				
-				//redireccionamos
-					redirect(base_url().'procesocierres/procesocierres/add', "refresh");
-				}
-			}else{
-				$this->session->set_flashdata('error', 'Ya existe un proceso de cierre en este periodo!');
-				redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
-			}
+		$this->form_validation->set_rules("FECHADESDE", "Fecha Desde", "required");
+		$this->form_validation->set_rules("FECHAHASTA", "fecha Hasta", "required");
+		if ($this->form_validation->run() == FALSE){
+			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
+			// $this->session->set_flashdata('error', validation_errors());
 		}else{
-			$this->session->set_flashdata('error', 'Ingrese Fecha correcta!');
-			redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
+
+			$IDCIERRE   = $this->input->post("IDCIERRE");
+			$DESDESUCURSAL   = $this->input->post("SUCURSAL_DESDE");
+			$HASTASUCURSAL   = $this->input->post("SUCURSAL_HASTA");
+			$DESDEDEPARTAMENTO   = $this->input->post("DEPARTAMENTO_DESDE");
+			$HASTADEPARTAMENTO   = $this->input->post("DEPARTAMENTO_HASTA");
+			$FECHADESDE   = $this->input->post("FECHADESDE");
+			$FECHAHASTA   = $this->input->post("FECHAHASTA");
+
+			$parametros['DESDESUCURSAL']= $DESDESUCURSAL;
+			$parametros['HASTASUCURSAL']= $HASTASUCURSAL;
+			$parametros['HASTADEPARTAMENTO']= $HASTADEPARTAMENTO;
+			$parametros['DESDEDEPARTAMENTO']= $DESDEDEPARTAMENTO;
+			$parametros['FECHADESDE']= $FECHADESDE;
+			$parametros['FECHAHASTA']= $FECHAHASTA;
+			$empleados = $this->Procesocierres_model->getEmpleado($parametros);
+			if ($empleados) {
+				$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('SALARIO');
+				$time = time();
+				$fechaActual = date("Y-m-d H:i:s",$time);
+				$data = array('IDTIPOMOVISUELDO'  => $tipoMovimiento->IDTIPOMOVISUELDO,//MIENTRAS
+					'FECHAMOVI'  => $fechaActual,
+					'IDEMPRESA' => 1,
+					'IDMONEDA' => 1);
+				$id_movimiento = $this->Movimientos_model->save($data);
+				foreach ($empleados as $empleado ) {
+					$data = array(
+						'idmovi' => $id_movimiento,
+						'idempleado' => $empleado->IDEMPLEADO,
+						'dias' => 0,
+						'horas' => 0,
+						'importe' => $empleado->MONTOASIGNADO,
+						'FECGRABACION'=> $fechaActual
+					);
+					$this->Movimientos_model->save_detalle($data);
+				}
+				$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
+				$data = array('IDTIPOMOVISUELDO'  => $tipoMovimiento->IDTIPOMOVISUELDO,//MIENTRAS
+					'FECHAMOVI'  => $fechaActual,
+					'IDEMPRESA' => 1,
+					'IDMONEDA' => 1);
+				$id_movimiento = $this->Movimientos_model->save($data);
+				foreach ($empleados as $empleado ) {
+					$total_movimientos_suma = $this->Movimientos_model->getTotalMovimientosSuma($empleado->IDEMPLEADO, $FECHADESDE, $FECHAHASTA);
+					$importeIPS = $total_movimientos_suma->IMPORTE*.09;
+					$data = array(
+						'idmovi' => $id_movimiento,
+						'idempleado' => $empleado->IDEMPLEADO,
+						'dias' => 0,
+						'horas' => 0,
+						'importe' => $importeIPS,
+						'FECGRABACION'=> $fechaActual
+						
+					);
+					$this->Movimientos_model->save_detalle($data);
+				}
+			}
+			// if ($IDCIERRE == 1){
+			// 	$IDCIERRE = $IDCIERRE + 100;
+			// }
+			// if ($this->validar_fecha_espanol($FECHADESDE,$FECHAHASTA)){
+			// 	$existe = $this->Procesocierres_model->existeCierre($DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA);
+			// 	$variableexiste = $existe[0]['CANTIDAD'];
+			// 	if($variableexiste == 0){
+			// 		if($this->save_procesocierre($IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){	
+			// 			$maximo = $this->Procesocierres_model->getIdAsiento();
+			// 			$idmaximo = $maximo[0]['MAXIMO'];
+			// 			$data = array('iddiario'  =>   $idmaximo,
+			// 				'idcierre'  =>  $IDCIERRE,
+			// 				'idusuario' => 1,
+			// 				'idempresa' => 1,
+			// 				'numasiento' => 0 + $idmaximo,
+			// 				'fechaasiento' => $FECHAHASTA,
+			// 				'generado'	 => 1);
+			// 			if($this->Procesocierres_model->saveAsiento($data)){ //CABECERA DE ASIENTOS CONTABLES 16/08/2018
+			// 				if($this->save_asientoDetalle($idmaximo,$IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){ //DETALLES DE ASIENTOS CONTABLES 16/08/2018
+			// 					$this->session->set_flashdata('success', 'Proceso generado correctamente!');
+			// 					redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
+			// 				}
+			// 			}
+			// 		}else{
+			// 			$this->session->set_flashdata('error', 'Movimiento no registrado!');				
+			// 		//redireccionamos
+			// 			redirect(base_url().'procesocierres/procesocierres/add', "refresh");
+			// 		}
+			// 	}else{
+			// 		$this->session->set_flashdata('error', 'Ya existe un proceso de cierre en este periodo!');
+			// 		redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
+			// 	}
+			// }else{
+			// 	$this->session->set_flashdata('error', 'Ingrese Fecha correcta!');
+			// 	redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
+			// }
+			echo "hizo todo";
+			die();
 		}
 
 	}
