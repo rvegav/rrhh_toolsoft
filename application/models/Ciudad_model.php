@@ -46,7 +46,6 @@ class Ciudad_model extends CI_Model {
 		$resultados= $this->db->get();
 		return $resultados->result();	
 	}
-//obtener el ultimo id mas 1
 	public function ultimoNumero(){
 	    $this->db->select("(CASE WHEN  max(idciudad) IS NULL THEN '1' ELSE max(idciudad) + 1 END) as MAXIMO");
 		$this->db->from("ciudad");

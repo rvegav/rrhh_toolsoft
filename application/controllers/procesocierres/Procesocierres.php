@@ -66,7 +66,7 @@ class Procesocierres extends CI_Controller
 			// $this->session->set_flashdata('error', validation_errors());
 		}else{
 
-			$IDCIERRE   = $this->input->post("IDCIERRE");
+			// $IDCIERRE   = $this->input->post("IDCIERRE");
 			$DESDESUCURSAL   = $this->input->post("SUCURSAL_DESDE");
 			$HASTASUCURSAL   = $this->input->post("SUCURSAL_HASTA");
 			$DESDEDEPARTAMENTO   = $this->input->post("DEPARTAMENTO_DESDE");
@@ -78,8 +78,8 @@ class Procesocierres extends CI_Controller
 			$parametros['HASTASUCURSAL']= $HASTASUCURSAL;
 			$parametros['HASTADEPARTAMENTO']= $HASTADEPARTAMENTO;
 			$parametros['DESDEDEPARTAMENTO']= $DESDEDEPARTAMENTO;
-			$parametros['FECHADESDE']= $FECHADESDE;
-			$parametros['FECHAHASTA']= $FECHAHASTA;
+			// $parametros['FECHADESDE']= $FECHADESDE;
+			// $parametros['FECHAHASTA']= $FECHAHASTA;
 			$empleados = $this->Procesocierres_model->getEmpleado($parametros);
 			if ($empleados) {
 				$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('SALARIO');

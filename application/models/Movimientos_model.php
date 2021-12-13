@@ -11,7 +11,7 @@ class Movimientos_model extends CI_Model {
 		//return $resultados->result();
 	//}
 
-	public function getTipoMovimientos($codigo= false, $desc = false){
+	public function getTipoMovimientos($codigo= false, $desc = false, $suma = false){
 		$this->db->select("idtipomovisueldo AS IDTIPOMOVI,NUMTIPOMOV,DESTIPOMOV AS DESC, SUMARESTA");
 		$this->db->from("tipomovisueldo");
 		if ($codigo) {
@@ -20,9 +20,12 @@ class Movimientos_model extends CI_Model {
 		if ($desc) {
 			$this->db->where('DESTIPOMOV', $desc);
 		}
+		if ($suma) {
+			$this->db->where('SUMARESTA', $suma);
+		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
-			if ($desc) {
+			if ($desc or $codigo) {
 				return $resultados->row();
 			}
 			return $resultados->result();
@@ -331,15 +334,47 @@ public function getEmpleado1(){
 		$this->db->where('IDCONCEPTOFIJO', $id, FALSE);
 		return $this->db->delete('CONCEPTOSFIJOS');
 	}
-	public function getTotalMovimientosSuma($empleado, $fechaDesde, $fechaHasta){
+	public function getTotalMovimientosSuma($empleado, $fechaDesde, $fechaHasta, $aguinaldo = true){
 		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN '0' ELSE SUM(ms.IMPORTE) END) as IMPORTE");
 		$this->db->from('movisueldodetalle ms');
 		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
 		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
 		$this->db->where('ms.IDEMPLEADO', $empleado);
 		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
-		// $this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		if ($aguinaldo) {
+			$this->db->where('tm.aguinaldo <> 0');
+		}
 		$this->db->where('tm.SUMARESTA', '+');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->row();
+		} else {
+			return false;
+		}
+	}
+	public function getTotalMovimientosResta($empleado, $fechaDesde, $fechaHasta){
+		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE");
+		$this->db->from('movisueldodetalle ms');
+		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
+		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
+		$this->db->where('ms.IDEMPLEADO', $empleado);
+		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$this->db->where('tm.SUMARESTA', '-');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->row();
+		} else {
+			return false;
+		}
+	}
+	public function getTotalMovimientos($empleado, $fechaDesde, $fechaHasta, $tipo){
+		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE, COUNT(tm.IDTIPOMOVISUELDO)  CANTIDAD");
+		$this->db->from('movisueldodetalle ms');
+		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
+		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
+		$this->db->where('ms.IDEMPLEADO', $empleado);
+		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$this->db->where('tm.DESTIPOMOV', $tipo);
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
 			return $resultados->row();

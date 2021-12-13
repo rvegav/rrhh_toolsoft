@@ -14,12 +14,14 @@ class Empleados_model extends CI_Model {
 	
 
 //EJEMPLO DE CONSULTA A BASE ESPECIFICANDO COLUMNAS Y UTILIZANDO UNIONES(JOIN)
-	public function getEmpleados(){
+	public function getEmpleados($activo = false){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, C.MONTOASIGNADO, DATE_FORMAT(FECHAINGRESO,'%d/%m/%Y') FECHAINGRESO, ESTADOEMPLEADO ESTADO");
+		$this->db->select("CONCAT(Nombre, ' ', Apellido) as NOMBRE, NUMEMPLEADO, IDEMPLEADO, CEDULAIDENTIDAD, TELEFONO, DIRECCION, C.DESCATEGORIA AS CATEGORIA, C.MONTOASIGNADO, DATE_FORMAT(FECHAINGRESO,'%d/%m/%Y') FECHAINGRESO, ESTADOEMPLEADO ESTADO, NROCUENTA, NUMEROIPS");
 		$this->db->from("empleado e");
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
-		// $this->db->where('ESTADOEMPLEADO <> 3');
+		if ($activo) {
+			$this->db->where('ESTADOEMPLEADO', '1');
+		}
 		$resultados= $this->db->get();
 		return $resultados->result();
 	}

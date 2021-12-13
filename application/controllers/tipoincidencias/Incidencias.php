@@ -16,14 +16,14 @@ class Incidencias extends CI_Controller
 	public function index()
 	{	
 		// if ($this->session->userdata('login')) {
-			$data = array(
-				'incidencias'=> $this->Incidencia_model->getIncidencias()
-			);
+		$data = array(
+			'incidencias'=> $this->Incidencia_model->getTipoIncidencias()
+		);
 			//llamamos a las vistas para mostrar
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('tipoincidencias/list', $data);
-			$this->load->view('template/footer');
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('tipoincidencias/list', $data);
+		$this->load->view('template/footer');
 
 		// }else {
 		// 	redirect(base_url(),'refresh');
@@ -34,14 +34,14 @@ class Incidencias extends CI_Controller
 	public function add()
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array(			
-				'maximos' => $this->Incidencia_model->ObtenerCodigo()
-			);
+		$data = array(			
+			'maximo' => $this->Incidencia_model->obtenerUltimoNro()
+		);
 
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('tipoincidencias/add', $data);
-			$this->load->view('template/footer');
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('tipoincidencias/add', $data);
+		$this->load->view('template/footer');
 		
 		// }else {
 		// 	redirect(base_url(),'refresh');
@@ -52,131 +52,113 @@ class Incidencias extends CI_Controller
 	public function view($id)
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array (
-				'ciudad'=> $this->Incidencia_model->getCiudad($id)
-			);
-
-			//print_r($data); die();
-			//abrimos la vista view
-			$this->load->view("tipoincidencias/view", $data);
+		$data = array (
+			'ciudad'=> $this->Incidencia_model->getCiudad($id)
+		);
+		$this->load->view("tipoincidencias/view", $data);
 		
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }
 	}
-	//funcion para almacenar en la bd
 	public function store()
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
 
-			$NumIncidencia   = $this->input->post("numero");
-			$descripcion = $this->input->post("descripcion");
+		$NumIncidencia   = $this->input->post("numIncidencia");
+		$descripcion = $this->input->post("descTipoIncidencia");
 
-			$idTipoIncidencia = $this->Incidencia_model->ultimoNumero();
+		$idTipoIncidencia = $this->Incidencia_model->ObtenerCodigo();
 
-			$time = time();
-			$fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-			$empresa = $_SESSION["Empresa"];
-			$sucursal = $_SESSION["Sucursal"];
-		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
-			$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$this->form_validation->set_rules("numIncidencia", "Nro de Incidencia", "required");
+		$this->form_validation->set_rules("descTipoIncidencia", "Descripcion", "required");
+		if ($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', validation_errors());
+			redirect(base_url()."empleados/empleados/add", "refresh");
+		}else{
+
 			$data = array(
-				'IDTIPOINCIDENCIA'  => $idciudad->MAXIMO,
-				'NumCiudad'  => $NumCiudad,
-				'desCiudad'  => $desCiudad,
-				'fecgrabacion' => $fechaActual
+				'IDTIPOINCIDENCIA'  => $idTipoIncidencia->MAXIMO,
+				'NUMINCIDENCIA'  => $NumIncidencia,
+				'DESCINCIDENCIA'  => $descripcion,
+				'FECGRABACION' => $fechaActual
 			);
-            //guardamos los datos en la base de datos
-			$desCiudad = trim($desCiudad);
-			if($desCiudad !="" && trim($desCiudad) !="")
+			if($this->Incidencia_model->save($data))
 			{
-				if($this->Incidencia_model->save($data))
-				{
-				//si todo esta bien, emitimos mensaje
-					$this->session->set_flashdata('success', 'Ciudad registrado correctamente!');
-					redirect(base_url()."tipoincidencias/tipoincidencias", "refresh");
-				}
-				else
-				{
-					//si hubo errores, mostramos mensaje
-					$this->session->set_flashdata('error', 'Ciudad no registrado!');
-					redirect(base_url()."tipoincidencias/tipoincidencias/add", "refresh");
-				}
+				$this->session->set_flashdata('success', 'Tipo de Incidencia registrado correctamente!');
+				redirect(base_url()."tipo_incidencia", "refresh");
+			}else{
+				$this->session->set_flashdata('error', 'Tipo de Incidencia no registrado!');
+				redirect(base_url()."tipoincidencias/Incidencia/add", "refresh");
 			}
-			else
-			{	
-				$this->session->set_flashdata('error', 'Ingrese Ciudad!');
-				//redireccionamos
-				redirect(base_url()."tipoincidencias/tipoincidencias/add", "refresh");
-			}
+		}
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }
-		
+
 
 	}
-	
+
 	//metodo para editar
 	public function edit($id)
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
-			$data = array(
-				'ciudad'=> $this->Incidencia_model->getCiudad($id),
-				'departamentos' => $this->Departamento_model->getDepartamentos()
-			);
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('tipoincidencias/edit', $data);
-			$this->load->view('template/footer');
-		
+		$data = array(
+			'incidencia'=> $this->Incidencia_model->getTipoIncidencias($id)
+		);
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('tipoincidencias/edit', $data);
+		$this->load->view('template/footer');
+
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }
 	}
 
 	//actualizamos 
-	
+
 	public function update()
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
-		
-			$idCiudad= $this->input->post("idciudad");
-			$NumCiudad= $this->input->post("NumCiudad");
-			$desCiudad= $this->input->post("desCiudad");
-			$idDepartamento= $this->input->post("IdDepartamento");
-			
-			$desCiudad = trim($desCiudad);
-			if($desCiudad !="" && trim($desCiudad) !="")
+
+		$idTipoIncidencia = $this->input->post('tipoincidenciasId');
+		$NumIncidencia   = $this->input->post("numIncidencia");
+		$descripcion = $this->input->post("descTipoIncidencia");
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
+		$this->form_validation->set_rules("numIncidencia", "Nro de Incidencia", "required");
+		$this->form_validation->set_rules("descTipoIncidencia", "Descripcion", "required");
+		if ($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', validation_errors());
+			redirect(base_url()."empleados/empleados/add", "refresh");
+		}else{
+
+			$data = array(
+				'NUMINCIDENCIA'  => $NumIncidencia,
+				'DESCINCIDENCIA'  => $descripcion,
+				'FECGRABACION' => $fechaActual
+			);
+			if($this->Incidencia_model->update($data, $idTipoIncidencia))
 			{
-				//indicar campos de la tabla a modificar
-				$data = array(
-					'desCiudad' => $desCiudad,
-					'iddepartamento' => $idDepartamento
-				);
-
-
-				if($this->Incidencia_model->update($idCiudad,$data))
-				{
 					//print_r($idCiudad); die();
-					$this->session->set_flashdata('success', 'Actualizado correctamente!');
-					redirect(base_url()."tipoincidencias/tipoincidencias", "refresh");
-				}
-				else
-				{
-					$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-					redirect(base_url()."tipoincidencias/tipoincidencias/edit/".$idCiudad,"refresh");
-				}
+				$this->session->set_flashdata('success', 'Actualizado correctamente!');
+				redirect(base_url()."tipo_incidencia", "refresh");
 			}
 			else
-			{	
-
-				$this->session->set_flashdata('error', 'Ingrese Ciudad!');
-					//redireccionamos
+			{
+				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
 				redirect(base_url()."tipoincidencias/tipoincidencias/edit/".$idCiudad,"refresh");
 			}
+		}
+
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }
@@ -187,14 +169,14 @@ class Incidencias extends CI_Controller
 	public function delete($id)
 	{
 		// if ($this->session->userdata('sist_conex')=="A") {
-			if($this->Incidencia_model->delete($id)){
-				$this->session->set_flashdata('success', 'Eliminado correctamente!');
-				redirect(base_url()."tipoincidencias/tipoincidencias/", "refresh");
-			}else{
-				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				redirect(base_url()."tipoincidencias/tipoincidencias/","refresh");
-			}
-		
+		if($this->Incidencia_model->delete($id)){
+			$this->session->set_flashdata('success', 'Eliminado correctamente!');
+			redirect(base_url()."tipoincidencias/tipoincidencias/", "refresh");
+		}else{
+			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+			redirect(base_url()."tipoincidencias/tipoincidencias/","refresh");
+		}
+
 		// }else {
 		// 	redirect(base_url(),'refresh');
 		// }

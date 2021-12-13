@@ -5,7 +5,7 @@ class pagos extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(array('Empleados_model'));
+		$this->load->model(array('Empleados_model', 'Movimientos_model'));
 		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
 
 
@@ -35,9 +35,9 @@ class pagos extends CI_Controller {
 			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
 		}else {
 			$movimiento = $this->input->post('movimiento', TRUE);
-			$desde = $this->input->post('desde', TRUE);
-			$hasta = $this->input->post('hasta', TRUE);
-			$mensajes['correcto'] = '<b style="color:green"> Todo bien hasta acá</b>';
+			$desde = $this->input->post('fechadesde', TRUE);
+			$hasta = $this->input->post('fechahasta', TRUE);
+			// $mensajes['correcto'] = '<b style="color:green"> Todo bien hasta acá</b>';
 			if ($movimiento=='1') {
 				$concepto = 'IPS';
 			}elseif ($movimiento =='2') {
@@ -46,19 +46,41 @@ class pagos extends CI_Controller {
 				$concepto = 'AGUINALDO';
 			}
 			$file = fopen($concepto.".txt", "w");
-			$empleados = $this->Empleados_model->getEmpleadosActivos();
+			$empleados = $this->Empleados_model->getEmpleados(true);
 			foreach ($empleados as $empleado) {
-				fwrite($file, $empleado->CEDULA.','. PHP_EOL);
-				// code...
+				$monto = 0;
+				if ($concepto =='SALARIO') {
+					$total_movimientos_suma = $this->Movimientos_model->getTotalMovimientosSuma($empleado->IDEMPLEADO, $desde, $hasta, false);
+					$total_movimientos_resta = $this->Movimientos_model->getTotalMovimientosResta($empleado->IDEMPLEADO, $desde, $hasta);
+					$monto = $total_movimientos_suma->IMPORTE - $total_movimientos_resta->IMPORTE;
+					$nroCuenta = $empleado->NROCUENTA;
+				}
+				if ($concepto =='IPS') {
+					$monto = $this->Movimientos_model->getTotalMovimientos($empleado->IDEMPLEADO, $desde, $hasta, $concepto);
+					$monto = $monto->IMPORTE;
+					$nroCuenta = $empleado->NUMEROIPS;
+				}
+				if ($concepto=='AGUINALDO') {
+					$tipoMovimientos = $this->Movimientos_model->getTipoMovimientos(false, false, '+');
+					foreach ($tipoMovimientos as $tipoMovimiento) {
+						$concepto = $tipoMovimiento->DESC;
+						$total_por_tipo = $this->Movimientos_model->getTotalMovimientos($empleado->IDEMPLEADO, $desde, $hasta, $concepto);
+						$monto = $monto + ($total_por_tipo->IMPORTE/12)*$total_por_tipo->CANTIDAD;
+					}
+					$nroCuenta = $empleado->NROCUENTA;
+					$concepto = 'AGUINALDO';
+				}
+				fwrite($file, $empleado->CEDULAIDENTIDAD.','.$nroCuenta.','.$monto.PHP_EOL);
 			}
 			fclose($file);
-			$mensajes['datos'] ="SALARIO.txt";
+			$mensajes['correcto'] =$concepto;
 		}
 		echo json_encode($mensajes);
 
 	}
-	public function descargarArchivos($name){
-		$fileName = "SALARIO.txt";
+	public function descargaArchivos($name){
+		var_dump($name);
+		$fileName = $name.".txt";
 		$filePath = FCPATH.'/'.$fileName;
 		if(!empty($fileName) && file_exists($filePath)){
     			// Define headers

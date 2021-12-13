@@ -3,7 +3,7 @@
 	<div class="page-title">
 		<div class="title_left">
 			<h3>
-				Ciudad
+				Tipo de Incidencias
 			</h3>
 		</div>
 	</div>
@@ -11,9 +11,9 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="col-md-12" align="right">
-				<a href="<?php echo base_url();?>ciudades/ciudades/add" class="btn btn-dark">
+				<a href="<?php echo base_url();?>tipoincidencias/Incidencias/add" class="btn btn-dark">
 					<i class="fa fa-plus">
-					</i> Agregar Ciudad
+					</i> Agregar Tipo de Incidencia
 				</a>
 				<?php
 				if($this->session->flashdata("success")): ?>
@@ -30,7 +30,7 @@
 			<?php endif; ?>
 			<?php
 			if($this->session->flashdata("error")): ?>
-				<div class="alert alert-success" role="alert">
+				<div class="alert alert-danger" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						&times;
 					</button>
@@ -45,7 +45,7 @@
 			<div class="x_panel">
 				<div class="x_title">
 					<h2>
-						Listado de Ciudades
+						Listado de Tipo de Incidencias
 					</h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li>
@@ -64,90 +64,56 @@
 				</div>
 				<div class="row">
 					<!-- <div class="col-md-12"> -->
-						<table id="tb_ciudad" class="table table-striped table-bordered btn-hover table-responsive" width="100%">
+						<table id="tb_tipoIncidencia" class="table table-striped table-bordered btn-hover table-responsive" width="100%">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Código Ciudad</th>
+									<th>Código Tipo Incidencia</th>
 									<th>Descripcion</th>
-									<th>Departamento</th>
 									<th>Fecha de Grabacion</th>
-									<th>Estado</th>
 									<th>Opciones</th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php
-								if(!empty($ciudades)):?>
+								if(!empty($incidencias)):?>
 									<?php
-									foreach($ciudades as $ciudad):?>
+									$contador = 0;
+									foreach($incidencias as $incidencia):?>
+										<?php $contador++ ?>
 										<tr>
-											<td><?php echo $ciudad->IDCIUDAD; ?></td>
-											<td><?php echo $ciudad->NUMCIUDAD;?></td>
-											<td><?php echo $ciudad->DESCIUDAD;?></td>
-											<td><?php echo $ciudad->DESDEPARTAMENTO;?></td>
-											<td><?php echo $ciudad->FECGRABACION;?></td>
-
-											<?php
-											$estado = 1;
-											if($estado == 1){
-												$estado2     = "Activo";$label_class = 'label-success';
-											}else{
-												if($estado == 2){
-													$estado2     = "Inactivo";$label_class = 'label-warning';
-												}else{
-													$estado2     = "Anulado";$label_class = 'label-danger';
-												}
-											}
-											;?>
-											<td><span class="label <?php echo $label_class;?>"><?php echo $estado2; ?></span></td>
+											<td><?php echo $contador; ?></td>
+											<td><?php echo $incidencia->NUMINCIDENCIA;?></td>
+											<td><?php echo $incidencia->DESCINCIDENCIA;?></td>
+											<td><?php echo $incidencia->FECHAGRABACION;?></td>
 											<td>
-												<a href="<?php echo base_url();?>ciudades/Ciudades/edit/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-												<a href="<?php echo base_url();?>ciudades/Ciudades/delete/<?php echo $ciudad->IDCIUDAD;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
+												<a href="<?php echo base_url();?>tipoincidencias/Incidencias/edit/<?php echo $incidencia->IDTIPOINCIDENCIA;?>" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+												<a href="<?php echo base_url();?>tipoincidencias/Incidencias/delete/<?php echo $incidencia->IDTIPOINCIDENCIA;?>" class="btn btn-danger btn-delete eliminar"><i class="fa fa-trash"></i></a>
 											</td>
 										</tr>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</tbody>
 						</table>
-					<!-- </div>  -->
+						<!-- </div>  -->
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
 <!-- </div> -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="modal-view">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><i class='fa fa-eye'></i> Ver Detalles de la Ciudad </h4>
-			</div>
-			<div class="modal-body">
-				<!--en esta parte se carga los datos de la vista view-->
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-			</div>
-		</div>
-	</div>
-</div>
 <!--<?php // $this->load->view('template/footer');?>-->
 <script type="text/javascript" src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
 
 <script type="text/javascript" >
 	$(document).ready(function(){
-		$('#tb_ciudad thead tr').clone(true).appendTo( '#tb_ciudad thead' );
-		$('#tb_ciudad thead tr:eq(1) th').each( function (i) {
+		$('#tb_tipoIncidencia thead tr').clone(true).appendTo( '#tb_tipoIncidencia thead' );
+		$('#tb_tipoIncidencia thead tr:eq(1) th').each( function (i) {
 			var title = $(this).text().trim();
 			var col = i;
-			if (col=='6' || col=='0') {
-				console.log(i);
+			if (col=='4' || col=='0') {
 				$(this).html( '' );
 			}else{
 				$(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
@@ -162,17 +128,17 @@
 				} );
 			}		
 		});
-		var table = $('#tb_ciudad').DataTable({
+		var table = $('#tb_tipoIncidencia').DataTable({
 			dom: 'Bfrtip',
 			"columnDefs": [
-			{ "width": "15%", "targets": 6 }],
+			{ "width": "15%", "targets": 4 }],
 			"orderCellsTop": true,
 			buttons: [{
 				extend: 'pdfHtml5',
 				text: 'Generar PDF',
-				title:'Listado de Ciudades' ,
+				title:'Listado de Tipo de Incidencias' ,
 				exportOptions: {
-					columns: [0,1,2,3,4,5 ]
+					columns: [0,1,2,3 ]
 				}, 
 				customize: function ( doc ) {
 					var d = new Date();
@@ -237,57 +203,28 @@
 						height: 80
 					} );
 }
-                // Data URL generated by http://dataurl.net/#dataurlmaker
 
-            }], 
-            "language": {
-            	"lengthMenu": "Mostrar _MENU_ registros por pagina",
-            	"zeroRecords": "No se encontraron Resultados!",
-            	"searchPlaceholder": "Buscar registros",
-            	"info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_ registros",
-            	"infoEmpty": "No existen registros",
-            	"infoFiltered": "(Filtrado de un total de _MAX_ registros)",
-            	"search": "Buscar:",
-            	"paginate": {
-            		"first": "Primero",
-            		"last" : "Ultimo",
-            		"next" : "Siguiente",
-            		"previous" : "Anterior"
-            	},
-            }
-        });
+}], 
+"language": {
+	"lengthMenu": "Mostrar _MENU_ registros por pagina",
+	"zeroRecords": "No se encontraron Resultados!",
+	"searchPlaceholder": "Buscar registros",
+	"info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_ registros",
+	"infoEmpty": "No existen registros",
+	"infoFiltered": "(Filtrado de un total de _MAX_ registros)",
+	"search": "Buscar:",
+	"paginate": {
+		"first": "Primero",
+		"last" : "Ultimo",
+		"next" : "Siguiente",
+		"previous" : "Anterior"
+	},
+}
+});
 
 var base_url= "<?php echo base_url();?>";
-$(".btn-view").on("click", function(){
-	var id= $(this).val();
-	$.ajax({
-		url: base_url + "ciudades/ciudades/view/" + id,
-		type: "POST",
-		success:function(resp){
-			$("#modal-view .modal-body").html(resp);
-		}
-	});
+
 })
-})
-
-function eliminar_Copia(id){
-	if(confirm("Esta seguro que desea eliminar este registro?")){
-
-		window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
-
-
-		/*$.ajax({
-            url: "/isupport/movimientos/movimientos/delete/" + id,
-            type: "GET",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              alert('Registro Eliminado correctamente');
-            //alert(resp);
-            }
-        });*/
-    }
-}
-
 $(".eliminar").click(function(e){
 	e.preventDefault();
 	var id = $(this).attr('href');

@@ -120,7 +120,7 @@
                     title: 'Correcto!',
                     content: wrapper,
                 });
-                window.location = base_url+r['datos'];
+                window.location = base_url+'descargar_archivo/'+r['correcto'];
             }
         }).fail(function() {
             alert("Se produjo un error, contacte con el soporte técnico");
