@@ -36,12 +36,7 @@ $date_act = $sucursal->FECGRABACION;
 <p>
 	<strong>
 		Descripcion:
-	</strong><?php echo $sucursal->DESSUCURSAL;?>
-</p>
-<p>
-	<strong>
-		Zona:
-	</strong><?php echo $sucursal->DESZONA;?>
+	</strong><?php echo $sucursal->DESCSUCURSAL;?>
 </p>
 <p>
 	<strong>
@@ -52,11 +47,6 @@ $date_act = $sucursal->FECGRABACION;
 	<strong>
 		Telefono:
 	</strong><?php echo $sucursal->TELEFONO;?>
-</p>
-<p>
-	<strong>
-		Nro. Registro Patronal:
-	</strong><?php echo $sucursal->NROPATRONAL;?>
 </p>
 <p>
 	<strong>
