@@ -72,7 +72,7 @@ class Profesiones extends CI_Controller
 		$time = time();
 		$fechaActual = date("Y-m-d H:i:s",$time);
 
-		// $empresa = $_SESSION["Empresa"];
+		$empresa = $_SESSION["Empresa"];
 		// $sucursal = $_SESSION["Sucursal"];
 		// $idusuario = $_SESSION["idusuario"];
 
