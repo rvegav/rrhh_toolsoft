@@ -13,7 +13,7 @@ class Movimientos extends CI_Controller
 			redirect(base_url());
 		}
         // $this->date = new Datetime();
-		$this->date = new Datetime('2021-11-01');
+		$this->date = new Datetime('2021-12-01');
 		$this->load->model("Empleados_model");
 		$this->load->model("Movimientos_model");
 	}

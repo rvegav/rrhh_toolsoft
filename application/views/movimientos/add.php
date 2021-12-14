@@ -270,7 +270,7 @@
         .done(function (data){
             var r = JSON.parse(data);
             console.log(r);
-            $('#txtTipoMovi').val(r[0].DESC);
+            $('#txtTipoMovi').val(r.DESC);
             $("#mdlTipoMovimiento").modal("hide");
         })
         .fail(function(){

@@ -183,7 +183,7 @@ public function getMovimientoDetalle($idMovi){
 
 
 public function getTipoMovimiento($desc){
-	$this->db->select("idtipomovisueldo as IDTIPOMOVISUELDO,numtipomov as NUMTIPOMOV,destipomov as DESTIPOMOV");
+	$this->db->select("idtipomovisueldo as IDTIPOMOVISUELDO,numtipomov as NUMTIPOMOV,destipomov as DESTIPOMOV, PORCENTAJE, SUMARESTA, ENRECIBO, SALARIOBASICO, SALARIOMINIMO, TOTALSALARIO, AGUINALDO");
 	$this->db->from("tipomovisueldo");
 	$this->db->where('destipomov', $desc);
 	$resultados= $this->db->get();
@@ -378,6 +378,20 @@ public function getEmpleado1(){
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
 			return $resultados->row();
+		} else {
+			return false;
+		}
+	}
+	public function getMovimientosEmpleados($empleado, $fechaDesde, $fechaHasta){
+		$this->db->select("ms.IMPORTE as IMPORTE, tm.aguinaldo AGUINALDO");
+		$this->db->from('movisueldodetalle ms');
+		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
+		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
+		$this->db->where('ms.IDEMPLEADO', $empleado);
+		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
 		} else {
 			return false;
 		}

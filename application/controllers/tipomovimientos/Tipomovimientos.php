@@ -67,6 +67,7 @@ class Tipomovimientos extends CI_Controller
 		$numTipoMov   = $this->input->post("NumTipoMovimiento");
 		$desTipoMov   = $this->input->post("desTipoMovimiento");
 		$importe   = $this->input->post("Importe");
+		$porcentaje = $this->input->post('Porcentaje');
 		$idCuentaContable  = $this->input->post("IdPlanCuenta");;
 		$accion  = $this->input->post("accion");
 		$tipo  = $this->input->post("tipo");
@@ -78,7 +79,7 @@ class Tipomovimientos extends CI_Controller
 		if(is_null($libro)){
 			$libro = 0;	
 		}
-		else if(is_null($recibo)){
+		elseif(is_null($recibo)){
 			$recibo = 0;
 		}
 		$idTipoMov = $this->Tipomovimiento_model->ultimoNumero();
@@ -88,17 +89,23 @@ class Tipomovimientos extends CI_Controller
 		$sucursal = $_SESSION["Sucursal"];
 		$idusuario = $_SESSION["usuario"];
 		//corremos la validacion
-		if($tipo == 1){$salarioMinimo = 1; $salarioBasico = 0; $salarioTotal = 0;}
-		else if ($tipo == 2){$salarioMinimo = 0; $salarioBasico = 1; $salarioTotal = 0;}
-		else if ($tipo == 3){$salarioMinimo = 0; $salarioBasico = 0; $salarioTotal = 1;}
-		else if ($tipo == 4){$salarioMinimo = 0; $salarioBasico = 0; $salarioTotal = 0;}
+		if($tipo == 1){
+			$salarioMinimo = 1; $salarioBasico = 0; $salarioTotal = 0;
+		}elseif ($tipo == 2){
+			$salarioMinimo = 0; $salarioBasico = 1; $salarioTotal = 0;
+		}elseif ($tipo == 3){
+			$salarioMinimo = 0; $salarioBasico = 0; $salarioTotal = 1;
+		}elseif ($tipo == 4){
+			$salarioMinimo = 0; $salarioBasico = 0; $salarioTotal = 0;
+		}
 		//print_r($_POST); die();
 		//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 		$data = array(
 			'idtipomovisueldo' => $idTipoMov->MAXIMO,
 			'numtipomov' => $numTipoMov,
-			'destipomov' => $desTipoMov,
+			'destipomov' => strtoupper($desTipoMov),
 			'sumaresta' => $accion,
+			'porcentaje'=> $porcentaje,
 			'salariominimo' => $salarioMinimo,
 			'salariobasico' => $salarioBasico,
 			'totalsalario' => $salarioTotal,
@@ -108,8 +115,11 @@ class Tipomovimientos extends CI_Controller
 			'fecgrabacion' => $fechaActual
 		);
 
+		// echo "<pre>";
+	 //    print_r($data);
+		// echo "</pre>";
 
-	    //print_r($data); die();
+	 //    die();
 			//guardamos los datos en la base de datos
 		if($this->Tipomovimiento_model->save($data))
 		{	
@@ -143,37 +153,79 @@ class Tipomovimientos extends CI_Controller
 	{
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
-			'tipomovimientos'=>$this->Tipomovimiento_model->getTipoMovimientos(),
+			'tipomovimientos'=>$this->Tipomovimiento_model->getTipoMovimientos($id),
 			'cuentacontables'=>$this->Plancuenta_model->getPlancuentas(),
 			'tipomovidetalles'=> $this->Tipomovimiento_model->getTipomovidetalle($id)
 		);
+		// echo "<pre>";
+		// var_dump($data);
+		// echo "</pre>";
+
+		// die();
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
-		$this->load->view('tipomovimientos/edit',compact('data'));
+		$this->load->view('tipomovimientos/edit',$data);
 		$this->load->view('template/footer');
 	}	
 	public function update(){
-		$idTipoMovi = $this->input->post("IDTIPOMOVISUELDO");
-		$desTipoMov = $this->input->post("DESTIPOMOV");
-		$importe = $this->input->post("IMPORTE");
-		$idCuentaContable  = $this->input->post("IDCUENTACONTABLE");
-		$suma = $this->input->post("SUMA");
-		$resta = $this->input->post("RESTA");
-		$salarioMinimo = $this->input->post("SALARIOMINIMO");
-		$salarioBasico = $this->input->post("SALARIOBASICO");
-		$totalSalario = $this->input->post("TOTALSALARIO");
-		$salarioMinimo = $this->input->post("RECIBO");
-		$libro = $this->input->post("LIBRO");
-			//indicar campos de la tabla a modificar
+		echo "<pre>";
+		var_dump($_POST);
+		echo "</pre>";
+
+		// die();
+		$idTipoMovi = $this->input->post('IDTIPOMOVISUELDO', TRUE);
+		$numTipoMov   = $this->input->post("NumTipoMovimiento");
+		$desTipoMov   = $this->input->post("desTipoMovimiento");
+		$importe   = $this->input->post("Importe");
+		$porcentaje = $this->input->post('Porcentaje');
+		$idCuentaContable  = $this->input->post("IdPlanCuenta");;
+		$accion  = $this->input->post("accion");
+		$tipo  = $this->input->post("tipo");
+		$impresion  = $this->input->post("impresion");
+		$recibo  = $this->input->post("recibo");
+		$libro  = $this->input->post("libro");
+		$detalle = $this->input->post("TipoDetalle");
+
+		if(is_null($libro)){
+			$libro = 0;	
+		}
+		elseif(is_null($recibo)){
+			$recibo = 0;
+		}
+		// $idTipoMov = $this->Tipomovimiento_model->ultimoNumero();
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$idusuario = $_SESSION["usuario"];
+		//corremos la validacion
+		if($tipo == 1){
+			$salarioMinimo = 1; $salarioBasico = 0; $salarioTotal = 0;
+		}elseif ($tipo == 2){
+			$salarioMinimo = 0; $salarioBasico = 1; $salarioTotal = 0;
+		}elseif ($tipo == 3){
+			$salarioMinimo = 0; $salarioBasico = 0; $salarioTotal = 1;
+		}elseif ($tipo == 4){
+			$salarioMinimo = 0; 
+			$salarioBasico = 0;
+			 $salarioTotal = 0;
+		}
+		//print_r($_POST); die();
+		//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 		$data = array(
-			'FECHAMOVI'  =>   $FECHAMOVI,
-			'IDTIPOMOVISUELDO'     =>  $NUMTIPOMOV,
-			'IDEMPLEADO' => $EMPLEADO,
-			'DIAS' => $DIAS,
-			'HORAS' => $HORAS,
-			'IMPORTE' => $IMPORTE,
-			'IDMOVIDETALLE' => $IDMOVIDETALLE		
+			'numtipomov' => $numTipoMov,
+			'destipomov' => strtoupper($desTipoMov),
+			'sumaresta' => $accion,
+			'porcentaje'=> $porcentaje,
+			'salariominimo' => $salarioMinimo,
+			'salariobasico' => $salarioBasico,
+			'totalsalario' => $salarioTotal,
+			'enrecibo' => $recibo,
+			'libros' => $libro,
+			'idplancuenta' => $idCuentaContable,
+			'fecgrabacion' => $fechaActual
 		);
+
 		if($this->Tipomovimiento_model->update($idTipoMovi,$data)){
                 //$this->Movimientos_model->update1($IDMOVI,$data);
 			$this->session->set_flashdata('success', 'Actualizado correctamente!');
@@ -186,7 +238,7 @@ class Tipomovimientos extends CI_Controller
 		//else
 		//{	
 			//si hubieron errores, recargamos la funcion que esta mas arriba, editar y enviamos nuevamente el id como parametro
-		$this->edit($idTipoMovi);
+		// $this->edit($idTipoMovi);
 		//}
 	}
 

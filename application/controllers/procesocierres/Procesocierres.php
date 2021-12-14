@@ -109,7 +109,7 @@ class Procesocierres extends CI_Controller
 				$id_movimiento = $this->Movimientos_model->save($data);
 				foreach ($empleados as $empleado ) {
 					$total_movimientos_suma = $this->Movimientos_model->getTotalMovimientosSuma($empleado->IDEMPLEADO, $FECHADESDE, $FECHAHASTA);
-					$importeIPS = $total_movimientos_suma->IMPORTE*.09;
+					$importeIPS = $total_movimientos_suma->IMPORTE * ($tipoMovimiento->PORCENTAJE /100);
 					$data = array(
 						'idmovi' => $id_movimiento,
 						'idempleado' => $empleado->IDEMPLEADO,
@@ -121,45 +121,41 @@ class Procesocierres extends CI_Controller
 					);
 					$this->Movimientos_model->save_detalle($data);
 				}
+				foreach ($empleados as $empleado) {
+					$movimientosEmpleado = $this->Movimientos_model->getMovimientosEmpleados($empleado->IDEMPLEADO, $FECHADESDE, $FECHAHASTA);
+					$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
+					$porcentajeIps=$tipoMovimiento->PORCENTAJE;
+					if ($movimientosEmpleado) {
+						// var_dump($movimientosEmpleado);
+						// die();
+						foreach ($movimientosEmpleado as $movimiento) {
+							if ($movimiento->AGUINALDO !='0') {
+								$data = array(
+									'idempleado' => $empleado->IDEMPLEADO,
+									'idsucursal' => $empleado->IDSUCURSAL,
+									'FECHADESDE' => $FECHADESDE,
+									'FECHAHASTA' => $FECHAHASTA,
+									'IMPORTEMOV'=> $movimiento->IMPORTE,
+									'NETO'=>$movimiento->IMPORTE - ($movimiento->IMPORTE * ($porcentajeIps/100))
+								);
+							}else{
+								$data = array(
+									'idempleado' => $empleado->IDEMPLEADO,
+									'idsucursal' => $empleado->IDSUCURSAL,
+									'FECHADESDE' => $FECHADESDE,
+									'FECHAHASTA' => $FECHAHASTA,
+									'IMPORTEMOV'=> $movimiento->IMPORTE,
+									'NETO'=>$movimiento->IMPORTE
+								);
+							}
+							$this->Procesocierres_model->saveProcesocierre($data);
+						}
+					}
+				}
+
+
 			}
-			// if ($IDCIERRE == 1){
-			// 	$IDCIERRE = $IDCIERRE + 100;
-			// }
-			// if ($this->validar_fecha_espanol($FECHADESDE,$FECHAHASTA)){
-			// 	$existe = $this->Procesocierres_model->existeCierre($DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA);
-			// 	$variableexiste = $existe[0]['CANTIDAD'];
-			// 	if($variableexiste == 0){
-			// 		if($this->save_procesocierre($IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){	
-			// 			$maximo = $this->Procesocierres_model->getIdAsiento();
-			// 			$idmaximo = $maximo[0]['MAXIMO'];
-			// 			$data = array('iddiario'  =>   $idmaximo,
-			// 				'idcierre'  =>  $IDCIERRE,
-			// 				'idusuario' => 1,
-			// 				'idempresa' => 1,
-			// 				'numasiento' => 0 + $idmaximo,
-			// 				'fechaasiento' => $FECHAHASTA,
-			// 				'generado'	 => 1);
-			// 			if($this->Procesocierres_model->saveAsiento($data)){ //CABECERA DE ASIENTOS CONTABLES 16/08/2018
-			// 				if($this->save_asientoDetalle($idmaximo,$IDCIERRE,$FECHADESDE,$FECHAHASTA,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)){ //DETALLES DE ASIENTOS CONTABLES 16/08/2018
-			// 					$this->session->set_flashdata('success', 'Proceso generado correctamente!');
-			// 					redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
-			// 				}
-			// 			}
-			// 		}else{
-			// 			$this->session->set_flashdata('error', 'Movimiento no registrado!');				
-			// 		//redireccionamos
-			// 			redirect(base_url().'procesocierres/procesocierres/add', "refresh");
-			// 		}
-			// 	}else{
-			// 		$this->session->set_flashdata('error', 'Ya existe un proceso de cierre en este periodo!');
-			// 		redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
-			// 	}
-			// }else{
-			// 	$this->session->set_flashdata('error', 'Ingrese Fecha correcta!');
-			// 	redirect(base_url().'procesocierres/procesocierres/add', 'refresh');
-			// }
-			echo "hizo todo";
-			die();
+			
 		}
 
 	}

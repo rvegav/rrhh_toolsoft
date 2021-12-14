@@ -74,55 +74,52 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desCiudad">Ciudad <span class="required">*</span>
 							</label>
-                        <!--<div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="desCiudad" required="required" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $ciudad->DESCIUDAD;?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
-                      </div>-->
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                      	<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $ciudad->DESCIUDAD;?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
-                      </div>
-                  </div>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input type="text" id="desCiudad" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $ciudad->DESCIUDAD;?>" name="desCiudad" class="form-control col-md-7 col-xs-12">
+							</div>
+						</div>
+						
+						<div class="container">
+							<label class="control-label col-md-3 col-sm-6 col-xs-12" for="IdCiudad">Departamento 
+								<span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div id="custom-search-input">
+									<div class="input-group col-md-12">
+										<input type="hidden" name="IdDepartamento" id="IdDepartamento">	
+										<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" />
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2">
+												<span class="fa fa-search" aria-hidden="true">
+												</span>
+											</button>
+										</span>
+									</div>
+								</div>
+							</div>        
+						</div>		
+						
 
-                  <div class="container">
-                  	<label class="control-label col-md-3 col-sm-6 col-xs-12" for="IdCiudad">Departamento 
-                  		<span class="required">*</span>
-                  	</label>
-                  	<div class="col-md-6 col-sm-6 col-xs-12">
-                  		<div id="custom-search-input">
-                  			<div class="input-group col-md-12">
-                  				<input type="hidden" name="IdDepartamento" id="IdDepartamento">	
-                  				<input type="text" name="Departamento" id="Departamento" class="form-control col-md-7 col-xs-12" placeholder="Buscar Departamento" disabled="disabled" />
-                  				<span class="input-group-btn">
-                  					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2">
-                  						<span class="fa fa-search" aria-hidden="true">
-                  						</span>
-                  					</button>
-                  				</span>
-                  			</div>
-                  		</div>
-                  	</div>        
-                  </div>		
-                  
+						<input type="text" id="idciudad" style="visibility: hidden;" required="required"  readonly value="<?php echo $ciudad->IDCIUDAD;?>" name="idciudad" class="form-control col-md-7 col-xs-12">
 
-                  <input type="text" id="idciudad" style="visibility: hidden;" required="required"  readonly value="<?php echo $ciudad->IDCIUDAD;?>" name="idciudad" class="form-control col-md-7 col-xs-12">
+						<div class="ln_solid"></div>
+						<div class="form-group">
+							<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+								<button type="reset" class="btn btn-primary">Resetear</button>
+								<button type="submit" class="btn btn-success">Actualizar</button>
+								<a href="<?php echo base_url();?>/ciudades/ciudades/"><button type="button" class="btn btn-warning">Cancelar</button></a>
 
-                  <div class="ln_solid"></div>
-                  <div class="form-group">
-                  	<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                  		<button type="reset" class="btn btn-primary">Resetear</button>
-                  		<button type="submit" class="btn btn-success">Actualizar</button>
-                  		<a href="<?php echo base_url();?>/ciudades/ciudades/"><button type="button" class="btn btn-warning">Cancelar</button></a>
+								<!--<button type="button" name="entrar" value="ENTER" onclick="verificar_campos()" class="btn btn-success" onclick="verificar_campos()">Actualizar</button>-->
 
-                  		<!--<button type="button" name="entrar" value="ENTER" onclick="verificar_campos()" class="btn btn-success" onclick="verificar_campos()">Actualizar</button>-->
+							</div>
+						</div>
 
-                  	</div>
-                  </div>
+					</form>
 
-              </form>
-
-          </div> <!-- /COL  12-->
-      </div><!-- /ROW -->
-  </div><!-- / content -->
-</div>
+				</div> <!-- /COL  12-->
+			</div><!-- /ROW -->
+		</div><!-- / content -->
+	</div>
 </div>
 </div>
 

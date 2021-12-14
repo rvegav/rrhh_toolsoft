@@ -23,7 +23,7 @@ class Procesocierres_model extends CI_Model {
 		$this->db->select("(CASE WHEN  max(IDCIERRE) IS NULL THEN '1' ELSE max(IDCIERRE) + 1 END) as MAXIMO");
 		$this->db->from("procesocierre");
 		$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 	}
 
 	public function getIdAsiento(){
@@ -147,7 +147,8 @@ return $resultados->result_array();
 	//esta es la parte para guardar en la bd
 	public function saveProcesocierre($data)
 	{
-		//echo '<pre>'.print_r($data).'</pre>'; die();
+		$Id = $this->getIdMaximo();
+		$this->db->set('idCierre', $Id->MAXIMO);
 		return $this->db->insert("procesocierre", $data);
 	}
 
@@ -270,7 +271,7 @@ public function getSucursal(){
 }
 
 public function getEmpleado($parametros = false){
-	$this->db->select("IDEMPLEADO,CONCAT(Nombre, ' ', Apellido) as NOMBRE,NUMEMPLEADO, c.MONTOASIGNADO");
+	$this->db->select("IDEMPLEADO,CONCAT(Nombre, ' ', Apellido) as NOMBRE,NUMEMPLEADO, c.MONTOASIGNADO, s.IDSUCURSAL");
 	$this->db->from("empleado e");
 	$this->db->join('sucursal s', 's.IDSUCURSAL = e.IDSUCURSAL');
 	$this->db->join('departamentoempresa d', 'd.IDDEPARTEMENTO = e.IDDEPARTEMENTO');

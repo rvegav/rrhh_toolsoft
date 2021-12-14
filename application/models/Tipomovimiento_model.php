@@ -11,11 +11,23 @@ class Tipomovimiento_model extends CI_Model {
 		//return $resultados->result();
 	//}
 
-	public function getTipoMovimientos(){
-		$this->db->select("idtipomovisueldo AS IDEMPLEADO,NUMTIPOMOV AS NUMEMPLEADO,DESTIPOMOV AS NOMBRE");
-		$this->db->from("tipomovisueldo");
+	public function getTipoMovimientos($id = false){
+		$this->db->select("IDTIPOMOVISUELDO,NUMTIPOMOV,DESTIPOMOV, DESCPLANCUENTA, t.IDPLANCUENTA, PORCENTAJE, SUMARESTA, ENRECIBO, SALARIOBASICO, SALARIOMINIMO, TOTALSALARIO, AGUINALDO, LIBROS, ENRECIBO");
+		$this->db->from("tipomovisueldo t");
+		$this->db->join('plancuentas p', 'p.IDPLANCUENTA = t.IDPLANCUENTA');
+		if ($id) {
+			$this->db->where('idtipomovisueldo', $id);
+		}
 		$resultados= $this->db->get();
-		return $resultados->result();
+		if ($resultados->num_rows()>0) {
+			if ($id) {
+				return $resultados->row();
+			}else{
+				return $resultados->result();
+			}
+		}else{
+			return false;
+		}
 	}
 
 	public function getTipoDetalle(){
@@ -27,7 +39,7 @@ class Tipomovimiento_model extends CI_Model {
 
 	public function getTipoMovimientos_Copia(){
 		$this->db->select("IDTIPOMOVISUELDO,NUMTIPOMOV,DESTIPOMOV,concat(d.numplancuenta,' - ',d.descplancuenta) as CUENTACONTABLE,
-			(case when t.sumaresta = 1 then 'SUMA' else 'RESTA' end) as SUMARESTA");
+			(case when t.sumaresta = '+' then 'SUMA' else 'RESTA' end) as SUMARESTA");
 		$this->db->from("tipomovisueldo t");
 		$this->db->join("plancuentas d", "d.idplancuenta = t.idplancuenta","left");
 		$resultados= $this->db->get();
@@ -108,44 +120,44 @@ public function getTipomovidetalle($id){
 
 	//esto es para actualizar los MOVIMIENTO CABECERA
 	public function update($id, $data){
-		//$this->db->where("idMovi", $idMovi);
-		//return $this->db->update("movisueldo", $data);
+		$this->db->where("IDTIPOMOVISUELDO", $id);
+		return $this->db->update("tipomovisueldo", $data);
 		//print_r($data);die();
-		$cabecera = array(
-				'DESTIPOMOV' => $data['DESTIPOMOV'],
-				'SUMARESTA'=> $data['SUMARESTA'],
-				'ENRECIBO'=> $data['ENRECIBO'],
-				'LIBROS'=> $data['LIBROS'],
-				'IMPORTE'=> $data['IMPORTE'],
-				'PORCENTAJE'=> $data['PORCENTAJE'],
-				'SALARIOMINIMO'=> $data['SALARIOMINIMO'],	
-				'SALARIOBASICO'=> $data['SALARIOBASICO'],
-				'TOTALSALARIO'=> $data['TOTALSALARIO'],
-		);
+		// $cabecera = array(
+		// 		'DESTIPOMOV' => $data['DESTIPOMOV'],
+		// 		'SUMARESTA'=> $data['SUMARESTA'],
+		// 		'ENRECIBO'=> $data['ENRECIBO'],
+		// 		'LIBROS'=> $data['LIBROS'],
+		// 		'IMPORTE'=> $data['IMPORTE'],
+		// 		'PORCENTAJE'=> $data['PORCENTAJE'],
+		// 		'SALARIOMINIMO'=> $data['SALARIOMINIMO'],	
+		// 		'SALARIOBASICO'=> $data['SALARIOBASICO'],
+		// 		'TOTALSALARIO'=> $data['TOTALSALARIO'],
+		// );
 
 
-		try { 	  
-			$this->db->where("idtipomovisueldo", $id);
-			if($this->db->update("tipomovisueldo", $cabecera)){
-				for ($i=0; $i < count($data['IDTIPOMOVIDETALLE']); $i++) { 
+		// try { 	  
+		// 	$this->db->where("idtipomovisueldo", $id);
+		// 	if($this->db->update("tipomovisueldo", $cabecera)){
+		// 		for ($i=0; $i < count($data['IDTIPOMOVIDETALLE']); $i++) { 
 					
-					$detalle = array(
-					    'idtipomovidetalle' => $data['IDTIPOMOVIDETALLE'][$i]
-					);
+		// 			$detalle = array(
+		// 			    'idtipomovidetalle' => $data['IDTIPOMOVIDETALLE'][$i]
+		// 			);
 					
-					$this->db->where("idtipomovidetalle", $detalle['idtipomovidetalle']);
-					$this->db->update("tipomovisueldodetalle", $detalle);
-					$detalle =array();
-				}
+		// 			$this->db->where("idtipomovidetalle", $detalle['idtipomovidetalle']);
+		// 			$this->db->update("tipomovisueldodetalle", $detalle);
+		// 			$detalle =array();
+		// 		}
 
-				return true;
+		// 		return true;
 
-			}
+		// 	}
 
-		} catch (Exception $e) {
-			  //alert the user.
-			  return false;
-		}
+		// } catch (Exception $e) {
+		// 	  //alert the user.
+		// 	  return false;
+		// }
 
 	}
 

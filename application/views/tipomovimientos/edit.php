@@ -1,415 +1,252 @@
-<?php //print_r($data); die();  ?>
-
 <div class="right_col" role="main">
     <div class="page-title">
         <div class="title_left">
-            <h3>
-                Movimientos
-            </h3>
+            <h3>Tipo Movimiento</h3>
         </div>
+        <div class="clearfix"></div>
     </div>
-    <div class="clearfix"></div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="x_panel">
-            <?php
-                if($this->session->flashdata("success")): ?>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-12" align="right">
+                <?php if($this->session->flashdata("success")): ?>
                     <div class="alert alert-success" role="alert">
-                        <button type="button" class="close" data-dismiss="alert">
-                            &times;
-                        </button>
-                        <strong>
-                            ¡Buen Trabajo!
-                        </strong>
-                        <p>
-                            <?php echo $this->session->flashdata("success")?>
-                        </p>
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>¡Buen Trabajo!</strong>
+                        <p><?php echo $this->session->flashdata("success")?></p>
                     </div>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </div>
             <?php if($this->session->flashdata("error")): ?>
-                <div class="alert alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">
-                        &times;
-                    </button>
-                    <strong>
-                        ¡Error!
-                    </strong>
-                    <p>
-                        <?php echo $this->session->flashdata("error")?>
-                    </p>
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>¡Buen Trabajo!</strong>
+                    <p><?php echo $this->session->flashdata("error")?></p>
                 </div>
             <?php endif; ?>
-                
-            <div class="x_title">
-                <h2>  Movimientos  | Editar </h2>
-                    <div class="clearfix"></div>
-            </div>
-            <div class="row">
-                <form action="<?php echo base_url();?>movimientos/movimientos/update" method="POST" class="form-horizontal">
-                    <div class="col-md-12">
-                       <div class="row"> 
-                            <div class="form-group col-md-2">
-                                <label for="" class="control-label">Numero:</label>
-                                
-                                <input type="text" class="form-control" id="NUMMOVI" name="NUMMOVI" readonly value="<?php echo $data['movimientos'][0]->NUMMOVI;?>">
-                                <input type="hidden" class="form-control" id="IDMOVI" name="IDMOVI" readonly value="<?php echo $data['movimientos'][0]->IDMOVI;?>">
-                            </div>
-                        </div>         
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Editar Movimiento</h2>
+                    <!-- <pre>
+                        <?php var_dump($tipomovimientos) ?>
                         
-                        <div class="row">
-                            <div class="form-group col-md-3">
-                            <label for="" class="control-label">Tipo de Movimiento:</label>
-                            <input type="hidden" name="IDTIPOMOVISUELDO" id="IDTIPOMOVISUELDO" value="<?php echo $data['movimientos'][0]->IDTIPOMOVISUELDO;?>">
-                            <div class="input-group">                       
-                                <input type="text" class="form-control" disabled="disabled" id="DESTIPOMOV" value="<?php echo $data['movimientos'][0]->DESTIPOMOV;?>">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-default" ><span class="fa fa-search"></span> Buscar</button>
-                                </span>
-                            </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-md-3">
-                                <label for="" class="control-label">Fecha:</label>
-                                <input type="date" class="form-control" name="FECHAMOVI" required value="<?php echo $data['movimientos'][0]->FECHAMOVI;?>">
-                                <span class="input-group-btn">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-12">
-                        <table id="tbmovimientos" class="table table-bordered table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Empleado</th>
-                                    <th>Dias</th>
-                                    <th>Horas</th>
-                                    <th>Importe</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                                <?php
-                                //echo "Esta es mi quinta frase hecha con Php!" ;
-                                if(!empty($data)):?>
-
-                                <?php foreach($data['movimientos_detalle'] as $i => $item):  ?>
-                                  
-                                 <!-- SIRVE PARA MOSTRAR LOS DATOS DE UN ARRAY -->
-                                  <!--<?php //print_r($movimientos) ;?>-->
-                                 
-
-                                <tr>
-                                    <td>
-                                       <input type="hidden" name="IDMOVIDETALLE[<?php echo $i; ?>]" 
-                                        id="<?php echo $i.'IDMOVIDETALLE'; ?>" value="<?php echo $item->IDMOVIDETALLE;?>">
-
-
-                                        <select name="EMPLEADO[<?php echo $i; ?>]" id="<?php echo $i.'EMPLEADO'; ?>" class="form-control">
-                                       <?php foreach($data['empleados'] as $j => $empleado1){   ?>
-                                            <?php if($empleado1->IDEMPLEADO == $item->IDEMPLEADO): ?>
-                                                <option value="<?php echo $empleado1->IDEMPLEADO?>" <?php echo 'selected'; ?>>
-                                                    <?php echo $empleado1->NOMBRE;?></option>
-                                        <?php else:?>
-                                            <option value="<?php echo $empleado1->IDEMPLEADO;?>"><?php echo $empleado1->NOMBRE;?></option>
-                                        <?php endif;?>
-                                        <?php }?>
-                                        </select>
-                                        
-                                    </td>
-                                    <td>
-                                         
-                                        <input type="text" name="DIAS[<?php echo $i; ?>]" 
-                                        id="<?php echo $i.'DIAS'; ?>" value="<?php echo $item->DIAS;?>" class="form-control">                                       
-                                     </td>
-                                    <td>
-                                        
-                                        <input type="text" name="HORAS[<?php echo $i; ?>]" 
-                                        id="<?php echo $i.'HORAS'; ?>" value="<?php echo $item->HORAS;?>" class="form-control">  
-                                    </td>
-                                    <td>
-                                        <input type="text" name="IMPORTE[<?php echo $i; ?>]" 
-                                        id="<?php echo $i.'IMPORTE'; ?>" value="<?php echo $item->IMPORTE;?>" class="form-control">  
-                                    </td>
-                                    
-                                    
-                                    
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php endif; ?>
-
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- <div class="col-md-12">
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Empleado:</span>
-                                <select name="EMPLEADO1_detalle" id="EMPLEADO1" class="form-control">
-                                <?php //foreach($data['empleados'] as $j => $empleado1):?>
-                                    <option value="<?php //echo $empleado1->IDEMPLEADO;?>"><?php //echo $empleado1->NOMBRE;?></option>
-                                <?php //endforeach;?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Dias:</span>
-                                <input type="text" class="form-control" placeholder="Dias" name="DIAS_detalle" id= "DIAS">
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Horas:</span>
-                                <input type="text" class="form-control" placeholder="Horas" name="HORAS_detalle" value="0.00" id="HORAS">
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">Importe:</span>
-                                <input type="text" class="form-control" placeholder="Importe" name="IMPORTE_detalle" id="IMPORTE">
-                            </div>
-                        </div>
-
-                    </div> -->
-                            
+                    </pre> -->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <!-- <div class="form-group col-md-3">
-                                <button id="btn-agregar" type="button" class="btn btn-success btn-flat"><span class="fa fa-plus"></span> Agregar</button>
-                            </div> -->
-
-                            <div class="form-group col-md-3">
-                                <button id="btn-grabar" type="submit" class="btn btn-success btn-flat">Guardar</button>
-                            </div>
+                            <div class="col-md-12">
+                                <form id="" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>tipomovimientos/tipomovimientos/update" method="POST">
+                                    <div class="form-group <?php echo !empty(form_error("NumTipoMovimiento"))? 'has-error':'';?>">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumTipoMovimiento">Código <span class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
+                                            <input type="hidden" name="IDTIPOMOVISUELDO" value="<?php echo $tipomovimientos->IDTIPOMOVISUELDO ?>">
+                                            <input type="text" class="form-control" id="NumPais" name="NumTipoMovimiento" readonly value="<?php echo $tipomovimientos->NUMTIPOMOV ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group <?php echo !empty(form_error("desTipoMovimiento"))? 'has-error':'';?>">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="desTipoMovimiento">Descripcion <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id="desTipoMovimiento" placeholder="Descripcion" font style="text-transform: uppercase;" required="required" value="<?php echo $tipomovimientos->DESTIPOMOV ?>" name="desTipoMovimiento" class="form-control col-md-7 col-xs-12">
+                                            <?php echo form_error("desTipoMovimiento","<span class='help-block'>","</span>" );?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group <?php echo !empty(form_error("Porcentaje"))? 'has-error':'';?>">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Porcentaje">Porcentaje <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" id="Porcentaje" placeholder="Porcentaje" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $tipomovimientos->PORCENTAJE ?>" name="Porcentaje" class="form-control col-md-7 col-xs-12">
+                                            <?php echo form_error("Porcentaje","<span class='help-block'>","</span>" );?>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <label class="control-label col-md-3 col-sm-6 col-xs-12" for="Plancuenta">Plan de Cuenta <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div id="custom-search-input">
+                                                <div class="input-group col-md-12">
+                                                    <input type="hidden" name="IdPlanCuenta" value="<?php echo $tipomovimientos->IDPLANCUENTA ?>" id="IdPlanCuenta"> 
+                                                    <input type="text" name="Plancuenta" id="Plancuenta" class="form-control col-md-7 col-xs-12" value="<?php echo $tipomovimientos->DESCPLANCUENTA ?>" placeholder="Buscar Plan de Cuentas" disabled="disabled" />
+                                                    <span class="input-group-btn"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default2"><span class="fa fa-search" aria-hidden="true"></span></button></span>
+                                                </div>
+                                            </div>
+                                        </div>        
+                                    </div>  
+                                    <div class="form-group <?php echo !empty(form_error("accion"))? 'has-error':'';?>">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="accion">Accion <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-1">
+                                            <div class="radio">
+                                                <label><input type="radio" class="flat" required="required" name="accion" <?php if ($tipomovimientos->SUMARESTA == '+') {?> checked <?php } ?> value="+"> Suma</label>
+                                                <label><input type="radio" class="flat" required="required" name="accion"<?php if ($tipomovimientos->SUMARESTA == '-') {?> checked <?php } ?> value="-"> Resta</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group <?php echo !empty(form_error("tipo"))? 'has-error':'';?>">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo">Tipo <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-1">
+                                            <div class="radio">
+                                                <label><input type="radio" class="flat" required="required" name="tipo"<?php if ($tipomovimientos->SALARIOMINIMO == '1') {?> checked <?php } ?>value="1"> Salario Minimo</label>
+                                                <label><input type="radio" class="flat" required="required" name="tipo"<?php if ($tipomovimientos->SALARIOBASICO == '1') {?> checked <?php } ?> value="2"> Salario Basico</label>
+                                                <label><input type="radio" class="flat" required="required" name="tipo" <?php if ($tipomovimientos->TOTALSALARIO == '1') {?> checked <?php } ?>value="3"> Total Salario</label>
+                                                <label><input type="radio" class="flat" required="required" name="tipo" <?php if ($tipomovimientos->TOTALSALARIO == '0' &&  $tipomovimientos->SALARIOMINIMO == '0' && $tipomovimientos->SALARIOBASICO =='0') {?> checked<?php } ?>  value="4"> Ninguno</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group <?php echo !empty(form_error("Impresion"))? 'has-error':'';?>">
+                                        
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Impresion">Impresion <span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-1">
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" class="flat" name="recibo" <?php if ($tipomovimientos->ENRECIBO == '1') {?> checked <?php } ?>value="1"> En recibo</label>
+                                                <label><input type="checkbox" class="flat" name="libro" <?php if ($tipomovimientos->LIBROS == '1') {?> checked <?php } ?>value="1"> En libro</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                            <button type="reset" class="btn btn-primary">Resetear</button>
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> <!-- /COL  12-->
                         </div>
-                    </div> 
-                </form>
-
-            </div>
+                    </div> <!-- /COL  12-->
+                </div><!-- /ROW -->
+            </div><!-- / content -->
         </div>
     </div>
+</div>
 
-
-
-
-
-
-<div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
+<!--MODAL PARA LISTADO DE BANCOS-->
+<div class="modal fade "  tabindex="-1" role="dialog" id="modal-default2">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Lista de Tipos de Movimiento</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Lista de Cuenta Contable</h4>
             </div>
             <div class="modal-body">
-                <table id="example1" class="table table-bordered table-striped table-hover">
+                <table id="tab_cuentasContable" class="table table-bordered table-striped table-hover" style="width: 100%;">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Nombre</th>
-                            <th>Documento</th>
+                            <th>Numero</th>
+                            <th>Descripcion</th>
                             <th>Opcion</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    foreach($data['tipoMovimientos'] as $i => $empleado) : ?>
-                      
-                    
-                    <tr>
-                        <td>
-                            <?php echo $empleado->IDTIPOMOVISUELDO;?>
-                        </td>
-                        <td>
-                            <?php echo $empleado->DESTIPOMOV;?>
-                            
-                        </td>
-                        <td>
-                            <?php echo $empleado->NUMTIPOMOV;?>
-                        </td>
-                        <?php $dataempleado = $empleado->IDTIPOMOVISUELDO."*".$empleado->DESTIPOMOV."*".$empleado->NUMTIPOMOV?>
-                                          
-                    
-                        <td>
-
-                                    <button type = "button" class="btn btn-success btn-check" value="<?php echo $dataempleado;?>"><span class= "fa fa-check"></span></button>
-
-                                    </td>
+                        <?php if(!empty($cuentacontables)):?>
+                            <?php foreach($cuentacontables as $cuentacontable):?>
+                                <tr>
+                                    <td><?php echo $cuentacontable->IDPLANCUENTA;?></td>
+                                    <td><?php echo $cuentacontable->NUMPLANCUENTA;?></td>
+                                    <td><?php echo $cuentacontable->DESCPLANCUENTA;?></td>                                    
+                                    <td><button type = "button" class="btn btn-success btn-check2 placuentaSelect" id="placuentaSelect" value="<?php echo $cuentacontable->IDPLANCUENTA;?>"><span class= "fa fa-check"></span></button></td>
                                 </tr>
-                                <?php endforeach; ?>
-                              
-
-
-
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cerrar</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
-
-<?php // $this->load->view('template/footer');?>
-<script type="text/javascript">
- $(document).ready(function(){
-    var base_url= "<?php echo base_url();?>";
-       // alert (base_url);
+</div>
+<!--<?php // $this->load->view('template/footer');?>-->
+<script>
+    $(document).ready(function(){
+        var base_url= "<?php echo base_url();?>";
         $(".btn-view").on("click", function(){
-          var id= $(this).val();
-          $.ajax({
-            url: base_url + "movimientos/movimientos/view/" + id,
-            type: "POST",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              $("#modal-view .modal-body").html(resp);
-            //alert(resp);
-            }
-          });
-        })
-            //esto lee el boton eliminar y envia via ajax
-         $(".btn-delete").on("click", function(e){
-            e.preventDefault();
-            //alert("borrando");
-            var ruta= $(this).attr("href");
-        //  alert(ruta);
+            var id= $(this).val();
             $.ajax({
-                url: ruta,
+                url: base_url + "ciudades/ciudades/view/" + id,
                 type: "POST",
                 success:function(resp){
-                    //se redirige a base url con la respuesta
-                    window.location.href= base_url + resp;  
-                    //alert(base_url + resp);
+                    $("#modal-view .modal-body").html(resp);
                 }
-                });
-
+            });
         })
+            //esto lee el boton eliminar y envia via ajax
+            $(".btn-delete").on("click", function(e){
+                e.preventDefault();
+                var ruta= $(this).attr("href");
+                $.ajax({
+                    url: ruta,
+                    type: "POST",
+                    success:function(resp){
+                        window.location.href= base_url + resp;  
+                    }
+                });
+            });
+            $('#tab_cuentasContable').dataTable();
+        });
+    function eliminar_Copia(id){
+        if(confirm("Esta seguro que desea eliminar este registro?")){
+            window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
+        }
+    };
+    $(".eliminar").click(function(e){
+        e.preventDefault();
+        var id = $(this).attr('id');
+        swal({
+          title: "Atención",
+          text: "Esta seguro de eliminarlo de forma permanente",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+             window.location.href = "/isupport/ciudades/ciudades/delete/" + id;
+         }
+     });
+    });
+    $(".btn-check2").on("click", function(){
+        plancuenta = $(this).val();
+        infoplancuenta = plancuenta.split("*");
+        $("#IdPlanCuenta").val(infoplancuenta[0]);
+        $("#Plancuenta").val(infoplancuenta[1]);
+        $("#modal-default2").modal("hide");
+    });
+    function format(input){
+        var num = input.value.replace(/\./g,'');
+        var monto = $('#Importe').val();
+        if ($.trim(monto).length < 1) {
+            $("#Importe").val('');
+            return false;
+        }
 
+        if(!isNaN(num)){
+            num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+            num = num.split('').reverse().join('').replace(/^[\.]/,'');
+            input.value = num;
+        }else{ 
+            swal ( "Solo puede ingresar valores numericos." ) ;
+            input.value = input.value.replace(/[^\d\.]*/g,'');
+        }
+    }
 
-$(".btn-check").on("click", function(){
-    empleado = $(this).val();
-  infoempleado = empleado.split("*");
-  $("#IDTIPOMOVISUELDO").val(infoempleado[0]);
-  $("#DESTIPOMOV").val(infoempleado[1]);
-  $("#modal-default").modal("hide");
-
-//
-
-//}
-
-
-});
-
-
-/*
-$("#btn-grabar").on("click", function(){
-   $IDMOVI   = $this->input->post("IDMOVI");
-
-        $NUMMOVI   = $this->input->post("NUMMOVI");
-
-
-        $FECHAMOVI   = $this->input->post("FECHAMOVI");
-        $IDEMPLEADO   = $this->input->post("IDEMPLEADO"); 
-
-});*/
-
-// PROPIEDAD CLIK DE EDITAR
-  //        $(".btn-warning").on("click", function(e){
-        //  e.preventDefault();
-        //  //alert("borrando");
-        //  var ruta= $(this).attr("href");
-        // //   alert(ruta);
-        //  $.ajax({
-        //      url: ruta,
-        //      type: "POST",
-        //      success:function(resp){
-        //          //se redirige a base url con la respuesta
-        //          window.location.href= base_url + resp;  
-        //          //alert(base_url + resp);
-
-        //              }
-        //      });
-        // })
-         //HASTA ACA BOTON EDITAR
-
-
-         $("#btn-agregar").on("click", function(){
-          //data = ui.item.IDEMPLEADO1 + "*"+ ui.item.DIAS +"*"+ui.item.HORAS +"*"+ ui.item.IMPORTE; 
-   //        select:function(event, ui){
-   //   data = ui.item.id+ "*"+ ui.item.NUMMOVI+ "*"+ ui.item.label+ "*"+ ui.item.DESTIPOMOV;
-   //   $("#btn-agregar"),val(data);
-   // }
-
-//data = ui.item.IDEMPLEADO1 + "*"+ ui.item.DIAS +"*"+ui.item.HORAS +"*"+ ui.item.IMPORTE; 
-  //      $("#btn-agregar").val(data);
-
-//echo("ingreso al boton");
-          //if(data != '') {
-           // infomovimiento = data.split("*");
-
-           console.log($("select#EMPLEADO1").val());
-
-           var empleado = $("SELECT#EMPLEADO1 option:selected").val() ;
-
-            // html = '<tr>';
-            // html += '<td>';
-            // html += '<select name="EMPLEADO[]" id="EMPLEADO" class="form-control">';
-            // html += '<?php //foreach($data['empleados'] as $j => $empleado1){   ?>';
-
-            // html += '<option value="<?php //echo $empleado1->IDEMPLEADO?>" '+ if() +'>';
-            // html += '<input type="hidden" id="EMPLEADO1" name="EMPLEADO1[]" value="'+ $("SELECT#EMPLEADO1 option:selected").val() + '" >';
-            // html += '<?php //echo $empleado1->NOMBRE;?></option>';
-            // html += '<?php //else:?>';
-            // html += '<option value="<?php //echo $empleado1->IDEMPLEADO;?>"><?php //echo $empleado1->NOMBRE;?></option>';
-            // html += '<?php //endif;?>';
-            // html += '<?php //}?>';
-            // html += '</select>';
-            // html += '</td>';
-            // html += '<td>';
-            // html += '<input type="number" class="form-control"  name="DIAS[]" value="'+ $("#DIAS").val() + '" >';
-            // html += '</td>';
-            // html += '<td>';
-            // html += '<input type="number" class="form-control" name="HORAS[]" value="'+ $("#HORAS").val() + '" >';
-            // html += '</td>';
-            // html += '<td>';
-            // html += '<input type="number" class="form-control" name="IMPORTE[]" value="'+ $("#IMPORTE").val() + '" >';
-            // html += '</td>';
-
-
-                
-
-       /*     html += "<td>"+infomovimiento[2]+"</td>"
-            html += "<td><input type='hiden' name= 'DIAS[]' value ='"+infomovimiento[3]+"'>"+infomovimiento[3]+"</td>";
-            html += "<td>"+infomovimiento[4]+"</td>"
-            html += "<td><input type='text' name= 'HORAS[]' value=0></td>";
-            html += "<td><input type='hiden' name= 'IMPORTE[]' value='"+infomovimiento[3]+"'><p>"+infomovimiento[3]+"</p></td>";
-            html += "<td><button type = 'button' class='btn btn-danger btn-remove-movimiento'><span class = 'fa fa-remove'></span></button></td>";*/
-            html += '</tr>';
-           // console.log(html);
-            $("#tbmovimientos tbody").append(html);
-
-            $("select#EMPLEADO1").val("");
-            $("#DIAS").val("");
-            $("#HORAS").val("");
-            $("#IMPORTE").val("");
-          /*}else{
-            alert("seleccione un tipo movimiento")
-          }*/
-         });
-
-})      
+    $(".placuentaSelect").on("click", function(){
+        var plancuenta = $(this).val();
+        $.ajax({
+          url: '<?php echo base_url()?>/getPlanCuenta',
+          type: 'POST',
+          data: { cuenta: plancuenta },
+      })
+        .done(function(resp) {
+            var valorespuesta=JSON.parse(resp);
+            $('#Plancuenta').prop("disabled", false);
+            $('#Plancuenta').val(valorespuesta.NUMPLANCUENTA +' - '+ valorespuesta.DESCPLANCUENTA);
+            $('#Plancuenta').prop("disabled", true);
+            $('#IdPlanCuenta').val(valorespuesta.IDPLANCUENTA);
+        })
+        .fail(function() {
+          console.log("error");
+      })
+        .always(function() {
+          console.log("complete");
+      });
+    });
 
 </script>

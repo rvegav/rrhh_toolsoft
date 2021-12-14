@@ -78,8 +78,8 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="accion">Accion <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6 col-xs-1">
                                                 <div class="radio">
-                                                    <label><input type="radio" class="flat" required="required" name="accion" value="1"> Suma</label>
-                                                    <label><input type="radio" class="flat" required="required" name="accion" value="0"> Resta</label>
+                                                    <label><input type="radio" class="flat" required="required" name="accion" value="+"> Suma</label>
+                                                    <label><input type="radio" class="flat" required="required" name="accion" value="-"> Resta</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,7 +98,7 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Impresion">Impresion <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6 col-xs-1">
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" class="flat" required="required" name="recibo" value="1"> En recibo</label>
+                                                    <label><input type="checkbox" class="flat" required="required" name="recibo" value="0"> En recibo</label>
                                                     <label><input type="checkbox" class="flat" name="libro" value="1"> En libro</label>
                                                 </div>
                                             </div>
