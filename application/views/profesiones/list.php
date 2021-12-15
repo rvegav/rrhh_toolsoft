@@ -304,10 +304,6 @@ $(".btn-view").on("click", function(){
 
 })    	
 
-
-
-
-
 $(".eliminar").click(function(e){
 	e.preventDefault();
 	var id = $(this).attr('href');
