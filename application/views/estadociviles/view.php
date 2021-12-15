@@ -41,7 +41,7 @@ $date_act = $estadocivil->FECGRABACION;
 <p>
 	<strong>
 		Descripcion:
-	</strong><?php echo $estadocivil->DESCIVIL;?>
+	</strong><?php echo $estadocivil->DESCCIVIL;?>
 </p>
 <p>
 	<strong>

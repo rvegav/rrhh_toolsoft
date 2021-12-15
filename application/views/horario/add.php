@@ -61,7 +61,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>ciudades/ciudades/store" method="POST">
+					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>store" method="POST">
 
 						<div class="form-group <?php echo !empty(form_error("NumCiudad"))? 'has-error':'';?>">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCiudad">Código Horario<span class="required">*</span>

@@ -64,7 +64,7 @@ class Departamentoempresas extends CI_Controller
 		$this->form_validation->set_rules("NumDepartamento", "Numero", "required");
 		if ($this->form_validation->run() == FALSE){
 			$this->session->set_flashdata('error', validation_errors('<div class="error">', '</div>'));
-			redirect(base_url()."horario/Horario", "refresh");
+			redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");
 
 		}else{
 			$NumDepartamento  = $this->input->post("NumDepartamento");

@@ -139,7 +139,7 @@
 		var id = $(this).val();
 		$('#modal-view').modal('show');
 		$.ajax({
-			url:'detalle_horario',
+			url:'<?php echo base_url();?>detalle_horario',
 			type:'POST',
 			data:{id:id},
 		}).done(function(res){
@@ -159,8 +159,8 @@
 				html+='</tr>';
 			}
 			$('#tab_detalle_body').html(html);
-			console.log($('#frm_busqueda')[0]);
-			$('#frm_busqueda')[0].reset();
+			// console.log($('#frm_busqueda')[0]);
+			// $('#frm_busqueda')[0].reset();
 		}).fail(function(){
 			Swal.fire({
 				type:'error',
