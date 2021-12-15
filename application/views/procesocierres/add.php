@@ -62,13 +62,6 @@
         <div class="row">
           <div class="col-md-12">
             <form id="demo-form2" name="prueba1" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>procesocierres/procesocierres/store" method="POST" novalidate="">
-
-                   <!-- <div class="row"> 
-                            <div class="form-group col-md-2">
-                                <input type="text" class="form-control" id="IDCIERRE" name="IDCIERRE" readonly value="<?php echo $maximos->MAXIMO;?>" style="visibility: hidden;">
-                            </div>
-                        </div>  --> 
-
                         <div class="form-group <?php echo !empty(form_error("IDSUCURSAL"))? 'has-error':'';?>">
                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IDSUCURSAL">Desde Sucursal <span class="required">*</span>
                               </label>

@@ -6,7 +6,7 @@ class informes extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(array('Empleados_model', 'Sucursal_model'));
+		$this->load->model(array('Empleados_model', 'Sucursal_model', 'Procesocierres_model'));
 		// $this->dompdf = new Dompdf();
 		$this->load->library('pdf');
 		$options = new Dompdf\Options();
@@ -210,6 +210,43 @@ class informes extends CI_Controller {
 			return $this->dompdf->output();
 		}
 		
+	}
+	public function informeLibroDiario(){
+		$this->form_validation->set_rules("FECHADESDE", "Fecha Desde", "required");
+		$this->form_validation->set_rules("FECHAHASTA", "Fecha Hasta", "required");
+		if ($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('error', validation_errors());
+			redirect(base_url()."informediarios/informediarios/add", "refresh");
+
+		}else{
+			$archivo = 'reporte'.date('dmY');
+			$fecha = date("d/m/Y H:i:s");
+			$desde = $this->input->post('FECHADESDE', TRUE);
+			$hasta = $this->input->post('FECHAHASTA', TRUE);
+			$desde=date_format(date_create($desde),"d/m/Y");;
+			$hasta=date_format(date_create($hasta),"d/m/Y");;
+			$data = array('asientos'=> $this->Procesocierres_model->getAsiento($desde,$hasta),
+				'detallesasientos'=>$this->Procesocierres_model->getAsientoDetalle($desde, $hasta),
+				'fecha' =>$fecha,
+				'desde' => $desde,
+				'hasta' =>$hasta);
+			$cuerpo = $this->load->view('informes/informe_libro_diario', $data, TRUE);
+			$this->dompdf->load_html($cuerpo);
+			$this->dompdf->set_paper('Legal','portrait');
+
+			// $this->load->view('informes/prueba_pdf', $data);
+
+			$this->dompdf->render();
+
+
+			if ($stream=TRUE) {
+				$this->dompdf->stream("$archivo", array("Attachment" => 1));
+			} else {
+				return $this->dompdf->output();
+			}
+			
+
+		}
 	}
 }
 

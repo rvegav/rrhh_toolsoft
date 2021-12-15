@@ -382,6 +382,22 @@ public function getEmpleado1(){
 			return false;
 		}
 	}
+	public function getTotalMovimientoMes($fechaDesde, $fechaHasta){
+		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE, tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, p.DESCPLANCUENTA");
+		$this->db->from('movisueldodetalle ms');
+		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
+		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
+		$this->db->join('plancuentas p', 'p.idPlancuenta = tm.idplancuenta', 'left');
+		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$this->db->where('tm.SUMARESTA', '+');
+		$this->db->group_by('tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
+		} else {
+			return false;
+		}
+	}
 	public function getMovimientosEmpleados($empleado, $fechaDesde, $fechaHasta){
 		$this->db->select("ms.IMPORTE as IMPORTE, tm.aguinaldo AGUINALDO");
 		$this->db->from('movisueldodetalle ms');

@@ -93,3 +93,4 @@ $route['resumen_ocupadas'] = 'informes/informes/resumenOcupadas';
 $route['listado_hijos'] = 'informes/informes/listadoHijos';
 $route['resumen_sueldos'] = 'informes/informes/resumenSueldos';
 $route['informe_empleado'] = 'informes/informes/informeEmpleado';
+$route['informe_libro_diario'] = 'informes/informes/informeLibroDiario';

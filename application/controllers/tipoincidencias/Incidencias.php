@@ -79,7 +79,7 @@ class Incidencias extends CI_Controller
 		$this->form_validation->set_rules("descTipoIncidencia", "Descripcion", "required");
 		if ($this->form_validation->run() == FALSE){
 			$this->session->set_flashdata('error', validation_errors());
-			redirect(base_url()."empleados/empleados/add", "refresh");
+			redirect(base_url()."tipoincidencias/Incidencias/add", "refresh");
 		}else{
 
 			$data = array(
@@ -138,7 +138,7 @@ class Incidencias extends CI_Controller
 		$this->form_validation->set_rules("descTipoIncidencia", "Descripcion", "required");
 		if ($this->form_validation->run() == FALSE){
 			$this->session->set_flashdata('error', validation_errors());
-			redirect(base_url()."empleados/empleados/add", "refresh");
+			redirect(base_url()."tipoincidencias/Incidencias/add", "refresh");
 		}else{
 
 			$data = array(
@@ -155,7 +155,7 @@ class Incidencias extends CI_Controller
 			else
 			{
 				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				redirect(base_url()."tipoincidencias/tipoincidencias/edit/".$idCiudad,"refresh");
+				redirect(base_url()."tipoincidencias/Incidencias/edit/".$idCiudad,"refresh");
 			}
 		}
 
@@ -171,10 +171,10 @@ class Incidencias extends CI_Controller
 		// if ($this->session->userdata('sist_conex')=="A") {
 		if($this->Incidencia_model->delete($id)){
 			$this->session->set_flashdata('success', 'Eliminado correctamente!');
-			redirect(base_url()."tipoincidencias/tipoincidencias/", "refresh");
+			redirect(base_url()."tipoincidencias/Incidencias/", "refresh");
 		}else{
 			$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-			redirect(base_url()."tipoincidencias/tipoincidencias/","refresh");
+			redirect(base_url()."tipoincidencias/Incidencias/","refresh");
 		}
 
 		// }else {

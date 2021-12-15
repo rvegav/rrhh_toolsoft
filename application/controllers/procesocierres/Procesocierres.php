@@ -13,7 +13,7 @@ class Procesocierres extends CI_Controller
 
 		//$this->load->model("Empleados_model");
 		$this->load->model("Procesocierres_model");
-		$this->load->model(array('Procesocierres_model', 'Movimientos_model'));
+		$this->load->model(array('Procesocierres_model', 'Movimientos_model', 'Plancuenta_model'));
 
 	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
@@ -65,7 +65,6 @@ class Procesocierres extends CI_Controller
 			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
 			// $this->session->set_flashdata('error', validation_errors());
 		}else{
-
 			// $IDCIERRE   = $this->input->post("IDCIERRE");
 			$DESDESUCURSAL   = $this->input->post("SUCURSAL_DESDE");
 			$HASTASUCURSAL   = $this->input->post("SUCURSAL_HASTA");
@@ -81,10 +80,10 @@ class Procesocierres extends CI_Controller
 			// $parametros['FECHADESDE']= $FECHADESDE;
 			// $parametros['FECHAHASTA']= $FECHAHASTA;
 			$empleados = $this->Procesocierres_model->getEmpleado($parametros);
+			$time = time();
+			$fechaActual = date("Y-m-d H:i:s",$time);
 			if ($empleados) {
 				$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('SALARIO');
-				$time = time();
-				$fechaActual = date("Y-m-d H:i:s",$time);
 				$data = array('IDTIPOMOVISUELDO'  => $tipoMovimiento->IDTIPOMOVISUELDO,//MIENTRAS
 					'FECHAMOVI'  => $fechaActual,
 					'IDEMPRESA' => 1,
@@ -152,10 +151,84 @@ class Procesocierres extends CI_Controller
 						}
 					}
 				}
+				//se obitiene los tipos de movimientos presentes en el mes
+				$movimientos = $this->Movimientos_model->getTotalMovimientoMes($FECHADESDE, $FECHAHASTA);
 
+				if ($movimientos) {
+					$data = array(
+						'idempresa' =>1,
+						'idsucursal' =>1,
+						'idusuario' =>1,
+						'fechaasiento' => $fechaActual,
+						'cotizacion1' => 1,
+						'cotizacion2' => 1,
+						'generado' => 1,
+						'fechagrabacion'=>  $fechaActual
+					);
+					$id_asiento = $this->Procesocierres_model->saveAsiento($data);
+					foreach ($movimientos as $movimiento) {
+						$montototalSuma = 0;
+						$importedebe = 0;
+						$importehaber = 0;
+						if ($movimiento->SUMARESTA =='+') {
+							$importedebe = $movimiento->IMPORTE;
+						}
+						$data = array(
+							'idplancuenta' =>$movimiento->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $movimiento->DESTIPOMOV,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+						$montototalSuma = $montototalSuma + $importedebe;
+						$importedebe = 0;
+						$importehaber = 0;
+						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS APORTE PATRONAL');
+						$importedebe = ($movimiento->IMPORTE)*0.165;
+
+						$data = array(
+							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $idPlancuenta->DESCPLANCUENTA,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+						$montototalSuma = $montototalSuma + $importedebe;
+						$importedebe = 0;
+						$importehaber = 0;
+						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS A PAGAR');
+						$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
+						$porcentajeIps=($tipoMovimiento->PORCENTAJE)/100;
+						$importehaber = ($montototalSuma)*$porcentajeIps;
+						$data = array(
+							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $idPlancuenta->DESCPLANCUENTA,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+						$importedebe = 0;
+						$importehaber = $montototalSuma-$importehaber;
+						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'CAJA');	
+
+						$data = array(
+							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $idPlancuenta->DESCPLANCUENTA,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber,
+							'eliminado'=>  $fechaActual
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+
+					}
+				}
 
 			}
-			
+			echo "hizo todo bien";
 		}
 
 	}

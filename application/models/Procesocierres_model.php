@@ -28,19 +28,19 @@ class Procesocierres_model extends CI_Model {
 
 	public function getIdAsiento(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("(CASE WHEN  max(IDDIARIO) IS NULL THEN '1' ELSE max(IDDIARIO) + 1 END) as MAXIMO");
-		$this->db->from("diario");
+		$this->db->select("(CASE WHEN  max(idasiento) IS NULL THEN '1' ELSE max(idasiento) + 1 END) as MAXIMO");
+		$this->db->from("asiento");
 		$resultados= $this->db->get();
-		return $resultados->result_array();
+		return $resultados->row();
 	}
 
 
-    public function getIdDetalle(){
+    public function getIdAsientoDetalle(){
 	//	$this->db->where("estempleado", "1");
-		$this->db->select("max(idmovidetalle) as MAXIMO");
-		$this->db->from("movisueldodetalle");
+		$this->db->select("(CASE WHEN  max(IDASIENTODETALLE) IS NULL THEN '1' ELSE max(IDASIENTODETALLE) + 1 END) as MAXIMO");
+		$this->db->from("asientodetalle");
 		$resultados= $this->db->get();
-		return $resultados->result();
+		return $resultados->row();
 	}
 
 
@@ -154,14 +154,20 @@ return $resultados->result_array();
 
 	public function saveAsiento($data)
 	{
-		//echo '<pre>'.print_r($data).'</pre>'; die();
-		return $this->db->insert("diario", $data);
+		$id = $this->getIdAsiento();
+		$this->db->set('idasiento', $id->MAXIMO);
+		$this->db->set('numasiento', $id->MAXIMO);
+		if ($this->db->insert("asiento", $data)) {
+			return $this->db->insert_id();
+		}else{
+			return false;
+		}
 	}
 
-	public function saveAsiento_detalle($data)
-	{
-		//echo '<pre>'.print_r($data).'</pre>'; die();
-		return $this->db->insert("diariodetalle", $data);
+	public function saveAsiento_detalle($data){
+		$id = $this->getIdAsientoDetalle();
+		$this->db->set('IDASIENTODETALLE', $id->MAXIMO);
+		return $this->db->insert("asientodetalle", $data);
 	}
 
 
@@ -282,6 +288,7 @@ public function getEmpleado($parametros = false){
 	if ($parametros['DESDEDEPARTAMENTO'] != '' && $parametros['HASTADEPARTAMENTO']!= '') {
 		$this->db->where('d.IDDEPARTEMENTO BETWEEN '.$parametros['DESDEDEPARTAMENTO']. ' AND '. $parametros['HASTADEPARTAMENTO']);
 	}
+	$this->db->where('e.ESTADOEMPLEADO', '1');
 	$resultados= $this->db->get();
 	return $resultados->result();
 }
@@ -368,4 +375,19 @@ public function getEmpleado1(){
 		return $this->db->update("movisueldodetalle", $data);
 
 	}
+	public function getAsientoDetalle($desde,$hasta){
+		$this->db->select('a.idasiento, a.numasiento, DATE_FORMAT(fechaasiento,\'%d/%m/%Y\') fechaasiento, ad.importedebe, ad.importeahaber, p.numplancuenta, p.descplancuenta');
+		$this->db->from('asiento a');
+		$this->db->join('asientodetalle ad', 'a.idasiento = ad.idasiento');
+		$this->db->join('plancuentas p', 'ad.idplancuenta = p.idplancuenta');
+		$resultado = $this->db->get();
+		return $resultado->result();
+	}
+	public function getAsiento($desde,$hasta){
+		$this->db->select('a.idasiento, a.numasiento, DATE_FORMAT(fechaasiento,\'%d/%m/%Y\') fechaasiento');
+		$this->db->from('asiento a');
+		$resultado = $this->db->get();
+		return $resultado->result();
+	}
+
 }
