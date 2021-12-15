@@ -168,10 +168,6 @@ class Tipomovimientos extends CI_Controller
 		$this->load->view('template/footer');
 	}	
 	public function update(){
-		echo "<pre>";
-		var_dump($_POST);
-		echo "</pre>";
-
 		// die();
 		$idTipoMovi = $this->input->post('IDTIPOMOVISUELDO', TRUE);
 		$numTipoMov   = $this->input->post("NumTipoMovimiento");
