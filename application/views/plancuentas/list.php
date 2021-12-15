@@ -194,7 +194,7 @@
  function eliminar__(id){
 	if(confirm("Esta seguro que desea eliminar este registro?")){
 		
-		window.location.href = "/isupport/plancuentas/plancuentas/delete/" + id;
+		window.location.href = "<?php echo base_url()?>plancuentas/plancuentas/delete/" + id;
 		
 
 		/*$.ajax({

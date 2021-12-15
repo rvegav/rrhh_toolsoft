@@ -67,6 +67,11 @@ class Plancuentas extends CI_Controller
 			$NumPlancuenta   = $this->input->post("NumCuentacontable");
 			$desPlancuenta   = $this->input->post("desPlancuenta");
 			$asentable = $this->input->post("rad_imputable");
+			if ($asentable == '0') {
+				$asentable = 'N';
+			}else{
+				$asentable = 'S';
+			}
 			$nivel = $this->input->post("nivel");
 			$cuentaPadre = $this->input->post("cuentaPadre");
 			$idPlancuenta = $this->Plancuenta_model->ultimoNumero();
@@ -123,8 +128,10 @@ class Plancuentas extends CI_Controller
 	{
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
-			'cuenta'=> $this->Plancuenta_model->getPlancuenta($id)
+			'cuentacontable'=> $this->Plancuenta_model->getPlancuenta($id),
+			'cuentas_padre'=> $this->Plancuenta_model->obtenerCuentaPadre()
 		);
+
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('plancuentas/edit', $data);
@@ -136,20 +143,31 @@ class Plancuentas extends CI_Controller
 	public function update()
 	{
 		$idPlancuenta= $this->input->post("idcuentacontable");
-		$NumPlancuenta= $this->input->post("NumPlancuenta");
-		$desPlancuenta= $this->input->post("desPlanCuenta");
-		$subCuenta= $this->input->post("subCuenta");
-		$asentable= $this->input->post("inlineMaterialRadiosExample");
-		$nivel= $this->input->post("nivel");
-
-		//print_r($_POST); die();
+		$NumPlancuenta   = $this->input->post("NumCuentacontable");
+		$desPlancuenta   = $this->input->post("desPlancuenta");
+		$asentable = $this->input->post("rad_imputable");
+		
+		$nivel = $this->input->post("nivel");
+		$cuentaPadre = $this->input->post("cuentaPadre");
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$usuario = $_SESSION["usuario"];	
+		// print_r($_POST); die();
 		
 			//indicar campos de la tabla a modificar
 		$data = array(
-			'desPlancuenta' => $desPlancuenta,
-			'subcuenta' => $subCuenta,
-			'asentable' => $asentable,
-			'nivelcuenta' => $nivel
+			'numplancuenta'  => $NumPlancuenta,
+			'descplancuenta'  => $desPlancuenta,
+			'asentable'  => $asentable,
+			'nivelcuenta' => $nivel,
+			'fechagrabacion' => $fechaActual,
+			'idempresa' => $empresa,
+			'idsucursal' => $sucursal,
+			'tipocuenta' => 0, 
+			'idplancuenta_padre'=> $cuentaPadre
+
 		);
 
 		if($this->Plancuenta_model->update($idPlancuenta,$data))

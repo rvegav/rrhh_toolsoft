@@ -1,4 +1,5 @@
 <div class="right_col" role="main">
+
 	<div class="page-title">
 		<div class="title_left">
 			<h3>
@@ -61,62 +62,77 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" class="form-horizontal form-label-left" action="<?php echo base_url();?>plancuentas/plancuentas/update"  method="POST" novalidate="">
+					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>plancuentas/plancuentas/update" method="POST" novalidate="" name="dato">
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumPlanCuenta">Codigo <span class="required">*</span></label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subCuenta">Cuenta Padre <span class="required">*</span></label>
 							<div class="col-md-2 col-sm-2 col-xs-12">
-								<input type="text" id="NumPlanCuenta" required="required" readonly value="<?php echo $cuenta->NUMPLANCUENTA;?>" name="NumPlanCuenta" class="form-control">
+								<select class="form-control" id="cuentaPadre" name="cuentaPadre">
+									<optgroup label="Cuenta Padre Actual"></optgroup>
+									<option value="<?php echo $cuentacontable->IDPLANCUENTA_PADRE ?>"><?php echo $cuentacontable->DESCPLANCUENTA_PADRE ?></option>
+									<optgroup label="Cuenta Padre a asignar"></optgroup>
+									<?php foreach ($cuentas_padre as $cuenta): ?>
+										<option value="<?php echo $cuenta->IDPLANCUENTA ?>"><?php echo $cuenta->NUMPLANCUENTA ?> - <?php echo $cuenta->CUENTA?></option>
+									<?php endforeach ?>
+								</select>
+								
+							</div>
+						</div>
+						<div class="form-group <?php echo !empty(form_error("NumCuentacontable"))? 'has-error':'';?>">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCuentacontable">Código de la Cuenta<span class="required">*</span>
+							</label>
+							<div class="col-md-2 col-sm-2 col-xs-12">
+								<input type="text" name="NumCuentacontable" id = "NumCuentacontable" value="<?php echo $cuentacontable->NUMPLANCUENTA ?>" class="form-control" data-inputmask="'mask': 9.99.99.99.999" pattern="[1-9]" placeholder="X.XX.XX.XX.XXX" > 
 							</div>
 						</div>
 
-
-						<div class="form-group <?php echo !empty(form_error("subCuenta"))? 'has-error':'';?>">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="subCuenta">Sub-Cuenta<span class="required">*</span></label>
-							<div class="col-md-2 col-sm-2 col-xs-12">
-								<input type="text" id="subCuenta" placeholder="Sub-Cuenta" style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo $cuenta->DESCPLANCUENTA;?>" name="subCuenta" class="form-control">
-							<?php echo form_error("subCuenta","<span class='help-block'>","</span>" );?>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="DESPLANCUENTA	">Descripcion <span class="required">*</span></label>
+						<div class="form-group <?php echo !empty(form_error("desPlancuenta"))? 'has-error':'';?>">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="desPlancuenta">Descripcion <span class="required">*</span>
+							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<input type="text" id="desPlanCuenta" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" value="<?php echo $cuenta->DESCPLANCUENTA;?>" name="desPlanCuenta" class="form-control col-md-7 col-xs-12">
+								<input type="text" id="desPlancuenta" placeholder="Descripcion" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();" required="required" value="<?php echo $cuentacontable->DESCPLANCUENTA ?>" name="desPlancuenta" class="form-control col-md-7 col-xs-12">
+								<?php echo form_error("desPlancuenta","<span class='help-block'>","</span>" );?>
 							</div>
 						</div>
+
 						<div class="form-group">
 							<div class="form-check form-check-inline">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" for="imputable">Imputable <span class="required">*</span>
 								</label>
 								<div class="col-md-2">
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="radio" class="form-check-input" id="materialInline1" name="inlineMaterialRadiosExample" value="1" <?php echo set_value('asentable', $cuenta->ASENTABLE) == 'S' ? "checked" : "";?>>
+										<input type="radio" class="form-check-input" id="materialInline1" <?php if ($cuentacontable->ASENTABLE =='S'):?>
+											checked 
+										<?php endif ?> name="rad_imputable" value="S">
 										<label class="form-check-label" for="materialInline1">Si</label>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<input type="radio" class="form-check-input" id="materialInline2" name="inlineMaterialRadiosExample" value="0" <?php echo set_value('asentable', $cuenta->ASENTABLE) == 'N' ? "checked" : "";?>>
+										<input type="radio" class="form-check-input" id="materialInline2"<?php if ($cuentacontable->ASENTABLE =='N'):?>
+											checked 
+										<?php endif ?> name="rad_imputable" value="N">
 										<label class="form-check-label" for="materialInline2">No</label>
 									</div>
 								</div>
 							</div> 
 						</div>
 
+
+
 						<div class="form-group <?php echo !empty(form_error("nivel"))? 'has-error':'';?>">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nivel">Nivel <span class="required">*</span>
 							</label>
 							<div class="col-xs-1">
-								<input type="number" id="nivel" placeholder="Nivel" required="required" value="<?php echo $cuenta->NIVELCUENTA;?>" name="nivel" class="form-control col-md-7 col-xs-12">
+								<input type="number" id="nivel" placeholder="Nivel" readonly required="required" value="<?php echo $cuentacontable->NIVELCUENTA ?>" name="nivel" class="form-control col-md-7 col-xs-12">
 								<?php echo form_error("nivel","<span class='help-block'>","</span>" );?>
 							</div>
 						</div>
-						<input type="text" id="idcuentacontable" style="visibility: hidden;" required="required"  readonly value="<?php echo $cuenta->IDPLANCUENTA;?>" name="idcuentacontable" class="form-control col-md-7 col-xs-12">
+
+
 
 						<div class="ln_solid"></div>
 						<div class="form-group">
 							<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 								<button type="reset" class="btn btn-primary">Resetear</button>
-								<button type="submit" class="btn btn-success">Actualizar</button>
-								<!--<button type="button" name="entrar" value="ENTER" onclick="verificar_campos()" class="btn btn-success" onclick="verificar_campos()">Actualizar</button>-->
-
+								<button id="send" type="submit"  name="idcuentacontable" value="<?php echo $cuentacontable->IDPLANCUENTA ?>" class="btn btn-success">Guardar</button>
 							</div>
 						</div>
 
@@ -128,3 +144,62 @@
 	</div>
 </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+<script src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js " > </script> 
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('#send').click(function(){    	
+
+			if ($('#NumCuentacontable').val().length < 1) {
+				swal ( "Debe introducir el Codigo de la cuenta." ) ;
+				return false;
+			}
+
+			// if ($('#NumCuentacontable').val().length < 14) {
+			// 	swal ( "Debe introducir el Codigo de la cuenta correcto." ) ;
+			// 	return false;
+			// }
+
+			if ($('#desPlancuenta').val().length < 1) {
+				swal ( "Debe introducir la Descripcion de la cuenta." ) ;
+				return false;
+			}
+
+		});
+		// $('#nivel').val(1);
+
+		console.log($("#cuentaPadre").val());
+	});
+	
+	$("#cuentaPadre").on('change', function(){
+		var cuenta = $(this).val();
+		alert();
+		if(cuenta){
+			$.ajax({
+				type:'POST',
+				url:"<?php echo base_url();?>getPlanCuenta",
+				data:{cuenta: cuenta},
+			})
+			.done(function (resp){
+				var valorespuesta=JSON.parse(resp);
+				console.log(valorespuesta);
+				$('#NumCuentacontable').val(valorespuesta.NUMPLANCUENTA);
+				$('#nivel').val(parseInt(valorespuesta.NIVELCUENTA) + 1)
+				$("#nivel").prop('readonly', true);
+			})
+			.fail(function(){
+				alert('ocurrio un error interno, contacte con el Soporte Técnico');
+			});
+		}else{
+			$('#nivel').val(1);
+			$("#nivel").prop('readonly', false);
+			$('#NumCuentacontable').val('');
+
+		}
+	});
+	$("#NumCuentacontable").mask("9.99.99.99.999");
+</script>

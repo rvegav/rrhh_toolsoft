@@ -343,8 +343,8 @@ class Movimientos extends CI_Controller
 	}
 	public function obtenerTipoMovimiento(){
 		$codigo = $this->input->post('tipo');
-		$tipo = $this->Movimientos_model->getTipoMovimientos($codigo);
-		echo json_encode($tipo);
+		// $tipo = $this->Movimientos_model->getTipoMovimientos($codigo);
+		echo json_encode($this->Movimientos_model->getTipoMovimientos($codigo));
 	}
 
 	public function list_concepto(){

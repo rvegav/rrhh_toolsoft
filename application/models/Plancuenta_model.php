@@ -23,17 +23,23 @@ class Plancuenta_model extends CI_Model {
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getPlancuenta($id = false){
-		$this->db->select("IDPLANCUENTA,NUMPLANCUENTA,TIPOCUENTA,ASENTABLE,NIVELCUENTA,DESCPLANCUENTA,FECHAGRABACION, (case when asentable = 0 then 'NO' else 'SI' end) as IMPONIBLE");
+		$this->db->select("p.IDPLANCUENTA,p.NUMPLANCUENTA,p.TIPOCUENTA, p.ASENTABLE, p.NIVELCUENTA,p.DESCPLANCUENTA,p.FECHAGRABACION,p.IDPLANCUENTA_PADRE, pa.DESCPLANCUENTA DESCPLANCUENTA_PADRE");
+		$this->db->from('plancuentas p');
+		$this->db->join('plancuentas pa ', 'p.IDPLANCUENTA_PADRE = pa.IDPLANCUENTA', 'left');
 		if ($id) {
-			$this->db->where("IDPLANCUENTA",$id);
+			$this->db->where("p.IDPLANCUENTA",$id);
 		}
-		$resultado= $this->db->get("plancuentas");
-		return $resultado->row();
+		$resultado= $this->db->get();
+		if ($id) {
+			return $resultado->row();
+		}
+		return $resultado->result();
 	}
 	//esto es para actualizar los empleado
 	public function update($id, $data){
+
 		$this->db->where("idplancuenta", $id);
-		return $this->db->update("plancuenta", $data);
+		return $this->db->update("plancuentas", $data);
 
 	}
 
