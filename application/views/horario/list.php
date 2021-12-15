@@ -159,8 +159,6 @@
 				html+='</tr>';
 			}
 			$('#tab_detalle_body').html(html);
-			// console.log($('#frm_busqueda')[0]);
-			// $('#frm_busqueda')[0].reset();
 		}).fail(function(){
 			Swal.fire({
 				type:'error',
