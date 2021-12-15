@@ -14,7 +14,7 @@ class Tipomovimiento_model extends CI_Model {
 	public function getTipoMovimientos($id = false){
 		$this->db->select("IDTIPOMOVISUELDO,NUMTIPOMOV,DESTIPOMOV, DESCPLANCUENTA, t.IDPLANCUENTA, PORCENTAJE, SUMARESTA, ENRECIBO, SALARIOBASICO, SALARIOMINIMO, TOTALSALARIO, AGUINALDO, LIBROS, ENRECIBO");
 		$this->db->from("tipomovisueldo t");
-		$this->db->join('plancuentas p', 'p.IDPLANCUENTA = t.IDPLANCUENTA');
+		$this->db->join('plancuentas p', 'p.IDPLANCUENTA = t.IDPLANCUENTA', 'left');
 		if ($id) {
 			$this->db->where('idtipomovisueldo', $id);
 		}
