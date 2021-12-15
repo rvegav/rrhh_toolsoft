@@ -88,7 +88,7 @@ class Nivelestudios extends CI_Controller
 			'numnivel'  => $NumNivel,
 			'desnivel'  => $desNivel,
 			'fecgrabacion' => $fechaActual,
-			'idusuario' => $idusuario
+			// 'idusuario' => $idusuario
 		);
             //guardamos los datos en la base de datos
 		$desNivel = trim($desNivel);
