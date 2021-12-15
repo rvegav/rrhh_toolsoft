@@ -203,7 +203,7 @@
 			"buttons": [{
 				extend: 'pdfHtml5',
 				text: 'Generar PDF',
-				title:'Lista de Prefesiones' ,
+				title:'Lista de Profesiones' ,
 				exportOptions: {
                     columns: [ 0, 1, 2, 3, 4]
                 }, 
