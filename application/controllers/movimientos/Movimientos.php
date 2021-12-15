@@ -1,5 +1,6 @@
 <?php
-date_default_timezone_set('America/Santiago');
+date_default_timezone_set('America/Asuncion');
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Movimientos extends CI_Controller
