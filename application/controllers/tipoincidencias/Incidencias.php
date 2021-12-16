@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('America/Asuncion');
+
 class Incidencias extends CI_Controller
 {
 	//solo el constructor, para llamar a las clases
