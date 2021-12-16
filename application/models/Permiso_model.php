@@ -27,7 +27,7 @@ class Permiso_model extends CI_Model {
 		return $this->db->insert("permiroles", $data);
 	}
 	public function getPermisosRol($idRol){
-		$this->db->select('M.DESMODULO, PA.DESPANTALLA, P.PERSELECT, P.PERUPDATE, P.PERDELETE, P.PERINSERT, P.IDPERMISO');
+		$this->db->select('M.DESMODULO, PA.DESPANTALLA,PA.IDPANTALLA, P.PERSELECT, P.PERUPDATE, P.PERDELETE, P.PERINSERT, P.IDPERMISO');
 		$this->db->from('ROLES R');
 		$this->db->join('PERMISOS P', 'P.IDROL = R.IDROL');
 		$this->db->join('PANTALLA PA', 'PA.IDPANTALLA = P.IDPANTALLA');
@@ -44,7 +44,7 @@ class Permiso_model extends CI_Model {
 	}
 	public function update($idRol, $idPermiso, $data){
 		echo $idPermiso;
-		die();
+		// die();
 		if ($idPermiso !='') {
 			$this->db->where('IDPERMISO', $idPermiso);
 			return $this->db->update('PERMISOS', $data);

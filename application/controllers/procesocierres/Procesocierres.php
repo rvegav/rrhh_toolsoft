@@ -183,7 +183,7 @@ class Procesocierres extends CI_Controller
 							$montototalSuma = $montototalSuma + $importedebe;
 							$importedebe = 0;
 							$importehaber = 0;
-							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'APORTE PATRONAL IPS');
+							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'APORTE PATRONAL IPS A PAGAR');
 							$importedebe = ($movimiento->IMPORTE)*0.165;
 
 							$data = array(
@@ -197,7 +197,7 @@ class Procesocierres extends CI_Controller
 							$montototalSuma = $montototalSuma + $importedebe;
 							$importedebe = 0;
 							$importehaber = 0;
-							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS A PAGAR');
+							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'APORTE RETENIDOS IPS A PAGAR');
 							$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
 							$porcentajeIps=($tipoMovimiento->PORCENTAJE)/100;
 							$importehaber = ($montototalSuma)*$porcentajeIps;

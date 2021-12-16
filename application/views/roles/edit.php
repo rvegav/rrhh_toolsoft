@@ -149,11 +149,12 @@
 										<td><?php echo $permiso->DESPANTALLA ?></td>
 										<td><table class="table table-responsive">
 											<thead>
-												<input type="hidden" name="modulo[<?php echo $permiso->DESMODULO?>][IDPERMISO]" value="<?php echo $permiso->IDPERMISO ?>">
-												<td><input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO);?>][insert]" <?php if ($permiso->PERINSERT =='1'): ?> checked <?php endif ?>>Insert</td>
-												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][update]" <?php if ($permiso->PERUPDATE =='1'): ?> checked <?php endif ?>>Update</td>
-												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][delete]" <?php if ($permiso->PERDELETE =='1'): ?> checked <?php endif ?>>Delete</td>
-												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][select]" <?php if ($permiso->PERSELECT =='1'): ?> checked <?php endif ?>>Visualizar</td>
+												<input type="hidden" name="modulo[<?php echo $permiso->DESPANTALLA?>][IDPERMISO]" value="<?php echo $permiso->IDPERMISO ?>">
+												<input type="hidden" name="modulo[<?php echo $permiso->DESPANTALLA?>][pantalla]" value="<?php echo $permiso->IDPANTALLA ?>">
+												<td><input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA);?>][insert]" <?php if ($permiso->PERINSERT =='1'): ?> checked <?php endif ?>>Insert</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA)?>][update]" <?php if ($permiso->PERUPDATE =='1'): ?> checked <?php endif ?>>Update</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA)?>][delete]" <?php if ($permiso->PERDELETE =='1'): ?> checked <?php endif ?>>Delete</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA)?>][select]" <?php if ($permiso->PERSELECT =='1'): ?> checked <?php endif ?>>Visualizar</td>
 											</thead>
 										</table></td>
 										<td><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
@@ -245,7 +246,7 @@
 			return false;
 		}
 		
-		pantalla = $("SELECT#modulo option:selected").text().replaceAll(" ", "");
+		pantalla = $("SELECT#pantalla option:selected").text().replaceAll(" ", "");
 		html = '<tr>';
 		html += '<td>';
 		html += '<input type="hidden" id="modulo" name="modulo['+pantalla+'][modulo]" value="'+ $("SELECT#modulo option:selected").val() + '" >';

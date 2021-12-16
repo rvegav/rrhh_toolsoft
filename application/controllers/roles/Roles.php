@@ -172,13 +172,8 @@ class Roles extends CI_Controller
 			$data = array(
 				'descripcion' => $desRol
 			);
-			echo "<pre>";
-			print_r($_POST);
-			echo "</pre>";
-			die();
 
 			if($this->Rol_model->update($idRol,$data)){
-				$this->session->set_flashdata('success', 'Actualizado correctamente!');
 				foreach ($modulos as $modulo) {
 					$data = array(
 						'IDPANTALLA' => $modulo['pantalla'], 
@@ -190,6 +185,7 @@ class Roles extends CI_Controller
 					$idPermiso = $modulo['IDPERMISO'];
 					$this->Permiso_model->update($idRol, $idPermiso, $data);
 				}
+				$this->session->set_flashdata('success', 'Actualizado correctamente!');
 				redirect(base_url()."roles/roles", "refresh");
 			}
 			else

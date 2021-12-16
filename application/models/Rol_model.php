@@ -72,6 +72,8 @@ class Rol_model extends CI_Model {
 
 	public function delete($id){
 		$this->db->where("idrol", $id);
+		$this->db->delete("permisos");
+		$this->db->where("idrol", $id);
 		return $this->db->delete("roles");
 
 	}

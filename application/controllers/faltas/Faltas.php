@@ -289,14 +289,33 @@ class Faltas extends CI_Controller {
 							$salida_am = explode(' ', $marcacion->SALIDAAM);
 							$entrada_pm = explode(' ', $marcacion->ENTRADAPM);
 							$salida_pm = explode(' ', $marcacion->SALIDAPM);
-							if (strtotime($entrada_am[1])>strtotime($horario->ENTRADAAM)) {
-								$tipoFalta = $tipoFalta.' LLEGADA TARDIA';
-								$resultado = 'error al insertar';
+							if (count($entrada_am)>1) {
+								if (strtotime($entrada_am[1])>strtotime($horario->ENTRADAAM)) {
+									$tipoFalta = $tipoFalta.' LLEGADA TARDIA';
+									$resultado = 'error al insertar';
+									$item ++;
+								}
+							}else{
+								$tipoFalta = 'AUSENCIA ENTRADA AM';
 								$item ++;
 							}
-							if (strtotime($salida_pm[1])<strtotime($horario->SALIDAPM)) {
-								$tipoFalta = 'SALIDA TEMPRANA';
+							if (count($salida_am)>1) {
+								if (strtotime($salida_pm[1])<strtotime($horario->SALIDAPM)) {
+									$tipoFalta = 'SALIDA TEMPRANA';
+									$item ++;
+								}
+							}else{
+								$tipoFalta = 'AUSENCIA SALIDA AM';
 								$item ++;
+
+							}
+							if (count($entrada_am)==0) {
+								$tipoFalta = 'AUSENCIA ENTRADA AM';
+								$item++;
+							}
+							if (count($entrada_am)==0) {
+								$tipoFalta = 'AUSENCIA ENTRADA AM';
+								$item++;
 							}
 
 						}else{

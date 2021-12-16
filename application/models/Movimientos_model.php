@@ -390,7 +390,7 @@ public function getEmpleado1(){
 		$this->db->join('plancuentas p', 'p.idPlancuenta = tm.idplancuenta', 'left');
 		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
 		$this->db->where('tm.SUMARESTA', '+');
-		$this->db->group_by('tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA');
+		$this->db->group_by('tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, tm.AGUINALDO');
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
 			return $resultados->result();
