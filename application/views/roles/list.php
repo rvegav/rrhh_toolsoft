@@ -119,11 +119,11 @@
 											</i>
 										</button>
 										<a href="<?php echo base_url();?>roles/roles/edit/<?php echo $rol->IDROL;?>" class="btn btn-warning">
-											<i class="fa fa-pencil">
+											<i class="fa fa-edit">
 											</i>
 										</a>
-										<a href="#" id="<?=$rol->IDROL;?>" class="btn btn-danger btn-delete eliminar">
-											<i class="fa fa-trash-o">
+										<a href="<?php echo base_url();?>roles/roles/delete/<?php echo $rol->IDROL;?>" id="<?=$rol->IDROL;?>" class="btn btn-danger btn-delete eliminar">
+											<i class="fa fa-trash">
 											</i>
 										</a>
 										
@@ -196,22 +196,12 @@
 		
 		window.location.href = "<?php echo base_url(); ?>/cargos/cargos/delete/" + id;
 		
-
-		/*$.ajax({
-            url: "/isupport/movimientos/movimientos/delete/" + id,
-            type: "GET",
-            success:function(resp){
-              //$("#modal-view .modal-body").html(resp);
-              alert('Registro Eliminado correctamente');
-            //alert(resp);
-            }
-          });*/
 	}
 }
 
 $(".eliminar").click(function(e){
 e.preventDefault();
-var id = $(this).attr('id');
+var id = $(this).attr('href');
 swal({
   title: "Atención",
   text: "Esta seguro de eliminarlo de forma permanente",
@@ -221,7 +211,7 @@ swal({
 })
 .then((willDelete) => {
   if (willDelete) {
-   window.location.href = "<?php echo base_url(); ?>/cargos/cargos/delete/" + id;
+   window.location.href = id;
   }
 });
 });

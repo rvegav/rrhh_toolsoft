@@ -64,13 +64,14 @@ class Empleados_model extends CI_Model {
 	}
 
 	public function getEmpleadosInforme($parametros = false){
-		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  NUMEMPLEADO, OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, DATE_FORMAT(FECHAINGRESO,"%d/%m/%Y") FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, ESTADOEMPLEADO ESTADO');
+		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  NUMEMPLEADO, OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, DATE_FORMAT(FECHAINGRESO,"%d/%m/%Y") FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, ESTADOEMPLEADO ESTADO, e.NUMEROIPS, ec.DESCCIVIL, pa.DESPAIS');
 		$this->db->from('empleado e');
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
 		$this->db->join('nivelestudio n', 'n.idnivel = e.idnivel');
 		$this->db->join('profesion p', 'p.idprofesion = e.idprofesion');
 		$this->db->join('ciudad ciu', 'ciu.idciudad = e.idciudad');
 		$this->db->join('sucursal s', 's.idsucursal = e.idsucursal');
+		$this->db->join('pais pa', 'pa.idpais = e.IDNACIONALIDAD', 'left');
 		$this->db->join('cargo car', 'car.idcargo = e.idcargo');
 		// $this->db->join('pais', 'pa.field = table2.field', 'left');
 		$this->db->join('estadocivil ec', 'ec.idcivil = e.idcivil');

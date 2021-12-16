@@ -6,7 +6,7 @@ class informes extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model(array('Empleados_model', 'Sucursal_model', 'Procesocierres_model'));
+		$this->load->model(array('Empleados_model', 'Sucursal_model', 'Procesocierres_model', 'Hijos_model'));
 		// $this->dompdf = new Dompdf();
 		$this->load->library('pdf');
 		$options = new Dompdf\Options();
@@ -89,11 +89,11 @@ class informes extends CI_Controller {
 		$parametros['empleado'] = $this->input->post('empleado', TRUE);
 		$parametros['sucursal'] = $this->input->post('sucursal', TRUE);
 		$parametros['estado'] = $this->input->post('estado', TRUE);
-		$data = array('empleados'=> $this->Empleados_model->getEmpleadosInforme($parametros),
+		$data = array('empleados'=> $this->Empleados_model->getEmpleadosInforme($parametros), 'hijos'=>$this->Hijos_model->getHijos(),
 			'fecha' =>$fecha);
-		$cuerpo = $this->load->view('informes/prueba_pdf', $data, TRUE);
+		$cuerpo = $this->load->view('informes/reporte_lista_empleado', $data, TRUE);
 		$this->dompdf->load_html($cuerpo);
-		$this->dompdf->set_paper('Legal','portrait');
+		$this->dompdf->set_paper('Legal','landscape');
 
 		// $this->load->view('informes/prueba_pdf', $data);
 
@@ -188,14 +188,11 @@ class informes extends CI_Controller {
 	public function informeHijos(){
 		$archivo = 'reporte'.date('dmY');
 		$fecha = date("d/m/Y H:i:s");
-		$parametros['ingreso'] = $this->input->post('fechaIngreso', TRUE);
-		$parametros['salida'] = $this->input->post('fechaEgreso', TRUE);
-		$parametros['empleado'] = $this->input->post('empleado', TRUE);
-		$parametros['sucursal'] = $this->input->post('sucursal', TRUE);
-		$parametros['estado'] = $this->input->post('estado', TRUE);
-		$data = array('empleados'=> $this->Empleados_model->getEmpleadosInforme($parametros),
+		$empleado = $this->input->post('empleado');
+		$sucursal = $this->input->post('sucursal');
+		$data = array('hijos'=> $this->Hijos_model->getHijosEmpleadoSucursal($empleado, $sucursal),
 			'fecha' =>$fecha);
-		$cuerpo = $this->load->view('informes/reporte_lista_hijos', $data, TRUE);
+		$cuerpo = $this->load->view('informes/reporte_listado_hijos', $data, TRUE);
 		$this->dompdf->load_html($cuerpo);
 		$this->dompdf->set_paper('Legal','portrait');
 
@@ -240,7 +237,7 @@ class informes extends CI_Controller {
 
 
 			if ($stream=TRUE) {
-				$this->dompdf->stream("$archivo", array("Attachment" => 1));
+				$this->dompdf->stream("$archivo", array("Attachment" => 0));
 			} else {
 				return $this->dompdf->output();
 			}

@@ -83,7 +83,6 @@
                     <th>Detalle Asiento</th>
                     <th>Debe</th>
                     <th>Haber</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -97,10 +96,12 @@
 	                    		<td></td>
 	                    		<td>Fecha: <?php echo $asiento->fechaasiento ?></td>
 	                    	</tr>
-	                    	<?php $cont = 0; ?>
+	                    	<?php $cont = 0; $totalDebe=0; $totalHaber =0; ?>
                             <?php foreach ($detallesasientos as $detalleasiento): ?>
                             	<?php $cont++ ?>
                             	<?php if ($detalleasiento->idasiento == $asiento->idasiento): ?>
+                            		<?php $totalDebe = $detalleasiento->importedebe + $totalDebe?>
+                            		<?php $totalHaber = $detalleasiento->importeahaber + $totalHaber?>
 	                            	<tr>
 	                            		<td><?php echo $cont ?></td>
 	                            		<td><?php echo $detalleasiento->numplancuenta ?></td>
@@ -111,6 +112,14 @@
 	                            	</tr>                            		
                             	<?php endif ?>
                             <?php endforeach ?>
+                            <tr>
+                            	<td></td>
+                            	<td></td>
+                            	<td></td>
+                            	<td><b>Total Asiento</b></td>
+                            	<td><b><?php echo $totalDebe?></b></td>
+                            	<td><b><?php echo $totalHaber?></b></td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
 

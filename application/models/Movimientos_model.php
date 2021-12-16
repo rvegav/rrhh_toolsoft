@@ -383,7 +383,7 @@ public function getEmpleado1(){
 		}
 	}
 	public function getTotalMovimientoMes($fechaDesde, $fechaHasta){
-		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE, tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, p.DESCPLANCUENTA");
+		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE, tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, p.DESCPLANCUENTA, tm.AGUINALDO");
 		$this->db->from('movisueldodetalle ms');
 		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
 		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');

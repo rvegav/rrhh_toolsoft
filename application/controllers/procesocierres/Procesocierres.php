@@ -170,9 +170,7 @@ class Procesocierres extends CI_Controller
 						$montototalSuma = 0;
 						$importedebe = 0;
 						$importehaber = 0;
-						if ($movimiento->SUMARESTA =='+') {
-							$importedebe = $movimiento->IMPORTE;
-						}
+						$importedebe = $movimiento->IMPORTE;
 						$data = array(
 							'idplancuenta' =>$movimiento->IDPLANCUENTA,
 							'idasiento' =>$id_asiento,
@@ -181,35 +179,37 @@ class Procesocierres extends CI_Controller
 							'importeahaber' => $importehaber
 						);
 						$this->Procesocierres_model->saveAsiento_detalle($data);
-						$montototalSuma = $montototalSuma + $importedebe;
-						$importedebe = 0;
-						$importehaber = 0;
-						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS APORTE PATRONAL');
-						$importedebe = ($movimiento->IMPORTE)*0.165;
+						if ($movimiento->AGUINALDO =='1') {
+							$montototalSuma = $montototalSuma + $importedebe;
+							$importedebe = 0;
+							$importehaber = 0;
+							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'APORTE PATRONAL IPS');
+							$importedebe = ($movimiento->IMPORTE)*0.165;
 
-						$data = array(
-							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
-							'idasiento' =>$id_asiento,
-							'comentario' => $idPlancuenta->DESCPLANCUENTA,
-							'importedebe' => $importedebe,
-							'importeahaber' => $importehaber
-						);
-						$this->Procesocierres_model->saveAsiento_detalle($data);
-						$montototalSuma = $montototalSuma + $importedebe;
-						$importedebe = 0;
-						$importehaber = 0;
-						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS A PAGAR');
-						$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
-						$porcentajeIps=($tipoMovimiento->PORCENTAJE)/100;
-						$importehaber = ($montototalSuma)*$porcentajeIps;
-						$data = array(
-							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
-							'idasiento' =>$id_asiento,
-							'comentario' => $idPlancuenta->DESCPLANCUENTA,
-							'importedebe' => $importedebe,
-							'importeahaber' => $importehaber
-						);
-						$this->Procesocierres_model->saveAsiento_detalle($data);
+							$data = array(
+								'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+								'idasiento' =>$id_asiento,
+								'comentario' => $idPlancuenta->DESCPLANCUENTA,
+								'importedebe' => $importedebe,
+								'importeahaber' => $importehaber
+							);
+							$this->Procesocierres_model->saveAsiento_detalle($data);
+							$montototalSuma = $montototalSuma + $importedebe;
+							$importedebe = 0;
+							$importehaber = 0;
+							$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'IPS A PAGAR');
+							$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
+							$porcentajeIps=($tipoMovimiento->PORCENTAJE)/100;
+							$importehaber = ($montototalSuma)*$porcentajeIps;
+							$data = array(
+								'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+								'idasiento' =>$id_asiento,
+								'comentario' => $idPlancuenta->DESCPLANCUENTA,
+								'importedebe' => $importedebe,
+								'importeahaber' => $importehaber
+							);
+							$this->Procesocierres_model->saveAsiento_detalle($data);
+						}
 						$importedebe = 0;
 						$importehaber = $montototalSuma-$importehaber;
 						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'CAJA');	

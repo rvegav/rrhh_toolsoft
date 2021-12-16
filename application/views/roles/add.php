@@ -62,7 +62,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>roles/roles/store" method="POST" novalidate="">
+					<form id="rol" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>roles/roles/store" method="POST" novalidate="">
 
 						<div class="form-group <?php echo !empty(form_error("NumCargo"))? 'has-error':'';?>">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="NumCargo">Código Rol<span class="required">*</span>
@@ -240,21 +240,21 @@
 			return false;
 		}
 		
-
+		pantalla = $("SELECT#modulo option:selected").text().replaceAll(" ", "");
 		html = '<tr>';
 		html += '<td>';
-		html += '<input type="hidden" id="modulo" name="modulo['+$("#pantalla option:selected").text()+'][modulo]" value="'+ $("SELECT#modulo option:selected").val() + '" >';
+		html += '<input type="hidden" id="modulo" name="modulo['+pantalla+'][modulo]" value="'+ $("SELECT#modulo option:selected").val() + '" >';
 		html += $("SELECT#modulo option:selected").text();
 		html += '</td>';
 		html += '<td>';
 
-		html += '<input type="hidden" id="pantalla" name="modulo['+$("#pantalla option:selected").text()+'][pantalla]" value="'+ $("SELECT#pantalla option:selected").val() + '" >';
+		html += '<input type="hidden" id="pantalla" name="modulo['+pantalla+'][pantalla]" value="'+ $("SELECT#pantalla option:selected").val() + '" >';
 		html += $("SELECT#pantalla option:selected").text();
 		html += '</td>';
 		html += '<td>';
 		html += '<table class="table table-responsive"> <thead>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo['+$("#pantalla option:selected").text()+'][insert]"';
+		html += '<input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo['+pantalla+'][insert]"';
 		if ($('#Insert').is(':checked')) {
 			html += "checked > Insertar";
 		}else{
@@ -262,26 +262,26 @@
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="modulo['+$("#pantalla option:selected").text()+'][update]"';
+		html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="modulo['+pantalla+'][update]"';
 		// html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="permiso['+$("#pantalla option:selected").val()+']["update"]"';
 		if ($('#Update').is(':checked')) {
-			html += "checked > Actualizar";
+			html += " checked > Actualizar";
 		}else{	
 			html += "> Actualizar";
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo['+$("#pantalla option:selected").text()+'][delete]"';
+		html += '<input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo['+pantalla+'][delete]"';
 		if ($('#Delete').is(':checked')) {
-			html += "checked > Eliminar";
+			html += " checked > Eliminar";
 		}else{
 			html += "> Eliminar";
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="select_detalle" name="modulo['+$("#pantalla option:selected").text()+'][select]"';
+		html += '<input type="checkbox" class="flat" disabled id="select_detalle" name="modulo['+pantalla+'][select]"';
 		if ($('#select').is(':checked')) {
-			html += "checked > Visualizar";
+			html += " checked > Visualizar";
 		}else{
 			html += "> Visualizar";
 		};
@@ -299,17 +299,18 @@
 		});
 		// $('#moduloDef').prop('selected',true);
 		$("#modulo").val('');
+		console.log(pantalla);
 		$("#modulo").select2().trigger('change');
 	});
-	$('#pantalla').change(function(){
-		$('#pantalla option').hide();
-		$('#pantalla option[value="'+$(this).val()+'"]').show()
-	});
+	// $('#pantalla').change(function(){
+	// 	$('#pantalla option').hide();
+	// 	$('#pantalla option[value="'+$(this).val()+'"]').show()
+	// });
 
-	$('#modulo').change(function(){
-		$('#modulo option').hide();
-		$('#modulo option[value="'+$(this).val()+'"]').show()
-	});
+	// $('#modulo').change(function(){
+	// 	$('#modulo option').hide();
+	// 	$('#modulo option[value="'+$(this).val()+'"]').show()
+	// });
 
 
 	$(document).ready(function(){
@@ -322,6 +323,7 @@
 					// data:'modulo_id='+moduloID,
 				})
 				.done(function (html){
+					console.log(html);
 					$('#pantalla').html(html);
 				})
 				.fail(function(){
@@ -335,7 +337,6 @@
 		$('#send').click(function(){    	
 			
 			var inputValue = $('#Descripcion').val();        
-
 			$('.flat').prop('disabled', false);		
 			// $('#update_detalle').prop('disabled', false);		
 			// $('#delete_detalle').prop('disabled', false);		

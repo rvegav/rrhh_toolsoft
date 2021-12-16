@@ -29,7 +29,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="frm_generar" name="frm_generar" data-parsley-validate="" class="form-horizontal form-label-left" method="POST" action="<?php echo base_url() ?>informe_empleado" novalidate="">
+					<form id="frm_generar" name="frm_generar" data-parsley-validate="" class="form-horizontal form-label-left" method="POST" action="<?php echo base_url() ?>informe_hijos" novalidate="">
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="movimiento">Empleado:</label>
 							<div class="col-md-4 col-sm-6 col-xs-12">

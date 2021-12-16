@@ -62,7 +62,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>roles/roles/store" method="POST" novalidate="">
+					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="<?php echo base_url()?>roles/roles/update" method="POST" novalidate="">
 
 						<div class="form-group <?php echo !empty(form_error("Descripcion"))? 'has-error':'';?>">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="Descripcion">Rol <span class="required">*</span>
@@ -79,7 +79,7 @@
 						<div class="form-group">
 							<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 								<button type="reset" class="btn btn-primary">Resetear</button>
-								<button id="send" type="submit" class="btn btn-success">Guardar</button>
+								<button id="send" type="submit" class="btn btn-success" name="idrol" value="<?php echo $rol->IDROL ?>">Guardar</button>
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -107,7 +107,7 @@
 							<div class="form-group col-md-1">
 								<div class="">
 									<label for="insert">Insertar</label>
-									<input type="checkbox" class="flat" id="Insert" value="" name="insert_detalle[]">
+									<input type="checkbox" class="flat" id="Insert">
 								</div>
 							</div>
 
@@ -120,7 +120,7 @@
 							<div class="form-group col-md-1">
 								<div class="">
 									<label for="Delete">Eliminar</label>
-									<input type="checkbox" class="flat" id="Delete" value="">
+									<input type="checkbox" class="flat" id="Delete">
 								</div>
 							</div>
 							<div class="form-group col-md-1">
@@ -144,28 +144,20 @@
 							<tbody>
 								<?php
 								foreach($permisos as $permiso):?>
-									<td><?php echo $permiso->DESMODULO ?></td>
-									<td><?php echo $permiso->DESPANTALLA ?></td>
-									<td><table class="table table-responsive">
-										<thead>
-											<td><input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo[<?php echo $permiso->DESMODULO?>][insert]" 
-									<?php if ($permiso->PERINSERT =='1'): ?>
-										checked
-									<?php endif ?>>Insert</td>
-									<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo $permiso->DESMODULO?>][update]" 
-									<?php if ($permiso->PERUPDATE =='1'): ?>
-										checked
-									<?php endif ?>>Update</td>
-									<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo $permiso->DESMODULO?>][delete]" 
-									<?php if ($permiso->PERDELETE =='1'): ?>
-										checked
-									<?php endif ?>>Delete</td>
-									<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo $permiso->DESMODULO?>][select]" 
-									<?php if ($permiso->PERSELECT =='1'): ?>
-										checked
-									<?php endif ?>>Visualizar</td>
-								</thead>
-							</table></td>
+									<tr>
+										<td><?php echo $permiso->DESMODULO ?></td>
+										<td><?php echo $permiso->DESPANTALLA ?></td>
+										<td><table class="table table-responsive">
+											<thead>
+												<input type="hidden" name="modulo[<?php echo $permiso->DESMODULO?>][IDPERMISO]" value="<?php echo $permiso->IDPERMISO ?>">
+												<td><input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO);?>][insert]" <?php if ($permiso->PERINSERT =='1'): ?> checked <?php endif ?>>Insert</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][update]" <?php if ($permiso->PERUPDATE =='1'): ?> checked <?php endif ?>>Update</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][delete]" <?php if ($permiso->PERDELETE =='1'): ?> checked <?php endif ?>>Delete</td>
+												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESMODULO)?>][select]" <?php if ($permiso->PERSELECT =='1'): ?> checked <?php endif ?>>Visualizar</td>
+											</thead>
+										</table></td>
+										<td><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+									</tr>
 								<?php endforeach; ?>
 							</tbody>
 						</table>
@@ -179,59 +171,59 @@
 </div>
 </div>
 <script type="text/javascript">
-	console.log($('#Insert'));
+	// console.log($('#Insert'));
 	$(document).ready(function(){
 		$('#Insert').on('ifChecked', function(event){
   			// alert(event.type + ' callback');
   			$('#select').iCheck("check");
   			$('#select').iCheck("disable");
-		});
+  		});
 		$('#Insert').on('ifUnchecked', function(event){
   			// alert(event.type + ' callback');
   			if ($('#Insert').prop("checked") == true || $('#Update').prop("checked") == true || $('#Delete').prop("checked") == true)
-			{
-				$('#select').iCheck("check");
-	  			$('#select').iCheck("disable");
-			}else{
-				$('#select').iCheck("uncheck");
+  			{
+  				$('#select').iCheck("check");
+  				$('#select').iCheck("disable");
+  			}else{
+  				$('#select').iCheck("uncheck");
   				$('#select').iCheck("enable");
-			}
-		});
+  			}
+  		});
 		$('#Delete').on('ifChecked', function(event){
   			// alert(event.type + ' callback');
   			$('#select').iCheck("check");
   			$('#select').iCheck("disable");
 
-		});
+  		});
 		$('#Delete').on('ifUnchecked', function(event){
   			// alert(event.type + ' callback');
   			$('#select').iCheck("uncheck");
   			$('#select').iCheck("enable");
   			if ($('#Insert').prop("checked") == true || $('#Update').prop("checked") == true || $('#Delete').prop("checked") == true)
-			{
-				$('#select').iCheck("check");
-	  			$('#select').iCheck("disable");
-			}else{
-				$('#select').iCheck("uncheck");
+  			{
+  				$('#select').iCheck("check");
+  				$('#select').iCheck("disable");
+  			}else{
+  				$('#select').iCheck("uncheck");
   				$('#select').iCheck("enable");
-			}
-		});
+  			}
+  		});
 		$('#Update').on('ifChecked', function(event){
   			// alert(event.type + ' callback');
   			$('#select').iCheck("check");
   			$('#select').iCheck("disable");
-		});
+  		});
 		$('#Update').on('ifUnchecked', function(event){
   			// alert(event.type + ' callback');
   			if ($('#Insert').prop("checked") == true || $('#Update').prop("checked") == true || $('#Delete').prop("checked") == true)
-			{
-				$('#select').iCheck("check");
-	  			$('#select').iCheck("disable");
-			}else{
-				$('#select').iCheck("uncheck");
+  			{
+  				$('#select').iCheck("check");
+  				$('#select').iCheck("disable");
+  			}else{
+  				$('#select').iCheck("uncheck");
   				$('#select').iCheck("enable");
-			}
-		});
+  			}
+  		});
 	});
 	$("#btn-agregar").on("click", function(){
 
@@ -253,21 +245,21 @@
 			return false;
 		}
 		
-
+		pantalla = $("SELECT#modulo option:selected").text().replaceAll(" ", "");
 		html = '<tr>';
 		html += '<td>';
-		html += '<input type="hidden" id="modulo" name="modulo['+$("#pantalla option:selected").text()+'][modulo]" value="'+ $("SELECT#modulo option:selected").val() + '" >';
+		html += '<input type="hidden" id="modulo" name="modulo['+pantalla+'][modulo]" value="'+ $("SELECT#modulo option:selected").val() + '" >';
 		html += $("SELECT#modulo option:selected").text();
 		html += '</td>';
 		html += '<td>';
 
-		html += '<input type="hidden" id="pantalla" name="modulo['+$("#pantalla option:selected").text()+'][pantalla]" value="'+ $("SELECT#pantalla option:selected").val() + '" >';
+		html += '<input type="hidden" id="pantalla" name="modulo['+pantalla+'][pantalla]" value="'+ $("SELECT#pantalla option:selected").val() + '" >';
 		html += $("SELECT#pantalla option:selected").text();
 		html += '</td>';
 		html += '<td>';
 		html += '<table class="table table-responsive"> <thead>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo['+$("#pantalla option:selected").text()+'][insert]"';
+		html += '<input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo['+pantalla+'][insert]"';
 		if ($('#Insert').is(':checked')) {
 			html += "checked > Insertar";
 		}else{
@@ -275,26 +267,26 @@
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="modulo['+$("#pantalla option:selected").text()+'][update]"';
+		html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="modulo['+pantalla+'][update]"';
 		// html += '<input type="checkbox" class="flat" disabled id="update_detalle" name="permiso['+$("#pantalla option:selected").val()+']["update"]"';
 		if ($('#Update').is(':checked')) {
-			html += "checked > Actualizar";
+			html += " checked > Actualizar";
 		}else{	
 			html += "> Actualizar";
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo['+$("#pantalla option:selected").text()+'][delete]"';
+		html += '<input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo['+pantalla+'][delete]"';
 		if ($('#Delete').is(':checked')) {
-			html += "checked > Eliminar";
+			html += " checked > Eliminar";
 		}else{
 			html += "> Eliminar";
 		};
 		html += '</td>';
 		html += '<td>';
-		html += '<input type="checkbox" class="flat" disabled id="select_detalle" name="modulo['+$("#pantalla option:selected").text()+'][select]"';
+		html += '<input type="checkbox" class="flat" disabled id="select_detalle" name="modulo['+pantalla+'][select]"';
 		if ($('#select').is(':checked')) {
-			html += "checked > Visualizar";
+			html += " checked > Visualizar";
 		}else{
 			html += "> Visualizar";
 		};
@@ -312,6 +304,7 @@
 		});
 		// $('#moduloDef').prop('selected',true);
 		$("#modulo").val('');
+		console.log(pantalla);
 		$("#modulo").select2().trigger('change');
 	});
 	$('#pantalla').change(function(){

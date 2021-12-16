@@ -17,14 +17,19 @@ class Permiso_model extends CI_Model {
 		$resultado = $this->db->get();
 		return $resultado->row();
 	}
+	public function ObtenerCodigo(){
+	    $this->db->select("(CASE WHEN  max(IDPERMISO) IS NULL THEN 1 ELSE max(IDPERMISO) + 1 END) as MAXIMO");
+		$this->db->from("permisos");
+		$resultado= $this->db->get();
+		return $resultado->row();
+	}
 	public function save_permiRoles($data){
 		return $this->db->insert("permiroles", $data);
 	}
 	public function getPermisosRol($idRol){
-		$this->db->select('M.DESMODULO, PA.DESPANTALLA, P.PERSELECT, P.PERUPDATE, P.PERDELETE, P.PERINSERT');
+		$this->db->select('M.DESMODULO, PA.DESPANTALLA, P.PERSELECT, P.PERUPDATE, P.PERDELETE, P.PERINSERT, P.IDPERMISO');
 		$this->db->from('ROLES R');
-		$this->db->join('PERMIROLES PR', 'PR.IDROL = R.IDROL');
-		$this->db->join('PERMISOS P', 'P.IDPERMISO = PR.IDPERMISO');
+		$this->db->join('PERMISOS P', 'P.IDROL = R.IDROL');
 		$this->db->join('PANTALLA PA', 'PA.IDPANTALLA = P.IDPANTALLA');
 		$this->db->join('MODULO M', 'M.IDMODULO = PA.IDMODULO');
 		$this->db->where('R.IDROL', $idRol);
@@ -36,6 +41,19 @@ class Permiso_model extends CI_Model {
 			return false;
 		}
 
+	}
+	public function update($idRol, $idPermiso, $data){
+		echo $idPermiso;
+		die();
+		if ($idPermiso !='') {
+			$this->db->where('IDPERMISO', $idPermiso);
+			return $this->db->update('PERMISOS', $data);
+		}else{
+			$this->db->set('IDROL', $idRol);
+			$idpermiso = $this->ObtenerCodigo();
+			$this->db->set('IDPERMISO', $idpermiso->MAXIMO);
+			return $this->db->insert('PERMISOS', $data);
+		}
 	}
 }
 
