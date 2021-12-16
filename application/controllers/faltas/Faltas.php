@@ -291,13 +291,23 @@ class Faltas extends CI_Controller {
 							$salida_pm = explode(' ', $marcacion->SALIDAPM);
 							if (count($entrada_am)>1) {
 								if (strtotime($entrada_am[1])>strtotime($horario->ENTRADAAM)) {
-									$tipoFalta = $tipoFalta.' LLEGADA TARDIA';
-									$resultado = 'error al insertar';
+									$tipoFalta = ' LLEGADA TARDIA';
 									$item ++;
 								}
 							}else{
 								$tipoFalta = 'AUSENCIA ENTRADA AM';
 								$item ++;
+							}
+							if ($tipoFalta !='') {
+								$array['NRO']=$item;
+								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['TIPO_FALTA']=$tipoFalta;
+								$f= date_create($fecha_desde_aux);
+								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
+								$array['PERMISOS']='';
+								$array['FECHA_PRESENTACION']='';
+								$datos[] = $array;
+								$tipoFalta='';
 							}
 							if (count($salida_am)>1) {
 								if (strtotime($salida_pm[1])<strtotime($horario->SALIDAPM)) {
@@ -309,19 +319,54 @@ class Faltas extends CI_Controller {
 								$item ++;
 
 							}
-							if (count($entrada_am)==0) {
-								$tipoFalta = 'AUSENCIA ENTRADA AM';
+							if ($tipoFalta !='') {
+								$array['NRO']=$item;
+								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['TIPO_FALTA']=$tipoFalta;
+								$f= date_create($fecha_desde_aux);
+								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
+								$array['PERMISOS']='';
+								$array['FECHA_PRESENTACION']='';
+								$datos[] = $array;
+								$tipoFalta='';
+							}
+							if (count($entrada_pm)==1) {
+								$tipoFalta = 'AUSENCIA ENTRADA PM';
 								$item++;
 							}
-							if (count($entrada_am)==0) {
-								$tipoFalta = 'AUSENCIA ENTRADA AM';
+							if ($tipoFalta !='') {
+								$array['NRO']=$item;
+								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['TIPO_FALTA']=$tipoFalta;
+								$f= date_create($fecha_desde_aux);
+								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
+								$array['PERMISOS']='';
+								$array['FECHA_PRESENTACION']='';
+								$datos[] = $array;
+								$tipoFalta='';
+							}
+							if (count($salida_pm)==1) {
+								$tipoFalta = 'AUSENCIA SALIDA PM';
 								$item++;
 							}
-
+							if ($tipoFalta !='') {
+								$array['NRO']=$item;
+								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['TIPO_FALTA']=$tipoFalta;
+								$f= date_create($fecha_desde_aux);
+								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
+								$array['PERMISOS']='';
+								$array['FECHA_PRESENTACION']='';
+								$datos[] = $array;
+								$tipoFalta='';
+							}
 						}else{
 							$tipoFalta = 'AUSENCIA';
 							$item ++;
 						}
+									// echo "<pre>";
+									// print_r ($tipoFalta);
+									// echo "</pre>";
 						if ($tipoFalta !='') {
 							$array['NRO']=$item;
 							$array['EMPLEADO']=$empleado->NOMBRE;
@@ -331,6 +376,7 @@ class Faltas extends CI_Controller {
 							$array['PERMISOS']='';
 							$array['FECHA_PRESENTACION']='';
 							$datos[] = $array;
+							$tipoFalta='';
 						}
 
 					}
