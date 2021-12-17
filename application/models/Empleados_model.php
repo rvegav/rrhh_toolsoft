@@ -143,4 +143,14 @@ class Empleados_model extends CI_Model {
 			return false;
 		}
 	}
+	public function getListadoSalarios($empleado, $desde, $hasta, $sucursal){
+		//acá pegas tu query
+		$select ='';
+		$query = $this->db->query($select);
+		if ($query->num_rows()>0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
 }

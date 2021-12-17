@@ -135,12 +135,12 @@ class informes extends CI_Controller {
 	public function informeSueldo(){
 		$archivo = 'reporte'.date('dmY');
 		$fecha = date("d/m/Y H:i:s");
-		$parametros['ingreso'] = $this->input->post('fechaIngreso', TRUE);
-		$parametros['salida'] = $this->input->post('fechaEgreso', TRUE);
-		$parametros['empleado'] = $this->input->post('empleado', TRUE);
-		$parametros['sucursal'] = $this->input->post('sucursal', TRUE);
-		$parametros['estado'] = $this->input->post('estado', TRUE);
-		$data = array('empleados'=> $this->Empleados_model->getEmpleadosInforme($parametros),
+		$empleado = $this->input->post('empleado', TRUE);
+		$mesdesde = $this->input->post('desde', TRUE);
+		$meshasta = $this->input->post('hasta', TRUE);
+		$sucursal = $this->input->post('sucursal', TRUE);
+		// Acá se me manda las variables
+		$data = array('sueldos'=> $this->Empleados_model->getListadoSalarios($parametros),
 			'fecha' =>$fecha);
 		$cuerpo = $this->load->view('informes/reporte_informe_sueldo', $data, TRUE);
 		$this->dompdf->load_html($cuerpo);

@@ -6,6 +6,8 @@ class Faltas extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model(array('Horario_model', 'Empleados_model', 'Marcacion_model', 'Faltas_model'));
+		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
+
 	}
 	public function index(){	
 		// if ($this->session->userdata('login')) {
@@ -13,6 +15,7 @@ class Faltas extends CI_Controller {
 			'tiposFaltas'=> $this->Faltas_model->getTipoFaltas(), 
 			'maximo' => $this->Faltas_model->ObtenerCodigo()
 		);
+		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
 
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -212,56 +215,29 @@ class Faltas extends CI_Controller {
 		$this->load->view('template/footer');
 	}
 	public function generacionFaltas(){
+		$mensajes = $this->data;
+		$data = $this->input->post('datos', TRUE);
+		if (!$data){
+			$mensajes['alerta'] = 'alerta';
 
-		$this->form_validation->set_rules("desde", "Desde", "required");
-		$this->form_validation->set_rules("hasta", "Hasta", "required");
-		if ($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('error', validation_errors('<div class="error">', '</div>'));
-			redirect(base_url()."horario/Horario", "refresh");
-
+			// redirect(base_url()."horario/Horario", "refresh");
 		}else{
-			$fecha_desde = $this->input->post('desde', TRUE);
-			$fecha_hasta = $this->input->post('hasta', TRUE);
-			$empleados = $this->Empleados_model->getEmpleados();
-			foreach ($empleados as $empleado) {
-				$fecha_desde_aux = $fecha_desde;
-				while ($fecha_desde_aux<= $fecha_hasta) {
-					$dia_numero = $this->Horario_model->getNroDía($fecha_desde_aux);
-					$horario = $this->Horario_model->getHorarioEmpleado($empleado->IDEMPLEADO, $dia_numero->NRODIA);
-					if ($horario) {
-						$marcacion  = $this->Marcacion_model->getMarcacionEmpleados($empleado->IDEMPLEADO, $fecha_desde_aux);
-						if ($marcacion) {
-							$entrada_am = explode(' ', $marcacion->ENTRADAAM);
-							$salida_am = explode(' ', $marcacion->SALIDAAM);
-							$entrada_pm = explode(' ', $marcacion->ENTRADAPM);
-							$salida_pm = explode(' ', $marcacion->SALIDAPM);
-							if (strtotime($entrada_am[1])>strtotime($horario->ENTRADAAM)) {
-								$tipoFalta = $this->Faltas_model->getTipoFaltas(false, 'LLEGADA TARDIA');
-							}
-							if (strtotime($salida_pm[1])<strtotime($horario->SALIDAPM)) {
-								$tipoFalta = $this->Faltas_model->getTipoFaltas(false, 'SALIDA TEMPRANA');
-							}
-
-							
-						}else{
-							$tipoFalta = $this->Faltas_model->getTipoFaltas(false, 'AUSENCIA');
-						}
-						$data['IDEMPLEADO'] = $empleado->IDEMPLEADO;
-						$data['IDFALTA'] = $tipoFalta->idfaltas;
-						$data['FECHAFALTA'] = $fecha_desde_aux;
-						if ($this->Faltas_model->insertFaltaEmpleado($data)) {
-							$resultado = 'se inserto correctamente';
-						}else{
-							$resultado = 'error al insertar';
-						}
-					}
-					$fecha_desde_aux= date("Y-m-d",strtotime($fecha_desde_aux."+ 1 days"));
-
+			foreach ($data as $dato) {
+				$data = array (
+					'idempleado' =>$dato[0],
+					'fechafalta'=>$dato[2],
+					'permiso'=>$dato[3],
+					'fechapermiso'=>$dato[4]
+				);
+				if ($this->Faltas_model->insertFaltasEmpleados($data, $dato[1])) {
+					$mensajes['correcto'] = 'correcto';
+				}else{
+					$mensajes['error'] = 'error';
 				}
-				
+
 			}
-			return true;
 		}
+		echo json_encode($mensajes);
 	}
 	
 	public function consultarFaltas(){
@@ -300,7 +276,9 @@ class Faltas extends CI_Controller {
 							}
 							if ($tipoFalta !='') {
 								$array['NRO']=$item;
+								$array['DOCUMENTO']=$empleado->CEDULAIDENTIDAD;
 								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['IDEMPLEADO']=$empleado->IDEMPLEADO;
 								$array['TIPO_FALTA']=$tipoFalta;
 								$f= date_create($fecha_desde_aux);
 								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
@@ -321,7 +299,11 @@ class Faltas extends CI_Controller {
 							}
 							if ($tipoFalta !='') {
 								$array['NRO']=$item;
+								$array['DOCUMENTO']=$empleado->CEDULAIDENTIDAD;
+
 								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['IDEMPLEADO']=$empleado->IDEMPLEADO;
+
 								$array['TIPO_FALTA']=$tipoFalta;
 								$f= date_create($fecha_desde_aux);
 								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
@@ -336,7 +318,10 @@ class Faltas extends CI_Controller {
 							}
 							if ($tipoFalta !='') {
 								$array['NRO']=$item;
+								$array['DOCUMENTO']=$empleado->CEDULAIDENTIDAD;
 								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['IDEMPLEADO']=$empleado->IDEMPLEADO;
+
 								$array['TIPO_FALTA']=$tipoFalta;
 								$f= date_create($fecha_desde_aux);
 								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
@@ -351,7 +336,10 @@ class Faltas extends CI_Controller {
 							}
 							if ($tipoFalta !='') {
 								$array['NRO']=$item;
+								$array['DOCUMENTO']=$empleado->CEDULAIDENTIDAD;
 								$array['EMPLEADO']=$empleado->NOMBRE;
+								$array['IDEMPLEADO']=$empleado->IDEMPLEADO;
+
 								$array['TIPO_FALTA']=$tipoFalta;
 								$f= date_create($fecha_desde_aux);
 								$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;
@@ -369,7 +357,9 @@ class Faltas extends CI_Controller {
 									// echo "</pre>";
 						if ($tipoFalta !='') {
 							$array['NRO']=$item;
+							$array['DOCUMENTO']=$empleado->CEDULAIDENTIDAD;
 							$array['EMPLEADO']=$empleado->NOMBRE;
+							$array['IDEMPLEADO']=$empleado->IDEMPLEADO;
 							$array['TIPO_FALTA']=$tipoFalta;
 							$f= date_create($fecha_desde_aux);
 							$array['FECHA_FALTA']=date_format($f,"d/m/Y") ;

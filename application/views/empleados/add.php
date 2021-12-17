@@ -1056,14 +1056,12 @@
         var mensaje = r['alerta'];
         wrapper.innerHTML = mensaje;
         swal({
-                    // buttons: true,
-                    title: 'Atención!', 
-                    content: wrapper,
-                    icon: "warning",
-                    // dangerMode: true,
-                    columnClass: 'medium',
-                    // theme: 'modern',
-                  });
+          title: 'Atención!', 
+          content: wrapper,
+          icon: "warning",
+          columnClass: 'medium',
+          
+        });
       }
       if (r['error']!="") {
         wrapper.innerHTML = r['error'];

@@ -60,10 +60,11 @@
 						<div class="row">
 							
 							<div class="col-md-12">
-								<table id="tab_faltas" class="table table-striped table-bordered btn-hover">
+								<table id="tab_faltas" class="table table-striped table-bordered btn-hover" width="100%">
 									<thead>
 										<tr>
 											<th>#</th>
+											<th>Documento</th>
 											<th>Empleado</th>
 											<th>Tipo Falta</th>
 											<th>Fecha Falta</th>
@@ -103,16 +104,17 @@
 						</div>
 						<div class="form-group col-md-4">
 							<label class="control-label">Fecha Falta:</label>
-							<input type="text" class="form-control" name="fechaFalta" id="fechaFalta">
+							<input type="date" class="form-control" name="fechaFalta" id="fechaFalta">
 						</div>
 						<div class="form-group col-md-4">
 							<label class="control-label">Fecha Presentacion:</label>
-							<input type="text" class="form-control" name="fechaPresentacion" id="fechaPresentacion">
+							<input type="date" class="form-control" name="fechaPresentacion" id="fechaPresentacion">
 						</div>
 					</form>
 				</div>
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="guardar_permiso">Guardar Permiso</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
@@ -137,12 +139,13 @@
 		},
 		'columns':[
 		{data:'NRO'},
+		{data:'DOCUMENTO'},
 		{data:'EMPLEADO'},
 		{data:'TIPO_FALTA'},
 		{data:'FECHA_FALTA'},
-		{data:'PERMISOS'},
+		{data:'PERMISOS', 'sClass':'perm'},
 		{data:'FECHA_PRESENTACION'},
-		{defaultContent: '<button class="btn btn-success cargar_permiso"  data-toggle="modal" title="Cargar permiso" data-target="#modal-permiso"><i class="fa fa-edit"></i></button>', "width": '20%', 'sClass':'text-center'}
+		{defaultContent: '<button class="btn btn-success cargar_permiso"  type="button" data-toggle="modal" title="Cargar permiso" data-target="#modal-permiso"><i class="fa fa-edit"></i></button>', "width": '20%', 'sClass':'text-center'}
 		],
 		"length": false,
 		'language':{
@@ -157,44 +160,98 @@
 			"sSearch":         "Buscar:",
 			"sUrl":            "",
 			"sInfoThousands":  ",",
-
-      // "sLoadingRecords": "Cargando...",
-      "oPaginate": {
-      	"sFirst":    "Primero",
-      	"sLast":     "Último",
-      	"sNext":     "Siguiente",
-      	"sPrevious": "Anterior"
-      },
-      "oAria": {
-      	"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-      	"sSortDescending": ": Activar para ordenar la columna de manera descendente"
-      }
-  }
-});
+			"oPaginate": {
+				"sFirst":    "Primero",
+				"sLast":     "Último",
+				"sNext":     "Siguiente",
+				"sPrevious": "Anterior"
+			},
+			"oAria": {
+				"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+				"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+			}
+		}
+	});
+	$('#tab_faltas tbody').on( 'click', '.cargar_permiso', function (e) {
+		var data = t_faltas.row( $(this).parents('tr') ).data();
+		var row = $(this).parents('tr');
+        	// console.log(data);
+        var dateString = data.FECHA_FALTA; // Oct 23
+        var dateParts = dateString.split("/");
+        $('#fechaFalta').val(dateParts[2]+'-'+dateParts[1]+'-'+dateParts[0]);
+        $('#guardar_permiso').on('click', function(){
+        	var text = $('#permiso').val();
+        	var fecha_presentacion = $('#fechaPresentacion').val();
+        	data.PERMISOS = text;
+        	data.FECHA_PRESENTACION = fecha_presentacion;
+        	t_faltas.row( row ).data(data).draw();
+        	$('#modal-permiso').modal('hide');
+        });
+    } );
 	$('#btn_consultar').on('click', function(){
 		t_faltas.ajax.reload();
 		
 	});
 
 	$('#btn_faltas').on('click', function(){
-		var desde=$('#fecha_desde').val();
-		var hasta=$('#fecha_hasta').val();
-		console.log(desde);
+		// var table = tabl.DataTable();
+		data = t_faltas.rows().data();
+		// data = table.rows().data();
+		var datos = new Array();
+		$.each(data, function( key, value ) {
+			var datosaux = new Array();
+        	// var columnas = value.split(",");
+        	datosaux.push(value.IDEMPLEADO);
+        	datosaux.push(value.TIPO_FALTA);
+        	datosaux.push(value.FECHA_FALTA);
+        	datosaux.push(value.PERMISOS);
+        	datosaux.push(value.FECHA_PRESENTACION);
+        	datos.push(datosaux);
+        	console.log(datos);
+        });
 		$.ajax({
 			url: 'procesar_faltas',
 			type: 'POST',
 			data: {
-				desde: desde, hasta:hasta
+				datos: datos
 			}
 		})
 		.done(function(resp) {
-			console.log(resp);
+			// console.log(resp);
+			var r = JSON.parse(resp);
+      		const wrapper = document.createElement('div');
+			if (r['correcto'] !='') {
+        		wrapper.innerHTML = '<p>Correcto<p>';
+				swal({
+					icon: "error",
+					columnClass: 'medium',
+					theme: 'modern',
+					title: 'Error!',
+					content: 'Correcto',
+				});
+			}
+			if (r['alerta'] !='') {
+        		wrapper.innerHTML = '<p>Debe seleccionar un Periodo<p>';
+
+				swal({
+					title: 'Atención!', 
+					content: wrapper,
+					icon: "warning",
+					columnClass: 'medium',
+
+				});
+			}
+			if (r['error']!='') {
+				swal({
+					icon: "error",
+					columnClass: 'medium',
+					theme: 'modern',
+					title: 'Error!',
+					content: 'No se insertaron algunos datos, ya existen en la fecha seleccionada',
+				});
+			}
 			$(this).prop( "disabled", true );
-			swal({
-				type:'success',
-				title:'Correcto!',
-				text:'Se migró correctamente',
-			});
+			
 		})
 		.fail(function() {
 			console.log("error");
@@ -231,12 +288,9 @@
 			console.log("complete");
 		});
 	});
-	$('#tab_faltas').on('change', function(){
-		alert();
-	});
-	$('.cargar_permiso').on('click', function(e){
-		e.preventDefault();
-		alert();
-	});
+	// $('#tab_faltas').on('change', function(){
+	// 	alert();
+	// });
+	
 
 </script>

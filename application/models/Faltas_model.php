@@ -10,10 +10,21 @@ class Faltas_model extends CI_Model {
 		
 	}
 
-	public function insertFaltasEmpleados($data){
-		$this->db->insert('faltasempleados', $data);
-		if ($this->db->affected_rows()>0) {
-			return true;
+	public function insertFaltasEmpleados($data, $tipoFalta){
+
+		$tipoFalta = $this->getTipoFaltas(false, $tipoFalta);
+		$this->db->where('idfalta',$tipoFalta->idfaltas);
+		$this->db->where('idempleado', $data['idempleado']);
+		$this->db->where('fechafalta', $data['fechafalta']);
+		$consulta = $this->db->get('faltasempleados');
+		if ($consulta->num_rows()==0) {
+			$id = $this->idFaltaEmpleados();
+			$this->db->set('idfaltasempleados', $id->MAXIMO, FALSE);
+			$this->db->set('idfalta', $tipoFalta->idfaltas);
+			$this->db->insert('faltasempleados', $data);
+			if ($this->db->affected_rows()>0) {
+				return true;
+			}
 		}
 	}
 	public function save($data)
@@ -116,23 +127,23 @@ class Faltas_model extends CI_Model {
 
 	}
 	public function idFaltaEmpleados(){
-	    $this->db->select("(CASE WHEN  max(idfaltasempleados) IS NULL THEN '1' ELSE max(idfaltasempleados) + 1 END) as MAXIMO");
+		$this->db->select("(CASE WHEN  max(idfaltasempleados) IS NULL THEN '1' ELSE max(idfaltasempleados) + 1 END) as MAXIMO");
 		$this->db->from("faltasempleados");
 		$resultado= $this->db->get();
 		return $resultado->row();
 	}
-	public function insertFaltaEmpleado($data){
-		$faltas = $this->getFaltaEmpleado($data['IDEMPLEADO'], $data['FECHAFALTA']);
-		if ($faltas) {
-			$this->db->where('idFaltaEmpleadosa', $faltas->idFaltaEmpleados);
-			return $this->db->update('faltasempleados', $data);
-		}else{
-			$id = $this->idFaltaEmpleados();
-			$this->db->set('idfaltasempleados', $id->MAXIMO, FALSE);
-			return $this->db->insert('faltasempleados', $data);
+	// public function insertFaltaEmpleado($data){
+	// 	$faltas = $this->getFaltaEmpleado($data['IDEMPLEADO'], $data['FECHAFALTA']);
+	// 	if ($faltas) {
+	// 		$this->db->where('idFaltaEmpleadosa', $faltas->idFaltaEmpleados);
+	// 		return $this->db->update('faltasempleados', $data);
+	// 	}else{
+	// 		$id = $this->idFaltaEmpleados();
+	// 		$this->db->set('idfaltasempleados', $id->MAXIMO, FALSE);
+	// 		return $this->db->insert('faltasempleados', $data);
 
-		}
-	}
+	// 	}
+	// }
 }
 
 /* End of file  */
