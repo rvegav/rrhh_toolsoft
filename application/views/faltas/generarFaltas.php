@@ -223,7 +223,7 @@
 			if (r['correcto'] !='') {
         		wrapper.innerHTML = '<p>Correcto<p>';
 				swal({
-					icon: "error",
+					icon: "Correcto",
 					columnClass: 'medium',
 					theme: 'modern',
 					title: 'Error!',
@@ -242,12 +242,14 @@
 				});
 			}
 			if (r['error']!='') {
+        		wrapper.innerHTML = '<p>No se insertaron algunos datos, ya existen en la fecha seleccionada<p>';
+
 				swal({
 					icon: "error",
 					columnClass: 'medium',
 					theme: 'modern',
 					title: 'Error!',
-					content: 'No se insertaron algunos datos, ya existen en la fecha seleccionada',
+					content: wrapper,
 				});
 			}
 			$(this).prop( "disabled", true );

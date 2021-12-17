@@ -223,12 +223,19 @@ class Faltas extends CI_Controller {
 			// redirect(base_url()."horario/Horario", "refresh");
 		}else{
 			foreach ($data as $dato) {
-				$data = array (
-					'idempleado' =>$dato[0],
-					'fechafalta'=>$dato[2],
-					'permiso'=>$dato[3],
-					'fechapermiso'=>$dato[4]
-				);
+				if ($dato[4]!='' or $dato[3]!='') {
+					$data = array (
+						'idempleado' =>$dato[0],
+						'fechafalta'=>$dato[2],
+						'permiso'=>$dato[3],
+						'fechapermiso'=>$dato[4]
+					);
+				}else{
+					$data = array (
+						'idempleado' =>$dato[0],
+						'fechafalta'=>$dato[2],
+					);
+				}
 				if ($this->Faltas_model->insertFaltasEmpleados($data, $dato[1])) {
 					$mensajes['correcto'] = 'correcto';
 				}else{

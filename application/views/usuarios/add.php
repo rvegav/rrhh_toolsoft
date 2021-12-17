@@ -121,7 +121,7 @@
 														<span class="input-group-addon">Roles:</span>
 														<select name="EMPLEADO1_detalle" id="modulo" class="form-control select2">
 															<?php foreach($roles as $rol):?>
-																<option value="<?php echo $rol->idrol;?>"><?php echo $rol->descripcion;?></option>
+																<option value="<?php echo $rol->IDROL;?>"><?php echo $rol->DESCRIPCION;?></option>
 															<?php endforeach;?>
 														</select>
 													</div>
@@ -146,30 +146,6 @@
 																	<td>1</td>
 																	<td>Admin</td>
 																	<td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																</tr>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
 																</tr>
 															</tbody>
 														</table>

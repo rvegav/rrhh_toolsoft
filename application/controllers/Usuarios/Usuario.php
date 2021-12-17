@@ -6,8 +6,10 @@ class Usuario extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+    	$this->load->model(array('Usuarios_model', 'Rol_model'));
+
 		$this->load->model("Empleados_model");
-		$this->load->model("Usuarios_model", "Rol_model");
+		// $this->load->model("Usuarios_model", "Rol_model");
 
 	}
 
@@ -20,9 +22,8 @@ class Usuario extends CI_Controller {
 		$this->load->view('template/footer');
 	}
 	public function add(){
-		$data['empleados'] = $this->Empleados_model->getEmpleados();
-		// $data['roles']= $this->Rol_model->; 
-		// var_dump($data);
+		$data = array('empleados'=> $this->Empleados_model->getEmpleados(),
+					  'roles'=> $this->Rol_model->getRoles());
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('usuarios/add', $data);
