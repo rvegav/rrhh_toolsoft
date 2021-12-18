@@ -6,23 +6,36 @@ class Marcacion extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model(array('Horario_model', 'Empleados_model', 'Marcacion_model'));
+		$this->load->model("Usuarios_model");
+		
 
 	}
-
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 3;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
 	{
+		$this->comprobacionRoles();
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('Marcaciones/Mapa');
 		$this->load->view('template/footer');
 	}
-	public function cargaImportacion(){
+	public function cargaImportacion()
+	{
+		$this->comprobacionRoles();
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
 		$this->load->view('Marcaciones/importacionMarcacion');
 		$this->load->view('template/footer');
 	}
-	public function procesarArchivo(){
+	public function procesarArchivo()
+	{
+		$this->comprobacionRoles();
 		$name_file=$_FILES['userfile']['name'];
 		$this->session->set_userdata('namearchivo',$name_file);
 		$config['upload_path']          = './uploads/';
@@ -60,10 +73,9 @@ class Marcacion extends CI_Controller {
 		}
 	}
 
-	public function get(){
-		var_dump($_POST);
-	}
-	public function insertarMarcaciones(){
+	public function insertarMarcaciones()
+	{
+		$this->comprobacionRoles();
 		$registros = $this->ReadFile();
 		$datos = array();
 		$fecha = '';
@@ -93,7 +105,8 @@ class Marcacion extends CI_Controller {
 		}
 		
 	}
-	private function ReadFile(){
+	private function ReadFile()
+	{
 		// if ($this->session->userdata('sist_conex')=="A") {
 		$name_file=$this->session->userdata('namearchivo');
 		$directorio = './uploads/';

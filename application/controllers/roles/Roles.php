@@ -10,12 +10,21 @@ class Roles extends CI_Controller
 		$this->load->model(array("Permiso_model", "Rol_model"));
 		// if (!$this->session->userdata("login")){
 		// 	redirect(base_url());
-		// }
+		$this->load->model("Usuarios_model");
+		// }s
 
+	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 4;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
 	}
 	//esta funcion es la primera que se cargar
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$roles = $this->Rol_model->getRoles();
 		$data = array(
@@ -32,6 +41,7 @@ class Roles extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
 		$data = array(			
 			'maximos' => $this->Rol_model->ObtenerCodigo(),
@@ -48,6 +58,7 @@ class Roles extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'rol'=> $this->Rol_model->getRol($id)
 		);
@@ -58,6 +69,7 @@ class Roles extends CI_Controller
 
 	public function GetPantalla($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'pantalla'=> $this->Rol_model->getPantalla($id)
 		);
@@ -74,6 +86,7 @@ class Roles extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		// recibimos las variables
 		$modulos = $this->input->post('modulo');
 		$NumRol   = $this->input->post("NumRol");
@@ -142,6 +155,7 @@ class Roles extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -162,6 +176,7 @@ class Roles extends CI_Controller
 
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idRol= $this->input->post("idrol");
 		$NumRol= $this->input->post("NumRol");
 		$desRol= $this->input->post("Descripcion");
@@ -201,7 +216,9 @@ class Roles extends CI_Controller
 		}
 	}
 
-	public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
 
 		if($this->Rol_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					

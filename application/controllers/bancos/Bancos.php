@@ -11,85 +11,81 @@ class Bancos extends CI_Controller
 			redirect(base_url());
 		}
 
+		$this->load->model(array('Usuarios_model', 'Banco_model'));
 		
-		$this->load->model("Banco_model");
+	}
+
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idpantalla = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idpantalla)) {
+			redirect(base_url());
+		}
 	}
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array(
-				'bancos'=> $this->Banco_model->getBancos()
-			);
+		$this->comprobacionRoles();
+		$data = array(
+			'bancos'=> $this->Banco_model->getBancos()
+		);
 		//cargamos un array usando el modelo
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('bancos/list', $data);
-			$this->load->view('template/footer');
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
-
-
-//print_r($data); die();
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('bancos/list', $data);
+		$this->load->view('template/footer');
 
 		//llamamos a las vistas para mostrar
 	}
 	
 	//funcion add para mostrar vistas
-	public function add()
-	{
-		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array(			
-				'maximos' => $this->Banco_model->ObtenerCodigo(),
-			);
+	public function add(){
+		$this->comprobacionRoles();
 
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('bancos/add', $data);
-			$this->load->view('template/footer');
+		$data = array(			
+			'maximos' => $this->Banco_model->ObtenerCodigo(),
+		);
 
-		// }else {
-			// redirect(base_url(),'refresh');
-		// }
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('bancos/add', $data);
+		$this->load->view('template/footer');
+
 
 
 	}
 	//funcion vista
 	public function view($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array (
-				'banco'=> $this->Banco_model->getBanco($id)
-			);
+		$this->comprobacionRoles();
+		$data = array (
+			'banco'=> $this->Banco_model->getBanco($id)
+		);
 
 			//print_r($data); die();
 			//abrimos la vista view
-			$this->load->view("bancos/view", $data);
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
+		$this->load->view("bancos/view", $data);
 	}
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
-			$NumBanco   = $this->input->post("NumBanco");
-			$desBanco   = $this->input->post("desBanco");
-			$direccion   = $this->input->post("direccion");
-			$telefono   = $this->input->post("telefono");
-			$web   = $this->input->post("web");
-			$email   = $this->input->post("email");
+		$this->comprobacionRoles();
+		$NumBanco   = $this->input->post("NumBanco");
+		$desBanco   = $this->input->post("desBanco");
+		$direccion   = $this->input->post("direccion");
+		$telefono   = $this->input->post("telefono");
+		$web   = $this->input->post("web");
+		$email   = $this->input->post("email");
 
-			$idBanco = $this->Banco_model->ultimoNumero();
+		$idBanco = $this->Banco_model->ultimoNumero();
 
 
-			$time = time();
-			$fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-			$empresa = $_SESSION["Empresa"];
-			$sucursal = $_SESSION["Sucursal"];
-			$usuario = $_SESSION["usuario"];
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$usuario = $_SESSION["usuario"];
 
 
 
@@ -98,136 +94,120 @@ class Bancos extends CI_Controller
 
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
-			$data = array(
-				'idbanco'  => $idBanco->MAXIMO,
-				'numbanco'  => $NumBanco,
-				'desbanco'  => $desBanco,
-				'direccion'  => $direccion,
-				'web' => $web,
-				'email' => $email,
-				'fecgrabacion' => $fechaActual,
-				'idempresa'  => $empresa
-			);
-			$desBanco = trim($desBanco);
-			if($desBanco !="" && trim($desBanco) !="")
+		$data = array(
+			'idbanco'  => $idBanco->MAXIMO,
+			'numbanco'  => $NumBanco,
+			'desbanco'  => $desBanco,
+			'direccion'  => $direccion,
+			'web' => $web,
+			'email' => $email,
+			'fecgrabacion' => $fechaActual,
+			'idempresa'  => $empresa
+		);
+		$desBanco = trim($desBanco);
+		if($desBanco !="" && trim($desBanco) !="")
+		{
+			if($this->Banco_model->save($data))
 			{
-				if($this->Banco_model->save($data))
-				{
 				//si todo esta bien, emitimos mensaje
-					$this->session->set_flashdata('success', 'Banco registrado correctamente!');
+				$this->session->set_flashdata('success', 'Banco registrado correctamente!');
 				//echo " < script > alert('Servicio Agregado, ¡Gracias!.');</script > ";
 
 				//redireccionamos y refrescamos
-					redirect(base_url()."bancos/bancos", "refresh");
+				redirect(base_url()."bancos/bancos", "refresh");
 
-				}
-				else
-				{
+			}
+			else
+			{
 					//si hubo errores, mostramos mensaje
 
-					$this->session->set_flashdata('error', 'Banco no registrado!');
+				$this->session->set_flashdata('error', 'Banco no registrado!');
 				//redirect(base_url()."servicios", "refresh");
 
-				//redireccionamos
-					redirect(base_url()."bancos/bancos/add", "refresh");
-				}
-			}else{	
-				$this->session->set_flashdata('error', 'Ingrese Banco!');
 				//redireccionamos
 				redirect(base_url()."bancos/bancos/add", "refresh");
 			}
+		}else{	
+			$this->session->set_flashdata('error', 'Ingrese Banco!');
+				//redireccionamos
+			redirect(base_url()."bancos/bancos/add", "refresh");
+		}
 
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 
 	}
 	
-	//metodo para editar
 	public function edit($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
-			$data = array(
-				'banco'=> $this->Banco_model->getBanco($id)
-			);
+		$this->comprobacionRoles();
+		$data = array(
+			'banco'=> $this->Banco_model->getBanco($id)
+		);
 
 
-			$this->load->view('template/head');
-			$this->load->view('template/menu');
-			$this->load->view('bancos/edit', $data);
-			$this->load->view('template/footer');
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('bancos/edit', $data);
+		$this->load->view('template/footer');
 	}
-
-	//actualizamos 
 	
 	public function update()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
 
-			$idBanco = $this->input->post("idbanco");
-			$NumBanco = $this->input->post("NumBanco");
-			$desBanco = $this->input->post("desBanco");
-			$direccion = $this->input->post("direccion");
-			$telefono = $this->input->post("telefono");
-			$web = $this->input->post("web");
-			$email = $this->input->post("email");
+		$this->comprobacionRoles();
+		$idBanco = $this->input->post("idbanco");
+		$NumBanco = $this->input->post("NumBanco");
+		$desBanco = $this->input->post("desBanco");
+		$direccion = $this->input->post("direccion");
+		$telefono = $this->input->post("telefono");
+		$web = $this->input->post("web");
+		$email = $this->input->post("email");
 
-			$desBanco = trim($desBanco);
-			if($desBanco !="" && trim($desBanco) !="")
-			{
+		$desBanco = trim($desBanco);
+		if($desBanco !="" && trim($desBanco) !="")
+		{
 			//indicar campos de la tabla a modificar
-				$data = array(
-					'desBanco' => $desBanco,
-					'direccion' => $direccion,
-					'telefono' => $telefono,
-					'web' => $web,
-					'email' => $email
-				);
+			$data = array(
+				'desBanco' => $desBanco,
+				'direccion' => $direccion,
+				'telefono' => $telefono,
+				'web' => $web,
+				'email' => $email
+			);
 
 
-				if($this->Banco_model->update($idBanco,$data))
-				{
+			if($this->Banco_model->update($idBanco,$data))
+			{
 				//print_r($idCiudad); die();
-					$this->session->set_flashdata('success', 'Actualizado correctamente!');
-					redirect(base_url()."bancos/bancos", "refresh");
-				}
-				else
-				{
-					$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-					redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
-				}
-			}else{	
+				$this->session->set_flashdata('success', 'Actualizado correctamente!');
+				redirect(base_url()."bancos/bancos", "refresh");
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
+				redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
+			}
+		}else{	
 
-				$this->session->set_flashdata('error', 'Ingrese Banco!');
+			$this->session->set_flashdata('error', 'Ingrese Banco!');
 				//redirect(base_url()."servicios", "refresh");
 
 				//redireccionamos
-				redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
-			}
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
+			redirect(base_url()."bancos/bancos/edit/".$idBanco,"refresh");
+		}
 
 	}
 
 	public function delete($id){
-		// if ($this->session->userdata('sist_conex')=="A") {
-			if($this->Banco_model->delete($id)){
-				$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-				redirect(base_url()."/bancos/bancos", "refresh");
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-				redirect(base_url()."/bancos/bancos", "refresh");		
-			}
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
-		
+		$this->comprobacionRoles();
+		if($this->Banco_model->delete($id)){
+			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
+			redirect(base_url()."/bancos/bancos", "refresh");
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
+			redirect(base_url()."/bancos/bancos", "refresh");		
+		}
 
 		
 	}

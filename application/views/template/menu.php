@@ -50,7 +50,7 @@
       <li><a><i class="fa fa-edit"></i> Gestión de usuarios <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="<?php echo base_url();?>roles/Roles">Gestionar Roles</a></li>
-          <li><a href="<?php echo base_url();?>Usuarios/Usuario/add">Registrar Usuarios</a></li>                    
+          <li><a href="<?php echo base_url();?>Usuarios/Usuario">Listado Usuarios</a></li>                    
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart-o"></i> Gestionar pagos <span class="fa fa-chevron-down"></span></a>

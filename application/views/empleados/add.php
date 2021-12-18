@@ -279,14 +279,6 @@
 
                   <div class="col-md-7 col-sm-7 col-xs-12">
 
-                    <div class="form-group <?php echo !empty(form_error("CodEmpleado"))? 'has-error':'';?>">
-                      <label class="control-label control-label col-md-3 col-sm-3 col-xs-12" for="CodEmpleado">Código Empleado<span class="required">*</span>
-                      </label>
-                      <div class="col-md-3 col-sm-3 col-xs-12">
-                        <input type="text" class="form-control" id="CodEmpleado" name="CodEmpleado">
-                      </div>
-                    </div>
-
                     <div class="form-group <?php echo !empty(form_error("Nombre"))? 'has-error':'';?>">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Nombre">Nombres <span class="required">*</span>
                       </label>
@@ -770,9 +762,6 @@
                   Apellido(s)
                 </th>
                 <th class="text-center">
-                  Sexo
-                </th>
-                <th class="text-center">
                   Fecha de Nacimiento
                 </th>
               </tr>
@@ -787,12 +776,6 @@
                 </td>
                 <td>
                   <input type="text" name='apellidohijo[]'  placeholder='Apellido(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
-                </td>
-                <td>
-                  <select class="form-control" id="sexohijo[]" name="sexohijo[]">
-                    <option value="1">MASCULINO</option>
-                    <option value="2">FEMENINO</option>
-                  </select>
                 </td>
                 <td>
                   <input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
@@ -819,7 +802,6 @@
 
 <div class="tab-pane" role="tabpanel" id="complete">
   <h3>Completado</h3>
-  <p>Se comppleto con exito todos los pasos!.</p>
   <ul class="list-inline pull-right">                                
     <li>
       <button type="submit" class="btn btn-success">Guardar</button>

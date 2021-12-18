@@ -19,7 +19,13 @@ class Cuentabancarias extends CI_Controller
 		$this->load->model("Plancuenta_model");
 		$this->load->model("Moneda_model");
 	}
-	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idpantalla = 2;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idpantalla)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
 	{	
 		// if ($this->session->userdata('sist_conex')=="A") {

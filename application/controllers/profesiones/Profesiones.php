@@ -10,13 +10,22 @@ class Profesiones extends CI_Controller
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
+		$this->load->model("Usuarios_model");
 
 		
 		$this->load->model("Profesion_model");
 	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 3;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	//esta funcion es la primera que se cargar
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$data = array(
 			'profesiones'=> $this->Profesion_model->getProfesiones()
@@ -34,6 +43,7 @@ class Profesiones extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
 		$data = array(			
 			'maximos' => $this->Profesion_model->ObtenerCodigo(),
@@ -48,6 +58,7 @@ class Profesiones extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'profesion'=> $this->Profesion_model->getProfesion($id)
 		);
@@ -59,6 +70,7 @@ class Profesiones extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 
 		//print_r($_POST); die();
@@ -136,6 +148,7 @@ class Profesiones extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -151,6 +164,7 @@ class Profesiones extends CI_Controller
 	//actualizamos 
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idProfesion= $this->input->post("idProfesion");
 		$NumProfesion= $this->input->post("NumProfesion");
 		$desProfesion= $this->input->post("desProfesion");
@@ -181,7 +195,9 @@ class Profesiones extends CI_Controller
 
 	}
 
-	public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
 		
 		if($this->Profesion_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					

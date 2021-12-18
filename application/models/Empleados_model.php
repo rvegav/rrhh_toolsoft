@@ -29,13 +29,19 @@ class Empleados_model extends CI_Model {
 
 	//esta es la parte para guardar en la bd
 	public function save($data)
-	{
-		return $this->db->insert("empleado", $data);
+	{	
+		$this->db->where('CEDULAIDENTIDAD', $data['cedulaidentidad']);
+		$consulta = $this->db->get('empleado');
+		if ($consulta->num_rows()==0) {
+			return $this->db->insert("empleado", $data);
+		}else{
+			return false;
+		}
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
 	public function getEmpleado($id = false, $numEmpleado = false, $nombre = false, $apellido = false){
-		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, PA.IDPAIS, PA.DESPAIS');
+		$this->db->select('NOMBRE, APELLIDO, CONCAT(NOMBRE," ", APELLIDO) as EMPLEADO,  OBSERVACION, IDEMPLEADO, PERFIL, CEDULAIDENTIDAD, E.DIRECCION, E.TELEFONO ,CELULAR, FECHAINGRESO, FECHASALIDA, FECNACIMIENTO, NROCUENTA, C.IDCATEGORIA, C.DESCATEGORIA AS CATEGORIA, N.IDNIVEL, N.DESNIVEL AS NIVEL, P.IDPROFESION, P.DESPROFESION AS PROFESION, CIU.IDCIUDAD, CIU.DESCIUDAD AS CIUDAD, CAR.IDCARGO, CAR.DESCARGO AS CARGO, EC.IDCIVIL, EC.DESCCIVIL, S.IDSUCURSAL, S.DESCSUCURSAL AS SUCURSAL, D.IDDEPARTEMENTO, D.DESCDEPARTAMENTO AS DEPARTAMENTO, PA.IDPAIS, PA.DESPAIS, E.NUMEROIPS');
 		$this->db->from('empleado e');
 		$this->db->join('categoria c', 'e.idcategoria = c.idcategoria');
 		$this->db->join('nivelestudio n', 'n.idnivel = e.idnivel');
@@ -101,8 +107,15 @@ class Empleados_model extends CI_Model {
 	
 	//esto es para actualizar los empleado
 	public function update($idEmpleado, $data){
-		$this->db->where("IDEMPLEADO", $idEmpleado);
-		return $this->db->update("empleado", $data);
+		$this->db->where('CEDULAIDENTIDAD', $data['cedulaidentidad']);
+		$this->db->where('IDEMPLEADO <> '.$idEmpleado);
+		$consulta = $this->db->get('empleado');
+		if ($consulta->num_rows()==0) {
+			$this->db->where("IDEMPLEADO", $idEmpleado);
+			return $this->db->update("empleado", $data);
+		}else{
+			return false;
+		}
 
 	}
 
@@ -145,12 +158,292 @@ class Empleados_model extends CI_Model {
 	}
 	public function getListadoSalarios($empleado, $desde, $hasta, $sucursal){
 		//acá pegas tu query
-		$select ='';
+		$select ='select z.documento, z.formapago, z.importeunitario, 
+					z.h_ene, 
+					(z.montoasignado * h_ene) as s_ene,
+					z.h_feb,
+					(z.montoasignado * h_feb) as s_feb,
+					z.h_mar,
+					(z.montoasignado * h_mar) as s_mar,
+					z.h_abril,
+					(z.montoasignado * h_abril) as s_abril,
+					z.h_may,
+					(z.montoasignado * h_may) as s_may,
+					z.h_junio,
+					(z.montoasignado * h_junio) as s_junio,
+					z.h_julio,
+					(z.montoasignado * h_julio) as s_julio,
+					z.h_agosto,
+					(z.montoasignado * h_agosto) as s_agosto,
+					z.h_sep,
+					(z.montoasignado * h_sep) as s_sep,
+					z.h_oct,
+					(z.montoasignado * h_oct) as s_oct,
+					z.h_nov,
+					(z.montoasignado * h_nov) as s_nov,
+					z.h_dic,
+					(z.montoasignado * h_dic) as s_dic,
+					z.aguinaldo,z.bonificaciones, 
+					z.vacaciones,z.total_h, z.total_s, z.totalgeneral
+					from (
+					select l.CEDULAIDENTIDAD as documento,
+					ca.MONTOASIGNADO,
+					"MENSUAL" as formaPago,
+					(ca.MONTOASIGNADO / 30) as importeunitario,
+					(select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-01-01" and "2021-01-31") x
+					     where x.idempleado = l.idempleado) as h_ene,
+					(select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-02-01" and "2021-02-28") x
+					     where x.idempleado = l.idempleado) as h_feb,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-03-01" and "2021-03-31") x
+					     where x.idempleado = l.idempleado) as h_mar,
+					(select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-04-01" and "2021-04-30") x
+					     where x.idempleado = l.idempleado) as h_abril,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-05-01" and "2021-05-31") x
+					     where x.idempleado = l.idempleado) as h_may,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-06-01" and "2021-06-30") x
+					     where x.idempleado = l.idempleado) as h_junio,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-07-01" and "2021-07-31") x
+					     where x.idempleado = l.idempleado) as h_julio,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-08-01" and "2021-08-31") x
+					     where x.idempleado = l.idempleado) as h_agosto,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-09-01" and "2021-09-30") x
+					     where x.idempleado = l.idempleado) as h_sep,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-10-01" and "2021-10-31") x
+					     where x.idempleado = l.idempleado) as h_oct,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-11-01" and "2021-11-30") x
+					     where x.idempleado = l.idempleado) as h_nov,
+					     (select 
+					ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
+					else x.horastrabajadas end) as char(20))),0) as horastrabajadassinextras
+					from (
+						   select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+						   DAYOFWEEK(a.entradaam) as dianumero,
+						   ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+						   (select s.descdia
+						   from detallehorario s where s.dianro = DAYOFWEEK(a.entradaam)) descdia,
+					       a.ENTRADAAM,a.SALIDAPM,a.idempleado
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-12-01" and "2021-12-31") x
+					     where x.idempleado = l.idempleado) as h_dic,
+					    ((select ifnull(sum(det.IMPORTE),0) from movisueldo mov
+							inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
+							inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
+							where tip.SUMARESTA = "+"
+							and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+							and det.IDEMPLEADO = l.idempleado) / 12) as aguinaldo,
+					        (select ifnull(sum(det.IMPORTE),0) from movisueldo mov
+							inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
+							inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
+							where tip.IDTIPOMOVISUELDO = 6
+							and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+							and det.IDEMPLEADO = l.IDEMPLEADO) as bonificaciones,
+							"0" vacaciones,
+					        (select (SEC_TO_TIME(sum(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)))) as horastrabajadas
+						   from marcacionempleado a
+						   inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+						   where a.ENTRADAAM between "2021-01-01" and "2021-12-31"
+					       and a.idempleado = l.IDEMPLEADO) as total_h,
+					       (select ifnull(sum(det.IMPORTE),0) from movisueldo mov
+							inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
+							inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
+							where tip.IDTIPOMOVISUELDO = 4
+							and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+							and det.IDEMPLEADO = l.IDEMPLEADO) total_s,
+					        (select ifnull(sum(det.IMPORTE),0) from movisueldo mov
+							inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
+							inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
+							where tip.SUMARESTA = "+"
+							and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+							and det.IDEMPLEADO = l.idempleado) totalgeneral
+					from empleado l
+					inner join categoria ca on ca.IDCATEGORIA = l.IDCATEGORIA) z';
 		$query = $this->db->query($select);
 		if ($query->num_rows()>0) {
 			return $query->result();
 		}else{
 			return false;
 		}
+	}
+
+	public function getListadoPersonasOcupadas($periodo){
+		//acá pegas tu query
+		$select ='select '.$periodo.' periodo,
+					(select count(1)
+					from empleado e
+					inner join categoria s on e.idcategoria = e.idcategoria
+					where s.DESCATEGORIA in("SUPERVISOR", "GERENTE")
+					and e.ESTADOEMPLEADO = 1 and e.sexo = "M") as supjefesvarones,
+					(select count(1)
+					from empleado e
+					inner join categoria s on e.idcategoria = e.idcategoria
+					where s.DESCATEGORIA in("SUPERVISOR", "GERENTE")
+					and e.ESTADOEMPLEADO = 1 and e.sexo = "F") as supjefesmujeres,
+					(select count(1) from empleado s where  s.sexo = "M" and s.ESTADOEMPLEADO = 1) empleadosvarones,
+    				(select count(1) from empleado s where  s.sexo = "F" and s.ESTADOEMPLEADO = 1) empleadosmujeres,
+					0 obrerosvarones, 0 obrerosmujeres,
+					(select count(1) from empleado s where 
+					ifnull(TIMESTAMPDIFF(YEAR,s.FECNACIMIENTO,CURDATE()),0) < 18
+					and s.sexo = "M" and s.ESTADOEMPLEADO = 1) as menoresvarones,
+					(select count(1) from empleado s where 
+					ifnull(TIMESTAMPDIFF(YEAR,s.FECNACIMIENTO,CURDATE()),0) < 18
+					and s.sexo = "F" and s.ESTADOEMPLEADO = 1) as menoresmujeres;';
+		$query = $this->db->query($select);
+		if ($query->num_rows()>0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	public function ObtenerCodigoEmpleado(){
+	    $this->db->select("(CASE WHEN  max(idempleado) IS NULL THEN '01' when (max(idempleado) + 1) <= 9 then concat('0',(max(idempleado) + 1)) ELSE max(idempleado) + 1 END) as MAXIMO");
+		$this->db->from("empleado");
+		$resultado= $this->db->get();
+		return $resultado->result();
 	}
 }

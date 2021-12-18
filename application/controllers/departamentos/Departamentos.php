@@ -6,17 +6,24 @@ class Departamentos extends CI_Controller
 	//solo el constructor, para llamar a las clases
 	public function __construct()
 	{
-        parent::__construct();
+		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
+		$this->load->model(array('Usuarios_model', 'Pais_model', 'Departamento_model'));
 
-		$this->load->model("Departamento_model");
-		$this->load->model("Pais_model");
 	}
 	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$moduloid = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
 	{	
+		$this->comprobacionRoles();
 		//cargamos un array usando el modelo
 		$data = array(
 			'departamentos'=> $this->Departamento_model->getDepartamentos()			
@@ -34,11 +41,12 @@ class Departamentos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
-$data = array(			
-			  'maximos' => $this->Departamento_model->ObtenerCodigo(),
-			  'paises' => $this->Pais_model->GetPaises()
-			  );
+		$data = array(			
+			'maximos' => $this->Departamento_model->ObtenerCodigo(),
+			'paises' => $this->Pais_model->GetPaises()
+		);
 
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -49,6 +57,7 @@ $data = array(
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'departamento'=> $this->Departamento_model->getDepartamento($id)
 		);
@@ -60,24 +69,25 @@ $data = array(
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 
 		//print_r($_POST); die();
 
-        $NumDepartamento  = $this->input->post("NumDepartamento");
+		$NumDepartamento  = $this->input->post("NumDepartamento");
 		$desDepartamento  = $this->input->post("desDepartamento");
 		$idPais = $this->input->post("IdPais");
 		
 		$idDepartamento = $this->Departamento_model->ultimoNumero();
 
 
-        $time = time();
-        $fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-        $empresa = $_SESSION["Empresa"];
-        $sucursal = $_SESSION["Sucursal"];
-        $usuario = $_SESSION["usuario"];
-                
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$usuario = $_SESSION["usuario"];
+
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
 
@@ -85,18 +95,18 @@ $data = array(
 		
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
-			$data = array(
-				'idDepartamento'  => $idDepartamento->MAXIMO,
-				'NumDepartamento'  => $NumDepartamento,
-				'desDepartamento'  => $desDepartamento,
-				'fecgrabacion' => $fechaActual,
-				'idusuario'  => $usuario,
-				'idpais' => $idPais
-			);
+		$data = array(
+			'idDepartamento'  => $idDepartamento->MAXIMO,
+			'NumDepartamento'  => $NumDepartamento,
+			'desDepartamento'  => $desDepartamento,
+			'fecgrabacion' => $fechaActual,
+			'idusuario'  => $usuario,
+			'idpais' => $idPais
+		);
 
 //print_r($data); die();
             //guardamos los datos en la base de datos
-            $desDepartamento = trim($desDepartamento);
+		$desDepartamento = trim($desDepartamento);
 		if($desDepartamento !="" && trim($desDepartamento) !="")
 		{
 			if($this->Departamento_model->save($data))
@@ -112,24 +122,24 @@ $data = array(
 			else
 			{
 					//si hubo errores, mostramos mensaje
-					
+
 				$this->session->set_flashdata('error', 'Departamento no registrado!');
 				//redirect(base_url()."servicios", "refresh");
 				
 				//redireccionamos
 				redirect(base_url()."departamentos/departamentos/add", "refresh");
 			}
-	    }
+		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Departamento!');
+
+			$this->session->set_flashdata('error', 'Ingrese Departamento!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."departamentos/departamentos/add", "refresh");
 
-				
+
 
 		}
 		
@@ -139,6 +149,7 @@ $data = array(
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -157,6 +168,7 @@ $data = array(
 	
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idDepartamento= $this->input->post("idDepartamento");
 		$NumDepartamento= $this->input->post("NumDepartamento");
 		$desDepartamento= $this->input->post("desDepartamento");
@@ -186,36 +198,38 @@ $data = array(
 		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Departamento!');
+
+			$this->session->set_flashdata('error', 'Ingrese Departamento!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."departamentos/departamentos/edit/".$idDepartamento,"refresh");
 
-				
+
 
 		}
 
 	}
 
-   public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
    	//print_r($id); die();
 		
-	  if($this->Departamento_model->delete($id)){
+		if($this->Departamento_model->delete($id)){
 
-		$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-		redirect(base_url()."departamentos/departamentos", "refresh");
+			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
+			redirect(base_url()."departamentos/departamentos", "refresh");
+
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
+			redirect(base_url()."departamentos/departamentos", "refresh");		
+
+		}
+
 		
-	  }
-	  else
-	  {
-		$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-		redirect(base_url()."departamentos/departamentos", "refresh");		
-
-	  }
-
-		
-}
+	}
 
 }

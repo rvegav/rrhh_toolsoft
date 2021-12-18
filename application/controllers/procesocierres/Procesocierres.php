@@ -16,9 +16,17 @@ class Procesocierres extends CI_Controller
 		$this->load->model(array('Procesocierres_model', 'Movimientos_model', 'Plancuenta_model'));
 
 	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
 	{	
+		$this->comprobacionRoles();
 		//cargamos un array usando el modelo
 		$data = array(
 			'procesocierres'=> $this->Procesocierres_model->getProcesocierre()
@@ -33,6 +41,7 @@ class Procesocierres extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 		$data = array(			
 			'maximos' => $this->Procesocierres_model->getIdMaximo(),
 			'sucursales' => $this->Procesocierres_model->getSucursal(),
@@ -48,6 +57,7 @@ class Procesocierres extends CI_Controller
 	//funcion vista
 	public function view($idMovi)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'movimientos'=> $this->Movimientos_model->getMovimientoDetalle($idMovi),
 			'empleados'=>$this->Procesocierres_model->getEmpleado()
@@ -58,7 +68,9 @@ class Procesocierres extends CI_Controller
 
 	}
 	//funcion para almacenar en la bd
-	public function store(){
+	public function store()
+	{
+		$this->comprobacionRoles();
 		$this->form_validation->set_rules("FECHADESDE", "Fecha Desde", "required");
 		$this->form_validation->set_rules("FECHAHASTA", "fecha Hasta", "required");
 		if ($this->form_validation->run() == FALSE){
@@ -233,7 +245,8 @@ class Procesocierres extends CI_Controller
 
 	}
 
-	protected function validar_fecha_espanol($fecha,$fechahasta){
+	protected function validar_fecha_espanol($fecha,$fechahasta)
+	{
 		$valores = explode('-', $fecha);
 		$valores1 = explode('-', $fechahasta);
 
@@ -252,7 +265,8 @@ class Procesocierres extends CI_Controller
 	}
 
 
-	protected function save_procesocierre($idcierre,$fechadesde,$fechahasta,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA){
+	protected function save_procesocierre($idcierre,$fechadesde,$fechahasta,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)
+	{
 
 		$liquidacion =  $this->Procesocierres_model->obtenerMovimientos($DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA);
 		try {
@@ -283,7 +297,8 @@ class Procesocierres extends CI_Controller
 	}
 
 
-	protected function save_asientoDetalle($idasiento,$idcierre,$fechadesde,$fechahasta,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA){
+	protected function save_asientoDetalle($idasiento,$idcierre,$fechadesde,$fechahasta,$DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA)
+	{
 
 		$asientos =  $this->Procesocierres_model->obtenerAiento($DESDESUCURSAL,$HASTASUCURSAL,$DESDEDEPARTAMENTO,$HASTADEPARTAMENTO,$FECHADESDE,$FECHAHASTA,$DESDEEMPRESA,$HASTAEMPRESA);
 
@@ -311,6 +326,7 @@ class Procesocierres extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'movimientos'=> $this->Movimientos_model->getMovimiento($id),
@@ -325,6 +341,7 @@ class Procesocierres extends CI_Controller
 	}
 	public function edit1($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'movimientos'=> $this->Movimientos_model->getMovimientoDetalle($id),
@@ -342,6 +359,7 @@ class Procesocierres extends CI_Controller
 
 	public function eliminar()
 	{
+		$this->comprobacionRoles();
 
 		$DESDESUCURSAL   = $this->input->post("SUCURSAL");
 		$HASTASUCURSAL   = $this->input->post("SUCURSAL1");
@@ -384,7 +402,8 @@ class Procesocierres extends CI_Controller
 		}
 	}
 
-	protected function eliminarAsientodetalle($idcierre){
+	protected function eliminarAsientodetalle($idcierre)
+	{
 
 		try {
 
@@ -409,7 +428,8 @@ class Procesocierres extends CI_Controller
 	}
 
 
-	protected function eliminarAsiento($idcierre){
+	protected function eliminarAsiento($idcierre)
+	{
 
 		try {
 
@@ -426,7 +446,8 @@ class Procesocierres extends CI_Controller
 		}
 	}
 
-	protected function eliminarCierre($idcierre){
+	protected function eliminarCierre($idcierre)
+	{
 		try {
 
 			for ($i=0; $i < count($idcierre); $i++) {
@@ -444,6 +465,7 @@ class Procesocierres extends CI_Controller
 
 	public function update1()
 	{
+		$this->comprobacionRoles();
 		$IDMOVI= $this->input->post("IDMOVI");
 		$IDMOVIDETALLE = $this->input->post("IDMOVIDETALLE");
 		$EMPLEADO= $this->input->post("EMPLEADO");
@@ -481,7 +503,9 @@ class Procesocierres extends CI_Controller
 		$this->edit1($IDMOVIDETALLE);
 	}
 
-	public function buscar(){       
+	public function buscar()
+	{     
+	$this->comprobacionRoles();  
 		$search_data = $this->input->post('nombre');
 
 		$result = $this->Movimienros_model->get_autocomplete($search_data);
@@ -498,7 +522,9 @@ class Procesocierres extends CI_Controller
 		} 
 	}
 
-	public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
 
 		if($this->Movimientos_model->deletedetalle($id))
 		{
@@ -520,7 +546,9 @@ class Procesocierres extends CI_Controller
 
 
 	}
-	public function deleteView($id){
+	public function deleteView($id)
+	{
+		$this->comprobacionRoles();
 
 		if($this->Movimientos_model->deleteDetalleView($id)){
 

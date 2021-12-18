@@ -23,12 +23,22 @@ class Empleados extends CI_Controller
 		$this->load->model("Pais_model");
 		$this->load->model("Cuentabancaria_model");
 		$this->load->model("Hijos_model");
+		$this->load->model("Usuarios_model");
+
 		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
 
 	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 2;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$data = array(
 			'empleados'=> $this->Empleados_model->getEmpleados());
@@ -42,6 +52,7 @@ class Empleados extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
 		$data = array(
 			'sucursales'=> $this->Sucursal_model->getSucursales(),
@@ -56,7 +67,8 @@ class Empleados extends CI_Controller
 			'tiposalarios'=> $this->Tiposalario_model->getTiposalarios(),
 			'paises'=> $this->Pais_model->getPaises(),
 			// 'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
-			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios()
+			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios(),
+			'maximos' => $this->Empleados_model->ObtenerCodigoEmpleado()
 		);
 
 		$this->load->view('template/head');
@@ -68,6 +80,7 @@ class Empleados extends CI_Controller
 	//funcion vista
 	public function view($idEmpleado)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'empleados'=> $this->Empleados_model->getEmpleado($idEmpleado)
 		);
@@ -77,6 +90,7 @@ class Empleados extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png';
@@ -97,7 +111,7 @@ class Empleados extends CI_Controller
 		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
 		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
 		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
-		$this->form_validation->set_rules("Observacion", "Observacion", "required");
+		$this->form_validation->set_rules("Celular", "Celular", "required");
 		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
 		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
 		if ($this->form_validation->run() == FALSE){
@@ -206,6 +220,7 @@ class Empleados extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'sucursales'=> $this->Sucursal_model->getSucursales(),
@@ -221,7 +236,8 @@ class Empleados extends CI_Controller
 			'paises'=> $this->Pais_model->getPaises(),
 			// 'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios(), 
-			'empleado'=> $this->Empleados_model->getEmpleado($id)
+			'empleado'=> $this->Empleados_model->getEmpleado($id),
+			'hijos'=> $this->Hijos_model->getHijos($id)
 		);
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -233,6 +249,7 @@ class Empleados extends CI_Controller
 
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$mensajes = $this->data;
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png';
@@ -250,7 +267,7 @@ class Empleados extends CI_Controller
 		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
 		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
 		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
-		$this->form_validation->set_rules("Observacion", "Observacion", "required");
+		$this->form_validation->set_rules("Celular", "Celular", "required");
 		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
 		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
 		if ($this->form_validation->run() == FALSE){
@@ -349,7 +366,7 @@ class Empleados extends CI_Controller
 				$mensajes['correcto'] = 'correcto';
 			}else{
 				$this->session->set_flashdata('error', 'Errores al Intentar Actualizar!');
-				$mensajes['error'] = 'Empleados no registrado!';
+				$mensajes['error'] = 'Empleados no registrado, ya existe un Empleado con esa cedula!';
 			}
 
 		}
@@ -357,7 +374,9 @@ class Empleados extends CI_Controller
 	}
 
 	//funcion para borrar
-	public function delete($idEmpleado){
+	public function delete($idEmpleado)
+	{
+		$this->comprobacionRoles();
 		$data = array(
 			'ESTADOEMPLEADO' => '3',
 		);
@@ -378,7 +397,9 @@ class Empleados extends CI_Controller
 
 
 	}
-	public function legajos($idEmpleado){
+	public function legajos($idEmpleado)
+	{
+		$this->comprobacionRoles();
 		$data['legajos'] = $this->Empleados_model->getLegajoEmpleado($idEmpleado);
 		$data['empleado'] = $this->Empleados_model->getEmpleado($idEmpleado);
 		$this->load->view('template/head');
@@ -386,11 +407,15 @@ class Empleados extends CI_Controller
 		$this->load->view('empleados/legajo', $data);
 		$this->load->view('template/footer');
 	}
-	public function getEmpleado(){
+	public function getEmpleado()
+	{
+		$this->comprobacionRoles();
 		$idEmpleado = $this->input->post('funcionario', TRUE);
 		echo json_encode($this->Empleados_model->getEmpleado($idEmpleado));
 	}
-	public function agregar_incidencia($idEmpleado){
+	public function agregar_incidencia($idEmpleado)
+	{
+		$this->comprobacionRoles();
 		$data['empleado'] = $this->Empleados_model->getEmpleado($idEmpleado);
 		$data['tipoIncidencias'] = $this->Empleados_model->getTipoIncidencias();
 		$this->load->view('template/head');
@@ -399,12 +424,16 @@ class Empleados extends CI_Controller
 		$this->load->view('template/footer');
 	}
 
-	public function getTipoIncidencia(){
+	public function getTipoIncidencia()
+	{
+		$this->comprobacionRoles();
 		$idTipoIncidencia = $this->input->post('id');
 		echo json_encode($this->Empleados_model->getTipoIncidencias($idTipoIncidencia));
 	}
 
-	public function storeIncidencia(){
+	public function storeIncidencia()
+	{
+		$this->comprobacionRoles();
 		$tipo = $this->input->post('txtTipoIncidencia', TRUE);
 		var_dump($tipo);
 		$tipo = $this->Empleados_model->getTipoIncidencias(false, $tipo);

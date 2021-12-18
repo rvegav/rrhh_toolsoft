@@ -8,6 +8,7 @@ class pagos extends CI_Controller {
 		parent::__construct();
 		$this->load->model(array('Empleados_model', 'Movimientos_model'));
 		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
+		$this->load->model("Usuarios_model");
 
 
 	}
@@ -80,7 +81,7 @@ class pagos extends CI_Controller {
 
 	}
 	public function descargaArchivos($name){
-		var_dump($name);
+		// var_dump($name);
 		$fileName = $name.".txt";
 		$filePath = FCPATH.'/'.$fileName;
 		if(!empty($fileName) && file_exists($filePath)){

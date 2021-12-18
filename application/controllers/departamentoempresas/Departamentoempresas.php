@@ -11,12 +11,20 @@ class Departamentoempresas extends CI_Controller
 			redirect(base_url());
 		}
 
+		$this->load->model(array('Usuarios_model', 'Departamentoempresa_model'));
 		
-		$this->load->model("Departamentoempresa_model");
+	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$moduloid = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
+			redirect(base_url());
+		}
 	}
 	//esta funcion es la primera que se cargar
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$data = array(
 			'departamentoempresas'=> $this->Departamentoempresa_model->getDepartamentoempresas()
@@ -34,6 +42,7 @@ class Departamentoempresas extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
 		$data = array(			
 			'maximos' => $this->Departamentoempresa_model->ObtenerCodigo(),
@@ -48,6 +57,7 @@ class Departamentoempresas extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'departamentoempresa'=> $this->Departamentoempresa_model->getDepartamentoempresa($id)
 		);
@@ -59,6 +69,7 @@ class Departamentoempresas extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 		$this->form_validation->set_rules("desDepartamento", "Descripcion", "required");
 		$this->form_validation->set_rules("NumDepartamento", "Numero", "required");
@@ -100,6 +111,7 @@ class Departamentoempresas extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -117,6 +129,7 @@ class Departamentoempresas extends CI_Controller
 	
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idDepartamento= $this->input->post("idDepartamento");
 		$NumDepartamento= $this->input->post("NumDepartamento");
 		$desDepartamento= $this->input->post("desDepartamento");
@@ -144,6 +157,7 @@ class Departamentoempresas extends CI_Controller
 	}
 
 	public function delete($id){
+		$this->comprobacionRoles();
 		if($this->Departamentoempresa_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
 			redirect(base_url()."departamentoempresas/departamentoempresas", "refresh");

@@ -31,8 +31,8 @@ class Auth extends CI_Controller
 			//otra manera de recibir los datos via post
 			$username = $this->input->post("username");
 			$password = $this->input->post("password");
-			$empresa = $this->input->post("Empresa");
-			$sucursal = $this->input->post("Sucursal");
+			// $empresa = $this->input->post("Empresa");
+			// $sucursal = $this->input->post("Sucursal");
             //session_start();
             $_SESSION["Empresa"]=1;
             $_SESSION["Sucursal"]=1;
@@ -61,7 +61,6 @@ class Auth extends CI_Controller
 				 	//si no hay datos que me recargue login
 					redirect(base_url());
 			  }else{
-
 			  	    $_SESSION["usuario"]= $res->IDUSUARIO;
 				//si existe datos, que me cargue las variables de sesion
 					$data= array(
@@ -69,7 +68,7 @@ class Auth extends CI_Controller
 					'DESUSUARIO' => $res->DESUSUARIO,
 					'NOMBRE' => $res->EMPLEADO,
 					'PERFIL' => $res->PERFIL,
-					'login'			=> TRUE
+					'login'	=> TRUE
 					);
 					$this->session->set_userdata($data);
 					$this->session->set_flashdata('success', 'Usuario registrado correctamente!');
@@ -77,7 +76,6 @@ class Auth extends CI_Controller
 					redirect(base_url()."dashboard");
 				}
 			// }
-		
 	}
 	
 	public function logout(){

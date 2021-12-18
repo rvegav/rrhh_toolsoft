@@ -689,8 +689,7 @@
 											</label>
 											<div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12">
-													<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIPS" class="form-control col-md-7 col-xs-12">
-													<?php echo form_error("Numero","<span class='help-block'>","</span>" );?>
+													<input type="text" id="Numero" placeholder="Número" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"  name="NumeroIPS" class="form-control col-md-7 col-xs-12" value="<?php echo $empleado->NUMEROIPS ?>">
 												</div>
 											</div>
 										</div>
@@ -746,9 +745,6 @@
 																	Apellido(s)
 																</th>
 																<th class="text-center">
-																	Sexo
-																</th>
-																<th class="text-center">
 																	Fecha de Nacimiento
 																</th>
 															</tr>
@@ -765,16 +761,29 @@
 																	<input type="text" name='apellidohijo[]'  placeholder='Apellido(s)' class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
 																</td>
 																<td>
-																	<select class="form-control" id="sexohijo[]" name="sexohijo[]">
-																		<option value="1">MASCULINO</option>
-																		<option value="2">FEMENINO</option>
-																	</select>
-																</td>
-																<td>
 																	<input type="date" name='fechanachijo[]' placeholder='Fecha de Nacimiento' class="form-control"/>
 																</td>
 															</tr>
 															<tr id='addr1'></tr>
+															<?php foreach ($hijos as $hijo): ?>
+																<?php $cont =2?>
+																<tr id='addr0'>
+																	<td>
+																		<?php echo $hijo->idhijo ?>
+																	</td>
+																	<td>
+																		<input type="text" name='nombrehijo[]'  value="<?php echo $hijo->nombre ?>" class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+																	</td>
+																	<td>
+																		<input type="text" name='apellidohijo[]'  value="<?php echo $hijo->apellido ?>" class="form-control" font style="text-transform: uppercase;" onkeyup="javascript:this.value = this.value.toUpperCase ();"/>
+																	</td>
+																	<td>
+																		<input type="date" name='fechanachijo[]' value="<?php echo $hijo->fecnacimiento ?>" class="form-control"/>
+																	</td>
+																</tr>
+																<tr id='addr1'></tr>
+																
+															<?php endforeach ?>
 														</tbody>
 													</table>
 												</div>
@@ -795,7 +804,6 @@
 
 								<div class="tab-pane" role="tabpanel" id="complete">
 									<h3>Completado</h3>
-									<p>Se comppleto con exito todos los pasos!.</p>
 									<ul class="list-inline pull-right">                                
 										<li>
 											<button type="submit" class="btn btn-success">Guardar</button>

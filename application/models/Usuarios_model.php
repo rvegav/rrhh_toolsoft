@@ -23,28 +23,80 @@ class Usuarios_model extends CI_Model {
 
 
 	public function getEmpresas(){
-	    $this->db->select("IDEMPRESA,DESEMPRESA,CONCAT(DESEMPRESA) AS EMPRESA");
+		$this->db->select("IDEMPRESA,DESEMPRESA,CONCAT(DESEMPRESA) AS EMPRESA");
 		$resultados= $this->db->get("empresa");
 		return $resultados->result();
 	}
 
 	public function getSucursales(){
-	    $this->db->select("IDSUCURSAL,NUMSUCURSAL,DESCSUCURSAL,CONCAT(NUMSUCURSAL,' ', DESCSUCURSAL) AS SUCURSAL");
+		$this->db->select("IDSUCURSAL,NUMSUCURSAL,DESCSUCURSAL,CONCAT(NUMSUCURSAL,' ', DESCSUCURSAL) AS SUCURSAL");
 		$resultados= $this->db->get("sucursal");
 		return $resultados->result();
 	}
 	public function getUsuarios(){
-		$this->db->select("U.IDUSUARIO, U.NUMUSUARIO, E.NOMBRE, E.APELLIDO, EM.DESEMPRESA AS EMPRESA, R.DESCRIPCION AS ROL, U.FECGRABACION AS FECHA_GRABACION", false);
+		$this->db->select("U.IDUSUARIO, U.NUMUSUARIO, u.DESUSUARIO USERNAME, CONCAT(e.Nombre, ' ', e.Apellido) as NOMBRE, U.FECGRABACION AS FECHA_GRABACION, U.ESTADO");
 		$this->db->from('usuario u');
 		$this->db->join('empleado e', 'e.idempleado = u.idempleado');
-		$this->db->join('roldetalle rd', 'u.idusuario = rd.idusuario');
-		$this->db->join('roles r', 'r.idrol = rd.idrol');
-		$this->db->join('empresa em', 'em.idempresa = u.idempresa');
+		$this->db->join('permiroles pr', 'pr.idusuario = u.idusuario');
+		$this->db->join('roles r', 'r.idrol = pr.idrol');
+		// $this->db->join('empresa em', 'em.idempresa = u.idempresa');s
+		$this->db->group_by('U.IDUSUARIO, U.NUMUSUARIO, u.DESUSUARIO, CONCAT(e.Nombre, \' \', e.Apellido), U.FECGRABACION , U.ESTADO');
 		$results= $this->db->get();
 		if($results->num_rows()>0){
-			return $results->row();
+			return $results->result();
 		}else{
 			//echo "error en user y clave";
+			return false;
+		}
+	}
+	public function save($data){
+		$this->db->where('desusuario', $data['desusuario']);
+		$this->db->or_where('idempleado', $data['idempleado']);
+		$consulta = $this->db->get('usuario');
+		if ($consulta->num_rows()==0) {
+			$id = $this->ultimoId();
+			$this->db->set('idusuario', $id->MAXIMO);
+			
+			if ($this->db->insert('usuario', $data)) {
+				return $this->db->insert_id();
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	public function ultimoId(){
+		$this->db->select("(CASE WHEN  max(idusuario) IS NULL THEN '1' ELSE max(idusuario) + 1 END) as MAXIMO");
+		$this->db->from("usuario");
+		$resultado= $this->db->get();
+		return $resultado->row();
+	}
+	public function ultimoIdPermiRoles(){
+		$this->db->select("(CASE WHEN  max(idpermirol) IS NULL THEN '1' ELSE max(idpermirol) + 1 END) as MAXIMO");
+		$this->db->from("permiroles");
+		$resultado= $this->db->get();
+		return $resultado->row();
+	}
+	public function save_permiRoles($data){
+		$id = $this->ultimoIdPermiRoles();
+		$this->db->set('idpermirol', $id->MAXIMO);
+		return $this->db->insert('permiroles', $data);
+	}
+	public function comprobarPermiso($usuario, $idmodulo){
+		$this->db->select('PE.IDPANTALLA, PE.PERINSERT, PE.PERSELECT, PE.PERDELETE, PE.PERUPDATE, m.DESMODULO, m.IDMODULO, u.DESUSUARIO');
+		$this->db->from('roles r');
+		$this->db->join('permiroles p', 'p.idrol = r.idrol');
+		$this->db->join('usuario u', 'p.idusuario = u.IDUSUARIO');
+		$this->db->join('permisos pe', 'pe.IDROL = p.IDROL');
+		$this->db->join('pantalla pa', 'pa.IDPANTALLA = pe.IDPANTALLA');
+		$this->db->join('modulo m', ' m.IDMODULO = pa.IDMODULO');
+		$this->db->where('u.DESUSUARIO', $usuario);
+		$this->db->where('m.IDMODULO', $idmodulo);
+		$resultado = $this->db->get();
+		if($resultado->num_rows()>0){
+			return $resultado->result();
+		}else{
 			return false;
 		}
 	}

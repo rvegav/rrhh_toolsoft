@@ -135,16 +135,24 @@ class informes extends CI_Controller {
 	public function informeSueldo(){
 		$archivo = 'reporte'.date('dmY');
 		$fecha = date("d/m/Y H:i:s");
-		$empleado = $this->input->post('empleado', TRUE);
-		$mesdesde = $this->input->post('desde', TRUE);
-		$meshasta = $this->input->post('hasta', TRUE);
-		$sucursal = $this->input->post('sucursal', TRUE);
+		$empleado = $this->input->post('empleado');
+		$mesdesde = $this->input->post('desde');
+		$meshasta = $this->input->post('hasta');
+		$sucursal = $this->input->post('sucursal');
+		print_r($_POST); die();
 		// Acá se me manda las variables
-		$data = array('sueldos'=> $this->Empleados_model->getListadoSalarios($parametros),
+		$data = array('sueldos'=> $this->Empleados_model->getListadoSalarios($empleado,
+																			 $mesdesde,
+																			 $meshasta,
+																			 $sucursal),
 			'fecha' =>$fecha);
-		$cuerpo = $this->load->view('informes/reporte_informe_sueldo', $data, TRUE);
+
+		$cuerpo = $this->load->view('informes/reporte_listado_sueldos', $data, TRUE);
 		$this->dompdf->load_html($cuerpo);
-		$this->dompdf->set_paper('Legal','portrait');
+		$this->dompdf->set_paper('A3','landscape');
+
+		//portrait - VERTICAL
+		//landscape - horizontal
 
 		// $this->load->view('informes/prueba_pdf', $data);
 
@@ -243,6 +251,37 @@ class informes extends CI_Controller {
 			
 
 		}
+	}
+
+
+	public function informePersonasOcupadas(){
+		//print_r($_POST); die();
+		$archivo = 'reporte'.date('dmY');
+		$fecha = date("d/m/Y H:i:s");
+		$periodo = $this->input->post('Periodo');
+		// Acá se me manda las variables
+		$data = array('ocupadas'=> $this->Empleados_model->getListadoPersonasOcupadas($periodo),
+			'fecha' =>$fecha);
+
+
+		$cuerpo = $this->load->view('informes/reporte_personas_ocupadas', $data, TRUE);
+		$this->dompdf->load_html($cuerpo);
+		$this->dompdf->set_paper('Legal','portrait');
+
+		//portrait - VERTICAL
+		//landscape - horizontal
+
+		// $this->load->view('informes/prueba_pdf', $data);
+
+		$this->dompdf->render();
+
+
+		if ($stream=TRUE) {
+			$this->dompdf->stream("$archivo", array("Attachment" => 0));
+		} else {
+			return $this->dompdf->output();
+		}
+		
 	}
 }
 

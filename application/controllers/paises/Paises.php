@@ -6,17 +6,26 @@ class Paises extends CI_Controller
 	//solo el constructor, para llamar a las clases
 	public function __construct()
 	{
-        parent::__construct();
+		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
 
+		$this->load->model("Usuarios_model");
 		
 		$this->load->model("Pais_model");
 	}
 	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
 	{	
+		$this->comprobacionRoles();
 		//cargamos un array usando el modelo
 		$data = array(
 			'paises'=> $this->Pais_model->getPaises()
@@ -34,10 +43,11 @@ class Paises extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
-$data = array(			
-			  'maximos' => $this->Pais_model->ObtenerCodigo(),
-			  );
+		$data = array(			
+			'maximos' => $this->Pais_model->ObtenerCodigo(),
+		);
 
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -48,6 +58,7 @@ $data = array(
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'pais'=> $this->Pais_model->getPais($id)
 		);
@@ -59,21 +70,22 @@ $data = array(
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 
 		//print_r($_POST); die();
 
-        $NumPais   = $this->input->post("NumPais");
+		$NumPais   = $this->input->post("NumPais");
 		$desPais   = $this->input->post("desPais");
 		
 		$idPais = $this->Pais_model->ultimoNumero();
 
 
-        $time = time();
-        $fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-        $empresa = $_SESSION["Empresa"];
-        $sucursal = $_SESSION["Sucursal"];
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
 
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
@@ -82,17 +94,17 @@ $data = array(
 		
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
-			$data = array(
-				'idpais'  => $idPais->MAXIMO,
-				'numpais'  => $NumPais,
-				'despais'  => $desPais,
-				'fecgrabacion' => $fechaActual,
+		$data = array(
+			'idpais'  => $idPais->MAXIMO,
+			'numpais'  => $NumPais,
+			'despais'  => $desPais,
+			'fecgrabacion' => $fechaActual,
 				// 'idempresa'  => $empresa
-			);
+		);
 
 //print_r($data); die();
             //guardamos los datos en la base de datos
-            $desPais = trim($desPais);
+		$desPais = trim($desPais);
 		if($desPais !="" && trim($desPais) !="")
 		{
 			if($this->Pais_model->save($data))
@@ -108,24 +120,24 @@ $data = array(
 			else
 			{
 					//si hubo errores, mostramos mensaje
-					
+
 				$this->session->set_flashdata('error', 'Pais no registrado!');
 				//redirect(base_url()."servicios", "refresh");
 				
 				//redireccionamos
 				redirect(base_url()."paises/paises/add", "refresh");
 			}
-	    }
+		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Pais!');
+
+			$this->session->set_flashdata('error', 'Ingrese Pais!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."paises/paises/add", "refresh");
 
-				
+
 
 		}
 		
@@ -135,6 +147,7 @@ $data = array(
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -152,6 +165,7 @@ $data = array(
 	
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idPais= $this->input->post("idpais");
 		$NumPais= $this->input->post("NumPais");
 		$desPais= $this->input->post("desPais");
@@ -179,32 +193,34 @@ $data = array(
 		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Pais!');
+
+			$this->session->set_flashdata('error', 'Ingrese Pais!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."paises/paises/edit/".$idPais,"refresh");
 
-				
+
 
 		}
 
 	}
 
-public function delete($id){
-		
-	if($this->Pais_model->delete($id)){
-		$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-		redirect(base_url()."/paises/paises", "refresh");
-	}
-	else
+	public function delete($id)
 	{
-		$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-		redirect(base_url()."/paises/paises", "refresh");		
-	}
+		$this->comprobacionRoles();
+		
+		if($this->Pais_model->delete($id)){
+			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
+			redirect(base_url()."/paises/paises", "refresh");
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
+			redirect(base_url()."/paises/paises", "refresh");		
+		}
 
 		
-}
+	}
 
 }

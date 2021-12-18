@@ -4,10 +4,19 @@ date_default_timezone_set('America/Asuncion');
 class Horario extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
-			$this->load->model("Horario_model");
+		$this->load->model("Horario_model");
+		$this->load->model("Usuarios_model");
+		
 		// if (!$this->session->userdata("login")){
 		// 	redirect(base_url());
 		// }
+	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
 	}
 	public function index(){	
 		// if ($this->session->userdata('login')) {
@@ -27,7 +36,7 @@ class Horario extends CI_Controller {
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		$data = array(			
 			'maximo' => $this->Horario_model->ObtenerCodigo()
 		);
@@ -45,7 +54,7 @@ class Horario extends CI_Controller {
 	//funcion vista
 	public function viewDetalle()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		$id = $this->input->post('id', TRUE);
 		$data =$this->Horario_model->getDetalleHorario($id);
 		echo json_encode($data);
@@ -57,7 +66,7 @@ class Horario extends CI_Controller {
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 
 		$this->form_validation->set_rules("descHorario", "Descripcion", "required");
 		$this->form_validation->set_rules("entrada_am", "Hora Entrada AM", "required");
@@ -114,7 +123,7 @@ class Horario extends CI_Controller {
 		// }
 	public function edit($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 
 		$data = array(
 			'horario'=> $this->Horario_model->getHorario($id),
@@ -132,7 +141,7 @@ class Horario extends CI_Controller {
 	//actualizamos 
 
 	public function update(){
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 
 		$this->form_validation->set_rules("descHorario", "Descripcion", "required");
 		$this->form_validation->set_rules("entrada_am", "Hora Entrada AM", "required");
@@ -189,7 +198,7 @@ class Horario extends CI_Controller {
 
 
 	public function delete($id){
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		if($this->Horario_model->delete($id)){
 			$this->session->set_flashdata('success', 'Eliminado correctamente!');
 			redirect(base_url()."horario/Horario/", "refresh");

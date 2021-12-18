@@ -9,8 +9,17 @@ class Empresas extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model("Empresas_model");
+		$this->load->model("Usuarios_model");
+		
 	}
 	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$moduloid = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
 	{	
 		//cargamos un array usando el modelo

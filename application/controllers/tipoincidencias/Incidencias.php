@@ -13,10 +13,19 @@ class Incidencias extends CI_Controller
 		}	
 		$this->load->model("Incidencia_model");
 		$this->load->model("Departamento_model");
+		$this->load->model("Usuarios_model");
+		
 	}
-	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		// if ($this->session->userdata('login')) {
 		$data = array(
 			'incidencias'=> $this->Incidencia_model->getTipoIncidencias()
@@ -35,6 +44,7 @@ class Incidencias extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 		$data = array(			
 			'maximo' => $this->Incidencia_model->obtenerUltimoNro()
@@ -53,6 +63,7 @@ class Incidencias extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 		$data = array (
 			'ciudad'=> $this->Incidencia_model->getCiudad($id)
@@ -65,6 +76,7 @@ class Incidencias extends CI_Controller
 	}
 	public function store()
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 
 		$NumIncidencia   = $this->input->post("numIncidencia");
@@ -109,6 +121,7 @@ class Incidencias extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
@@ -129,6 +142,7 @@ class Incidencias extends CI_Controller
 
 	public function update()
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 
 		$idTipoIncidencia = $this->input->post('tipoincidenciasId');
@@ -170,6 +184,7 @@ class Incidencias extends CI_Controller
 
 	public function delete($id)
 	{
+		$this->comprobacionRoles();
 		// if ($this->session->userdata('sist_conex')=="A") {
 		if($this->Incidencia_model->delete($id)){
 			$this->session->set_flashdata('success', 'Eliminado correctamente!');

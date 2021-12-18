@@ -10,14 +10,23 @@ class Plancuentas extends CI_Controller
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
+		$this->load->model("Usuarios_model");
 
 		$this->load->library(array('form_validation'));
 		
 		$this->load->model("Plancuenta_model");
 	}
 	//esta funcion es la primera que se cargar
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 7;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
-	{	
+	{
+		$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$data = array(
 			'cuentas'=> $this->Plancuenta_model->getPlancuentas()
@@ -32,6 +41,7 @@ class Plancuentas extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 		$data = array(			
 			'maximos' => $this->Plancuenta_model->ObtenerCodigo(),
 			'cuentas_padre'=> $this->Plancuenta_model->obtenerCuentaPadre());
@@ -44,6 +54,7 @@ class Plancuentas extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'cuenta'=> $this->Plancuenta_model->getPlancuenta($id)
 		);
@@ -53,6 +64,7 @@ class Plancuentas extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 
 		// if ($this->session->userdata('pantalla')=='S' and  $this->session->userdata('accion') = 'S') {
 		
@@ -126,6 +138,7 @@ class Plancuentas extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'cuentacontable'=> $this->Plancuenta_model->getPlancuenta($id),
@@ -142,6 +155,7 @@ class Plancuentas extends CI_Controller
 	
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idPlancuenta= $this->input->post("idcuentacontable");
 		$NumPlancuenta   = $this->input->post("NumCuentacontable");
 		$desPlancuenta   = $this->input->post("desPlancuenta");
@@ -184,7 +198,9 @@ class Plancuentas extends CI_Controller
 
 	}
 
-	public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
 		
 		if($this->Plancuenta_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
@@ -198,7 +214,9 @@ class Plancuentas extends CI_Controller
 
 		
 	}
-	public function getPlancuenta(){
+	public function getPlancuenta()
+	{
+		$this->comprobacionRoles();
 		$id = $this->input->post('cuenta', TRUE);
 		echo json_encode($this->Plancuenta_model->getPlancuenta($id));
 	}

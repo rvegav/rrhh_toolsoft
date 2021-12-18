@@ -6,17 +6,27 @@ class Estadociviles extends CI_Controller
 	//solo el constructor, para llamar a las clases
 	public function __construct()
 	{
-        parent::__construct();
+		parent::__construct();
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
 
 		
 		$this->load->model("Estadocivil_model");
+		$this->load->model("Usuarios_model");
+		
+	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
 	}
 	//esta funcion es la primera que se cargar
 	public function index()
-	{	
+	{
+	$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$data = array(
 			'estadociviles'=> $this->Estadocivil_model->getEstadociviles()
@@ -34,10 +44,11 @@ class Estadociviles extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 
-$data = array(			
-			  'maximos' => $this->Estadocivil_model->ObtenerCodigo(),
-			  );
+		$data = array(			
+			'maximos' => $this->Estadocivil_model->ObtenerCodigo(),
+		);
 
 		$this->load->view('template/head');
 		$this->load->view('template/menu');
@@ -48,6 +59,7 @@ $data = array(
 	//funcion vista
 	public function view($id)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'estadocivil'=> $this->Estadocivil_model->getEstadocivil($id)
 		);
@@ -59,24 +71,25 @@ $data = array(
 	//funcion para almacenar en la bd
 	public function store()
 	{
+		$this->comprobacionRoles();
 		//recibimos las variables
 
 		//print_r($_POST); die();
 
-        $NumCivil   = $this->input->post("NumCivil");
+		$NumCivil   = $this->input->post("NumCivil");
 		$desCivil   = $this->input->post("desCivil");
 		
 		$idCivil = $this->Estadocivil_model->ultimoNumero();
 
 
-        $time = time();
-        $fechaActual = date("Y-m-d H:i:s",$time);
+		$time = time();
+		$fechaActual = date("Y-m-d H:i:s",$time);
 
-        $empresa = $_SESSION["Empresa"];
-        $sucursal = $_SESSION["Sucursal"];
-        $usuario = $_SESSION["usuario"];
+		$empresa = $_SESSION["Empresa"];
+		$sucursal = $_SESSION["Sucursal"];
+		$usuario = $_SESSION["usuario"];
 
-                
+
 		//aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		//$this->form_validation->set_rules("NumCiudad", "NumCiudad", "required|is_unique[ciudad.numCiudad]");
 
@@ -84,16 +97,16 @@ $data = array(
 		
 			//aqui el arreglo, nombre de los campos de la tabla en la bd y las variables previamente cargada
 
-			$data = array(
-				'idcivil'  => $idCivil->MAXIMO,
-				'numcivil'  => $NumCivil,
-				'DESCCIVIL'  => $desCivil,
-				'fecgrabacion' => $fechaActual
-			);
+		$data = array(
+			'idcivil'  => $idCivil->MAXIMO,
+			'numcivil'  => $NumCivil,
+			'DESCCIVIL'  => $desCivil,
+			'fecgrabacion' => $fechaActual
+		);
 
 //print_r($data); die();
             //guardamos los datos en la base de datos
-            $desCivil = trim($desCivil);
+		$desCivil = trim($desCivil);
 		if($desCivil !="" && trim($desCivil) !="")
 		{
 			if($this->Estadocivil_model->save($data))
@@ -109,24 +122,24 @@ $data = array(
 			else
 			{
 					//si hubo errores, mostramos mensaje
-					
+
 				$this->session->set_flashdata('error', 'Estado Civil no registrado!');
 				//redirect(base_url()."servicios", "refresh");
 				
 				//redireccionamos
 				redirect(base_url()."estadociviles/estadociviles/add", "refresh");
 			}
-	    }
+		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Estado Civil!');
+
+			$this->session->set_flashdata('error', 'Ingrese Estado Civil!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."estadociviles/estadociviles/add", "refresh");
 
-				
+
 
 		}
 		
@@ -136,6 +149,7 @@ $data = array(
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -153,6 +167,7 @@ $data = array(
 	
 	public function update()
 	{
+		$this->comprobacionRoles();
 		$idCivil= $this->input->post("idcivil");
 		$NumCivil= $this->input->post("NumCivil");
 		$desCivil= $this->input->post("desCivil");
@@ -180,32 +195,34 @@ $data = array(
 		}
 		else
 		{	
-			    
-                $this->session->set_flashdata('error', 'Ingrese Estado Civil!');
+
+			$this->session->set_flashdata('error', 'Ingrese Estado Civil!');
 				//redirect(base_url()."servicios", "refresh");
-				
+
 				//redireccionamos
 			redirect(base_url()."estadociviles/estadociviles/edit/".$idCivil,"refresh");
 
-				
+
 
 		}
 
 	}
 
-public function delete($id){
-		
-	if($this->Estadocivil_model->delete($id)){
-		$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
-		redirect(base_url()."/estadociviles/estadociviles", "refresh");
-	}
-	else
+	public function delete($id)
 	{
-		$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
-		redirect(base_url()."/estadociviles/estadociviles", "refresh");		
-	}
+		$this->comprobacionRoles();
+		
+		if($this->Estadocivil_model->delete($id)){
+			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					
+			redirect(base_url()."/estadociviles/estadociviles", "refresh");
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Errores al Intentar Eliminar!');
+			redirect(base_url()."/estadociviles/estadociviles", "refresh");		
+		}
 
 		
-}
+	}
 
 }

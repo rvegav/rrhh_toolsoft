@@ -11,14 +11,20 @@ class Ciudades extends CI_Controller
 			redirect(base_url());
 		}
 		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
-		
-		$this->load->model("Ciudad_model");
-		$this->load->model("Departamento_model");
+		$this->load->model(array('Usuarios_model', 'Ciudad_model', 'Departamento_model'));
+
+	}
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$moduloid = 1;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
+			redirect(base_url());
+		}
 	}
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		// if ($this->session->userdata('login')) {
+		$this->comprobacionRoles();
 		$data = array(
 			'ciudades'=> $this->Ciudad_model->getCiudades()
 		);
@@ -28,15 +34,12 @@ class Ciudades extends CI_Controller
 		$this->load->view('ciudades/list', $data);
 		$this->load->view('template/footer');
 
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 	}
 	
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		$data = array(			
 			'maximos' => $this->Ciudad_model->ObtenerCodigo(),
 			'departamentos' => $this->Departamento_model->getDepartamentos()
@@ -47,28 +50,22 @@ class Ciudades extends CI_Controller
 		$this->load->view('ciudades/add', $data);
 		$this->load->view('template/footer');
 		
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 
 	}
 	//funcion vista
 	public function view($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		$data = array (
 			'ciudad'=> $this->Ciudad_model->getCiudad($id)
 		);
 		$this->load->view("ciudades/view", $data);
 		
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 	}
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 
 		$mensajes= $this->data;
 		$empresa = $_SESSION["Empresa"];
@@ -107,9 +104,6 @@ class Ciudades extends CI_Controller
 			}
 		}
 		echo json_encode($mensajes);
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 		
 
 	}
@@ -117,7 +111,7 @@ class Ciudades extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -129,16 +123,13 @@ class Ciudades extends CI_Controller
 		$this->load->view('ciudades/edit', $data);
 		$this->load->view('template/footer');
 		
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 	}
 
 	//actualizamos 
 	
 	public function update()
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		$mensajes = $this->data;
 		$idCiudad= $this->input->post("idciudad");
 		$NumCiudad= $this->input->post("NumCiudad");
@@ -176,16 +167,13 @@ class Ciudades extends CI_Controller
 			}
 		}
 		echo json_encode($mensajes);
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 
 	}
 
 
 	public function delete($id)
 	{
-		// if ($this->session->userdata('sist_conex')=="A") {
+		$this->comprobacionRoles();
 		if($this->Ciudad_model->delete($id)){
 			$this->session->set_flashdata('success', 'Eliminado correctamente!');
 			redirect(base_url()."ciudades/Ciudades/", "refresh");
@@ -194,9 +182,6 @@ class Ciudades extends CI_Controller
 			redirect(base_url()."ciudades/Ciudades/","refresh");
 		}
 		
-		// }else {
-		// 	redirect(base_url(),'refresh');
-		// }
 
 	}
 

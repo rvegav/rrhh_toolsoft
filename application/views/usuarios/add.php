@@ -71,7 +71,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<form id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" action="" method="POST" novalidate="">
+					<form id="form-user" data-parsley-validate="" class="form-horizontal form-label-left" action="" method="POST" novalidate="">
 
 						<div class="form-group">
 							<div class="row">
@@ -93,8 +93,8 @@
 										<div class="col-md-6">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12">Empleado:</label>
 											<div class="input-group">
-												<input type="hidden" name="empleado[]" id="empleadoCi" >
-												<input type="text" name="empleado[]" id="empleado" placeholder="Buscar Empleado" class="form-control" disabled="disabled" />
+												<input type="hidden" name="idempleado" id="idempleado" >
+												<input type="text" name="" id="empleado" placeholder="Buscar Empleado" class="form-control" disabled="disabled" />
 												<span class="input-group-btn">
 													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-empleado">
 														<i class="fa fa-search" aria-hidden="true">
@@ -119,7 +119,8 @@
 												<div class="form-group col-md-6">
 													<div class="input-group">
 														<span class="input-group-addon">Roles:</span>
-														<select name="EMPLEADO1_detalle" id="modulo" class="form-control select2">
+														<select name="EMPLEADO1_detalle" id="roles" class="form-control select2">
+															<option>Seleccione un Rol</option>
 															<?php foreach($roles as $rol):?>
 																<option value="<?php echo $rol->IDROL;?>"><?php echo $rol->DESCRIPCION;?></option>
 															<?php endforeach;?>
@@ -127,13 +128,13 @@
 													</div>
 												</div>
 												<div class="col-md-6">
-													<button class="btn btn-block"><i class="fa fa-plus"></i></button>
+													<button  type="button" id="btn-agregar" class="btn btn-block"><i class="fa fa-plus"></i></button>
 												</div>
 											</div>
 											<div class="row">
 												<div class="col-md-12">
 													<div class="table-wrapper-scroll-y my-custom-scrollbar">
-														<table class="table table-responsive table-bordered">
+														<table class="table table-responsive table-bordered" id="roles_seleccionados">
 															<thead>
 																<tr>
 																	<th>Item</th>
@@ -142,11 +143,7 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	<td>1</td>
-																	<td>Admin</td>
-																	<td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-																</tr>
+
 															</tbody>
 														</table>
 														
@@ -160,11 +157,11 @@
 												
 												<label class="control-label col-md-5 col-sm-5 col-xs-12">Contraseña Generada:</label>
 												<div class="input-group">
-													<input class="form-control" type="text" name="username">
+													<input class="form-control" type="text" name="pass_inicial" id="pass_inicial">
 												</div>
 												<div class="row">
 													<div class="col-md-5 col-md-offset-5">
-														<button class="btn btn-success btn-block ">Generar Contraseña</button>
+														<button class="btn btn-success btn-block " type="button" id="generar_pass">Generar Contraseña</button>
 													</div>
 												</div>
 											</div>
@@ -190,6 +187,7 @@
 			</div><!-- / content -->
 		</div>
 	</div>
+</div>
 </div>
 <div class="modal fade" id="modal-empleado">
 	<div class="modal-dialog modal-lg">
@@ -228,7 +226,7 @@
 										<?php $dataEmpleado = $empleado->CEDULAIDENTIDAD.'*'.$empleado->NOMBRE?>
 
 										<td>
-											<button type = "button" class="btn btn-success btn-check2" value="<?php echo $dataEmpleado;?>"><span class= "fa fa-check"></span></button>
+											<button type = "button" class="btn btn-success checkFuncionario" value="<?php echo $empleado->IDEMPLEADO;?>"><span class= "fa fa-check"></span></button>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -248,8 +246,108 @@
 		$(".btn-check2").on("click", function(){
 			var empleado = $(this).val();
 			infoEmpleado = empleado.split("*");
-			$('#empleado').val(infoEmpleado[1]);
-			$('#empleadoCi').val(infoEmpleado[0]);
-			$("#modal-empleado").modal("hide");
+			
+		});
+		$(".checkFuncionario").on("click", function(){
+			funcionario = $(this).val();
+			console.log(funcionario);
+			$.ajax({
+				type:'POST',
+				url:'<?php echo base_url()?>getEmpleado',
+				data: {funcionario:funcionario},
+			})
+			.done(function (data){
+				var r = JSON.parse(data);
+				console.log(r);
+				$('#empleado').val(r.EMPLEADO);
+				$('#idempleado').val(r.IDEMPLEADO);
+				$("#modal-empleado").modal("hide");
+			})
+			.fail(function(){
+				alert('ocurrio un error interno, contacte con Rolo');
+			});
+
+		});
+		var item = 0;
+		$("#btn-agregar").on("click", function(){
+			item++;
+			html = '<tr>';
+			html += '<td>';
+			html += item;
+			html += '</td>';
+			html += '<td>';
+			html += '<input type="hidden" id="modulo" name="roles[]" value="'+ $("SELECT#roles option:selected").val() + '" >';
+			html += $("SELECT#roles option:selected").text();
+			html += '</td>';
+			html += '<td>';
+			html += '<button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+			html += '</td>';
+			html += '<tr>'
+			$("#roles_seleccionados tbody").append(html);
+		});
+		$('#form-user').submit(function(event) {
+			event.preventDefault();
+			var formDato = $(this).serialize();
+			$.ajax({
+				url: "<?php echo base_url()?>store_user",
+				type: 'POST',
+				data: formDato,
+			})
+			.done(function(result) {
+				var r = JSON.parse(result);
+				$("#mdlAguarde").modal('hide');
+				console.log(r);
+				const wrapper = document.createElement('div');
+				if (r['alerta']!="") {
+					var mensaje = r['alerta'];
+					wrapper.innerHTML = mensaje;
+					swal({
+						title: 'Atención!', 
+						content: wrapper,
+						icon: "warning",
+						columnClass: 'medium',
+
+					});
+				}
+				if (r['error']!="") {
+					wrapper.innerHTML = r['error'];
+					swal({
+						icon: "error",
+						columnClass: 'medium',
+						theme: 'modern',
+						title: 'Error!',
+						content: wrapper,
+					});
+				}
+				if (r['correcto']!="") {
+					wrapper.innerHTML = r['error'];
+					swal({
+						icon: "Correcto",
+						columnClass: 'medium',
+						theme: 'modern',
+						title: 'Correcto!',
+						content: wrapper,
+					});
+					// window.location = "<?php echo base_url()?>empleados/add";
+				}
+			}).fail(function() {
+				alert("Se produjo un error, contacte con el soporte técnico");
+				$("#mdlAguarde").modal('hide');
+			});
+		});
+		$("#generar_pass").on("click", function(){
+			$.ajax({
+				url: "<?php echo base_url()?>generar_pass",
+				type: 'POST',
+				// data: formDato,
+			})
+			.done(function(result) {
+				var r = JSON.parse(result);
+				console.log(r);
+				$('#pass_inicial').val(r);
+			}).fail(function() {
+				alert("Se produjo un error, contacte con el soporte técnico");
+				$("#mdlAguarde").modal('hide');
+			});
 		});
 	</script>

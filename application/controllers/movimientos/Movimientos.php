@@ -17,10 +17,20 @@ class Movimientos extends CI_Controller
 		$this->date = new Datetime('2021-12-01');
 		$this->load->model("Empleados_model");
 		$this->load->model("Movimientos_model");
+		$this->load->model("Usuarios_model");
+		
 	}
 	//esta funcion es la primera que se ejecuta para cargar los datos
+	public function comprobacionRoles(){
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$idmodulo = 3;
+		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+			redirect(base_url());
+		}
+	}
 	public function index()
-	{	
+	{
+		$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
 		$fecha = strftime("%B, %Y", $this->date->getTimestamp());
 		$mes =strftime("%m", $this->date->getTimestamp());
@@ -40,6 +50,7 @@ class Movimientos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
+		$this->comprobacionRoles();
 		$data = array(			
 			'empleados' => $this->Empleados_model->getEmpleados(),
 			'maximos' => $this->Movimientos_model->getIdMaximo(),
@@ -56,6 +67,7 @@ class Movimientos extends CI_Controller
 	//funcion vista
 	public function view($idMovi)
 	{
+		$this->comprobacionRoles();
 		$data = array (
 			'movimientos'=> $this->Movimientos_model->getMovimientoDetalle($idMovi),
 			'empleados'=>$this->Movimientos_model->getEmpleado()
@@ -71,7 +83,9 @@ class Movimientos extends CI_Controller
 
 
 	}
-	public function store(){
+	public function store()
+	{
+		$this->comprobacionRoles();
 		$TIPOMOVIMIENTO   = $this->input->post("txtTipoMovi");
 		$idTipoMovi = $this->Movimientos_model->getTipoMovimientos(false, $TIPOMOVIMIENTO);
 		$FECHAMOVI   = $this->input->post("fechamovi");
@@ -82,28 +96,28 @@ class Movimientos extends CI_Controller
 		// $this->form_validation->set_rules("NUMMOVI", "NUMMOVI", "required|is_unique[MOVISUELDO.NUMMOVI]");
 		//corremos la validacion
 		// if($this->form_validation->run()){
-			$data = array(
+		$data = array(
 				'IDTIPOMOVISUELDO'  => $idTipoMovi->IDTIPOMOVI,//MIENTRAS
 				'FECHAMOVI'  => $FECHAMOVI,
 				'IDEMPRESA' => 1,
 				'IDMONEDA' => 1
 			);
-			$id = $this->Movimientos_model->save($data);
-			if($id>0){
-				if ($this->save_detalle($id,$empleados,$dias,$horas,$importes)) {
-					$this->session->set_flashdata('success', 'Movimiento registrado correctamente!');
-					redirect(base_url().'movimientos/movimientos', 'refresh');
-				}else{
-					$this->session->set_flashdata('error', 'Movimiento no registrado! por acá');
-					//redirect(base_url()."servicios", "refresh");
-					redirect("movimientos/movimientos", "refresh");	
-				}
-
+		$id = $this->Movimientos_model->save($data);
+		if($id>0){
+			if ($this->save_detalle($id,$empleados,$dias,$horas,$importes)) {
+				$this->session->set_flashdata('success', 'Movimiento registrado correctamente!');
+				redirect(base_url().'movimientos/movimientos', 'refresh');
 			}else{
-				$this->session->set_flashdata('error', 'Movimiento no registrado!');
-				//redirect(base_url()."servicios", "refresh");
-				redirect("movimientos/movimientos", "refresh");
+				$this->session->set_flashdata('error', 'Movimiento no registrado! por acá');
+					//redirect(base_url()."servicios", "refresh");
+				redirect("movimientos/movimientos", "refresh");	
 			}
+
+		}else{
+			$this->session->set_flashdata('error', 'Movimiento no registrado!');
+				//redirect(base_url()."servicios", "refresh");
+			redirect("movimientos/movimientos", "refresh");
+		}
 		// }else{
 		// 	$this->session->set_flashdata('error', 'Movimiento no registrado!');
 		// 		//redirect(base_url()."servicios", "refresh");
@@ -134,6 +148,7 @@ class Movimientos extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		//print_r($id); die();
 		$data = array(
@@ -156,6 +171,7 @@ class Movimientos extends CI_Controller
 
 	public function edit1($id)
 	{
+		$this->comprobacionRoles();
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -175,6 +191,7 @@ class Movimientos extends CI_Controller
 
 	public function update()
 	{
+		$this->comprobacionRoles();
 
 		$IDMOVI= $this->input->post("IDMOVI");
 		$NUMMOVI= $this->input->post("NUMMOVI");
@@ -226,6 +243,7 @@ class Movimientos extends CI_Controller
 
 	public function update1()
 	{
+		$this->comprobacionRoles();
 		$IDMOVI= $this->input->post("IDMOVI");
 		$IDMOVIDETALLE = $this->input->post("IDMOVIDETALLE");
 		$EMPLEADO= $this->input->post("EMPLEADO");
@@ -276,7 +294,8 @@ class Movimientos extends CI_Controller
 		//}
 	}
 	public function buscar(){       
-		$search_data = $this->input->post('nombre');
+		
+		$this->comprobacionRoles();$search_data = $this->input->post('nombre');
 
 		$result = $this->Movimienros_model->get_autocomplete($search_data);
 
@@ -292,7 +311,9 @@ class Movimientos extends CI_Controller
 		} 
 	}
 	//funcion para borrar
-	public function delete($id){
+	public function delete($id)
+	{
+		$this->comprobacionRoles();
 
 		if($this->Movimientos_model->deletedetalle($id))
 		{
@@ -322,7 +343,9 @@ class Movimientos extends CI_Controller
 
 
 
-	public function deleteView($id){
+	public function deleteView($id)
+	{
+		$this->comprobacionRoles();
 
 		if($this->Movimientos_model->deleteDetalleView($id))
 		{
@@ -342,13 +365,17 @@ class Movimientos extends CI_Controller
 			redirect(base_url()."/isupport/movimientos/movimientos", "refresh");
 		}
 	}
-	public function obtenerTipoMovimiento(){
+	public function obtenerTipoMovimiento()
+	{
+		$this->comprobacionRoles();
 		$codigo = $this->input->post('tipo');
 		// $tipo = $this->Movimientos_model->getTipoMovimientos($codigo);
 		echo json_encode($this->Movimientos_model->getTipoMovimientos($codigo));
 	}
 
-	public function list_concepto(){
+	public function list_concepto()
+	{
+		$this->comprobacionRoles();
 		$data = array(
 			'conceptos'=> $this->Movimientos_model->getConceptoFijos()
 		);
@@ -358,7 +385,9 @@ class Movimientos extends CI_Controller
 		$this->load->view('template/footer');
 	}
 
-	public function add_concepto(){
+	public function add_concepto()
+	{
+		$this->comprobacionRoles();
 		$data = array(			
 			'empleados' => $this->Empleados_model->getEmpleados(),
 			'tipoMovimientos' => $this->Movimientos_model->getTipoMovimientos(),
@@ -368,7 +397,9 @@ class Movimientos extends CI_Controller
 		$this->load->view('movimientos/concepto_fijo_add', $data);
 		$this->load->view('template/footer');
 	}
-	public function storeConceptoFijos(){
+	public function storeConceptoFijos()
+	{
+		$this->comprobacionRoles();
 		$empleados = $this->input->post('empleados', TRUE);
 		$tipos = $this->input->post('tipo', TRUE);
 		$importes = $this->input->post('importes', TRUE);
@@ -397,12 +428,16 @@ class Movimientos extends CI_Controller
 		$this->session->set_flashdata('success', 'Se ha registrado correctamente!');					
 		redirect(base_url()."concepto_fijo", "refresh");
 	}
-	public function getEmpleadoConceptos(){
+	public function getEmpleadoConceptos()
+	{
+		$this->comprobacionRoles();
         	//retorna los empleados por tipo de movimiento
 		$tipo = $this->input->post('tipo', TRUE);
 		echo json_encode($this->Movimientos_model->getEmpleadoConceptos($tipo));
 	}
-	public function editConcepto($id){
+	public function editConcepto($id)
+	{
+		$this->comprobacionRoles();
 
 		$data = array(			
 			'empleados' => $this->Empleados_model->getEmpleados(),
@@ -414,12 +449,16 @@ class Movimientos extends CI_Controller
 		$this->load->view('template/footer');
 	}
 
-	public function getConceptoFijos(){
+	public function getConceptoFijos()
+	{
+		$this->comprobacionRoles();
 		$id = $this->input->post('concepto', TRUE);
 		echo json_encode($this->Movimientos_model->getEmpleadoConceptos(false, $id));
 	}
 
-	public function updateConceptoFijo(){
+	public function updateConceptoFijo()
+	{
+		$this->comprobacionRoles();
 		$id = $this->input->post('id');
 		$desde = $this->input->post('desde', TRUE);
 		$hasta = $this->input->post('hasta', TRUE);
@@ -430,7 +469,9 @@ class Movimientos extends CI_Controller
 			echo json_encode("correcto");
 		}
 	}
-	public function deleteConceptoFijo(){
+	public function deleteConceptoFijo()
+	{
+		$this->comprobacionRoles();
 		$id = $this->input->post('id', TRUE);
 		if (!$this->Movimientos_model->deleteConceptoFijo($id)) {
 			echo json_encode("error");
@@ -438,7 +479,9 @@ class Movimientos extends CI_Controller
 			echo json_encode("correcto");
 		}
 	}
-	public function getEmpleadoMovimentos(){
+	public function getEmpleadoMovimentos()
+	{
+		$this->comprobacionRoles();
 		$idMovi = $this->input->post('idmovi', TRUE);
 		echo json_encode($this->Movimientos_model->getEmpleadosMovimiento($idMovi));
 	}

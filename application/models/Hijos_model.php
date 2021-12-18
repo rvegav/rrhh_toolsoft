@@ -13,7 +13,7 @@ class Hijos_model extends CI_Model {
 		$this->db->select('idhijo, nombre, apellido, fecnacimiento, idempleado');
 		$this->db->from('hijos');
 		if ($id_padre) {
-			$this->db->where('idemppledo', $id_padre);
+			$this->db->where('idempleado', $id_padre);
 		}
 		$resultados= $this->db->get();
 		if ($resultados->num_rows() >0) {
@@ -40,7 +40,18 @@ class Hijos_model extends CI_Model {
 		}
 	}
 	public function save($data){
-		return $this->db->insert("hijos", $data);
+		$this->db->where('idempleado', $data['idempleado']);
+		$this->db->where('idempresa', $data['idempresa']);
+		$this->db->where('nombre', $data['nombre']);
+		$this->db->where('apellido', $data['apellido']);
+		$this->db->where('fecnacimiento', $data['fecnacimiento']);
+		$consulta = $this->db->get('hijos');
+		if ($consulta->num_rows() ==0) {
+			return $this->db->insert("hijos", $data);
+		}else{
+			return false;
+		}
+
 	}
 }
 
