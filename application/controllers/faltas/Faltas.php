@@ -14,9 +14,9 @@ class Faltas extends CI_Controller {
 	public function comprobacionRoles(){
 		$usuario = $this->session->userdata("DESUSUARIO");
 		$idmodulo = 3;
-		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
-			redirect(base_url());
-		}
+		// if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+		// 	redirect(base_url());
+		// }
 	}
 	public function index()
 	{	

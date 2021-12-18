@@ -13,7 +13,9 @@ class Faltas_model extends CI_Model {
 	public function insertFaltasEmpleados($data, $tipoFalta){
 		$campos = explode('/',$data['fechafalta']);
 		$data['fechafalta'] = date_format(date_create($campos[2].'-'.$campos[1].'-'.$campos[0]), 'Y-m-d');
-		$tipoFalta = $this->getTipoFaltas(false, $tipoFalta);
+		// die();
+		$tipoFalta = $this->getTipoFaltas(false, trim($tipoFalta));
+		// var_dump($tipoFalta);
 		$this->db->where('idfalta',$tipoFalta->idfaltas);
 		$this->db->where('idempleado', $data['idempleado']);
 		$this->db->where('fechafalta', $data['fechafalta']);
