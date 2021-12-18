@@ -31,51 +31,13 @@
 				<div class="col-md-12">
 					<form id="frm_generar" name="frm_generar" data-parsley-validate="" class="form-horizontal form-label-left" method="POST" action="<?php echo base_url() ?>resumen_ocupado" novalidate="">
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="movimiento">Empleado:</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="movimiento">Periodo:</label>
 							<div class="col-md-4 col-sm-6 col-xs-12">
-								<select name="empleado" id="empleado" class="form-control">
-									<option value="">Seleccionar Empleado</option>
-									<?php foreach ($empleados as $empleado): ?>
-										<option value="<?php echo $empleado->IDEMPLEADO?>"><?php echo $empleado->NOMBRE ?></option>
-									<?php endforeach ?>
-								</select>
+								<input type="Text" name="Periodo" class="form-control">
 							</div>
 						</div>
 						<div class="mensaje"></div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso:</label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<input type="date" class="form-control col-md-7 col-xs-12" name="fechaIngreso">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Egreso: </label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<input type="date" class="form-control col-md-7 col-xs-12" name="fechaEgreso" >
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Sucursal: </label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<select name="sucursal" id="sucursal" class="form-control">
-									<option value="">Seleccionar Sucursal</option>
-									<?php foreach ($sucursales as $sucursal): ?>
-										<option value="<?php echo $sucursal->IDSUCURSAL?>"><?php echo $sucursal->DESCSUCURSAL ?></option>
-									<?php endforeach ?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Estado: </label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<select name="movimiento" id="movimiento" class="form-control">
-									<option value="">Seleccionar Estado</option>
-									<option value="1">ACTIVO</option>
-									<option value="2">INACTIVO</option>
-									<option value="3">ANULADO</option>
-								</select>
-							</div>
-						</div>
+
 						<div class="ln_solid"></div>
 						<div class="form-group">
 							<div class="col-md-4 col-md-offset-3">

@@ -15,7 +15,7 @@ class Usuario extends CI_Controller {
 	}
 	public function comprobacionRoles()
 	{
-		$this->comprobacionRoles();
+		// $this->comprobacionRoles();
 		$usuario = $this->session->userdata("DESUSUARIO");
 		$idmodulo = 4;
 		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {

@@ -16,22 +16,22 @@ class Paises extends CI_Controller
 		$this->load->model("Pais_model");
 	}
 	//esta funcion es la primera que se cargar
-	public function comprobacionRoles(){
-		$usuario = $this->session->userdata("DESUSUARIO");
-		$idmodulo = 1;
-		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
-			redirect(base_url());
-		}
-	}
+	
 	public function index()
 	{	
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		//cargamos un array usando el modelo
 		$data = array(
 			'paises'=> $this->Pais_model->getPaises()
 		);
 
-//print_r($data); die();
 
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
@@ -43,7 +43,14 @@ class Paises extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 
 		$data = array(			
 			'maximos' => $this->Pais_model->ObtenerCodigo(),
@@ -58,7 +65,14 @@ class Paises extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		$data = array (
 			'pais'=> $this->Pais_model->getPais($id)
 		);
@@ -70,7 +84,14 @@ class Paises extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '1';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		//recibimos las variables
 
 		//print_r($_POST); die();
@@ -147,7 +168,14 @@ class Paises extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '1';
+		$this->comprobacionRoles($data);
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -165,7 +193,14 @@ class Paises extends CI_Controller
 	
 	public function update()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '1';
+		$this->comprobacionRoles($data);
 		$idPais= $this->input->post("idpais");
 		$NumPais= $this->input->post("NumPais");
 		$desPais= $this->input->post("desPais");
@@ -208,7 +243,14 @@ class Paises extends CI_Controller
 
 	public function delete($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '1';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '1';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		
 		if($this->Pais_model->delete($id)){
 			$this->session->set_flashdata('success', 'Registro eliminado correctamente!');					

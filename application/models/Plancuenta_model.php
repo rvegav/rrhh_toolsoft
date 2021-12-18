@@ -22,10 +22,13 @@ class Plancuenta_model extends CI_Model {
 	}
 	
 	//esto es una funcion o metodo para mostrar 1 empleado por id
-	public function getPlancuenta($id = false, $desc = false){
+	public function getPlancuenta($id = false, $desc = false, $imputable = false){
 		$this->db->select("p.IDPLANCUENTA,p.NUMPLANCUENTA,p.TIPOCUENTA, p.ASENTABLE, p.NIVELCUENTA,p.DESCPLANCUENTA,p.FECHAGRABACION,p.IDPLANCUENTA_PADRE, pa.DESCPLANCUENTA DESCPLANCUENTA_PADRE");
 		$this->db->from('plancuentas p');
 		$this->db->join('plancuentas pa ', 'p.IDPLANCUENTA_PADRE = pa.IDPLANCUENTA', 'left');
+		if ($imputable) {
+			$this->db->where('p.ASENTABLE', 'S');
+		}
 		if ($id) {
 			$this->db->where("p.IDPLANCUENTA",$id);
 		}

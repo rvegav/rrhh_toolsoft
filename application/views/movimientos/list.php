@@ -50,14 +50,10 @@
 					<div class="row">
 						<div class="col-md-8">
 							<h2>
-								Listado de Movimientos correspondiente al mes de <b><?php echo $mes; ?></b>
+								<!-- Listado de Movimientos correspondiente al mes de <b><?php echo $mes; ?></b> -->
 							</h2>
 						</div>
 						<div class="col-md-2">
-
-							<div class="form-group">
-								<input type="month" id="txtperiodo" name="txtperiodo" class="form-control"> 
-							</div>
 							
 						</div>
 						
@@ -142,8 +138,27 @@
 		</div>
 	</div>
 <?php // $this->load->view('template/footer');?>
-<script type="text/javascript">
+<script type="text/javascript" src = " https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
+<script type="">
 	$(document).ready(function(){
+		var table = $('#tb_empleado').DataTable({
+				"orderCellsTop": true,
+	            "language": {
+	            	"lengthMenu": "Mostrar _MENU_ registros por pagina",
+	            	"zeroRecords": "No se encontraron Resultados!",
+	            	"searchPlaceholder": "Buscar registros",
+	            	"info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_ registros",
+	            	"infoEmpty": "No existen registros",
+	            	"infoFiltered": "(Filtrado de un total de _MAX_ registros)",
+	            	"search": "Buscar:",
+	            	"paginate": {
+	            		"first": "Primero",
+	            		"last" : "Ultimo",
+	            		"next" : "Siguiente",
+	            		"previous" : "Anterior"
+	            	},
+	            }
+	        });
 		var base_url= "<?php echo base_url();?>";
 		$(".btn-view").on("click", function(){
 			var id= $(this).val();

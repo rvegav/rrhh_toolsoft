@@ -190,6 +190,10 @@ class Roles extends CI_Controller
 
 			if($this->Rol_model->update($idRol,$data)){
 				foreach ($modulos as $modulo) {
+					// echo '<pre>';
+					// var_dump($_POST);
+					// echo '</pre>';
+					$idPermiso ='';
 					$data = array(
 						'IDPANTALLA' => $modulo['pantalla'], 
 						'PERINSERT' => isset($modulo['insert']),
@@ -197,11 +201,14 @@ class Roles extends CI_Controller
 						'PERDELETE'=>isset($modulo['delete']),
 						'PERSELECT'=>isset($modulo['select'])
 					);
-					$idPermiso = $modulo['IDPERMISO'];
+					if ($idPermiso!='') {
+						$idPermiso = $modulo['IDPERMISO'];
+					}
 					$this->Permiso_model->update($idRol, $idPermiso, $data);
 				}
 				$this->session->set_flashdata('success', 'Actualizado correctamente!');
 				redirect(base_url()."roles/roles", "refresh");
+				
 			}
 			else
 			{

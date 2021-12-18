@@ -68,6 +68,7 @@ class Empleados extends CI_Controller
 			'paises'=> $this->Pais_model->getPaises(),
 			// 'nrocuentas'=> $this->Cuentabancaria_model->getCuentabancarias(),
 			'nivelestudios'=> $this->Nivelestudio_model->getNivelestudios(),
+			'horarios'=> $this->Empleados_model->getHorarios(),
 			'maximos' => $this->Empleados_model->ObtenerCodigoEmpleado()
 		);
 
@@ -114,6 +115,7 @@ class Empleados extends CI_Controller
 		$this->form_validation->set_rules("Celular", "Celular", "required");
 		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
 		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
+		$this->form_validation->set_rules("Horario", "Horario", "required");
 		if ($this->form_validation->run() == FALSE){
 			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
 			// $this->session->set_flashdata('error', validation_errors());
@@ -154,6 +156,7 @@ class Empleados extends CI_Controller
 			$apellido_hijo = $this->input->post('apellidohijo');
 			$sexohijo = $this->input->post('sexohijo');
 			$fecha_nacimiento_hijo = $this->input->post('fechanachijo');
+			$horario = $this->input->post('Horario');
 
 			$data = array(
 				// 'idEmpleado'  => $idEmpleado,
@@ -197,6 +200,7 @@ class Empleados extends CI_Controller
 							'nombre'=>$nombre_hijo[$i],
 							'apellido'=>$apellido_hijo[$i],
 							'fecnacimiento'=> $fecha_nacimiento_hijo[$i],
+							'idempresa'=> 1,
 							'fecgrabacion'=> date("Y-m-d H:i:s")
 
 						);
@@ -205,6 +209,17 @@ class Empleados extends CI_Controller
 						}
 					} 
 				}
+				$data= array(
+				 'idEmpleado'  => $idEmpleado,
+				 'idhorario'  => $horario,
+				 'idempresa' => 1,
+				 'fecgrabacion' => date("Y-m-d H:i:s")
+				);
+
+				if ($this->Horario_model->saveHorarioEmpleado($data)) {
+							$correcto = "Se ha asociado correctamente los Horarios";	
+				}
+
 				$this->session->set_flashdata('success', 'Empleado registrado correctamente!');
 				$mensajes['correcto'] = 'correcto';
 			}else{

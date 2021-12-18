@@ -13,23 +13,20 @@ class Departamentos extends CI_Controller
 		$this->load->model(array('Usuarios_model', 'Pais_model', 'Departamento_model'));
 
 	}
-	//esta funcion es la primera que se cargar
-	public function comprobacionRoles(){
-		$usuario = $this->session->userdata("DESUSUARIO");
-		$moduloid = 1;
-		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
-			redirect(base_url());
-		}
-	}
 	public function index()
 	{	
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		//cargamos un array usando el modelo
 		$data = array(
 			'departamentos'=> $this->Departamento_model->getDepartamentos()			
 		);
-
-//print_r($data); die();
 
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');
@@ -41,7 +38,14 @@ class Departamentos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '1';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 
 		$data = array(			
 			'maximos' => $this->Departamento_model->ObtenerCodigo(),
@@ -57,6 +61,14 @@ class Departamentos extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		$this->comprobacionRoles();
 		$data = array (
 			'departamento'=> $this->Departamento_model->getDepartamento($id)
@@ -69,7 +81,14 @@ class Departamentos extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		//recibimos las variables
 
 		//print_r($_POST); die();
@@ -149,7 +168,14 @@ class Departamentos extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -168,7 +194,14 @@ class Departamentos extends CI_Controller
 	
 	public function update()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '1';
+		$this->comprobacionRoles($data);
 		$idDepartamento= $this->input->post("idDepartamento");
 		$NumDepartamento= $this->input->post("NumDepartamento");
 		$desDepartamento= $this->input->post("desDepartamento");
@@ -213,7 +246,14 @@ class Departamentos extends CI_Controller
 
 	public function delete($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '3';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
    	//print_r($id); die();
 		
 		if($this->Departamento_model->delete($id)){

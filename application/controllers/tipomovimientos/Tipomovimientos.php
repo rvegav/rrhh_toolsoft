@@ -16,17 +16,19 @@ class Tipomovimientos extends CI_Controller
 		$this->load->model("Usuarios_model");
 		
 	}
-	public function comprobacionRoles(){
-		$usuario = $this->session->userdata("DESUSUARIO");
-		$idmodulo = 1;
-		if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
-			redirect(base_url());
-		}
-	}
+	// public function comprobacionRoles($modulo, $pantalla, $usuario){
+	// 	$usuario = $this->session->userdata("DESUSUARIO");
+	// 	$idmodulo = 1;
+	// 	if (!$this->Usuarios_model->comprobarPermiso($usuario, $idmodulo)) {
+	// 		redirect(base_url());
+	// 	}
+	// }
 	//esta funcion es la primera que se ejecuta para cargar los datos
 	public function index()
 	{
-	$this->comprobacionRoles();	
+
+		$usuario = $this->session->userdata("DESUSUARIO");
+		$this->comprobacionRoles($data);	
 		//cargamos un array usando el modelo
 		$data = array(
 			'tipos'=> $this->Tipomovimiento_model->getTipoMovimientos_Copia(),
@@ -169,7 +171,7 @@ class Tipomovimientos extends CI_Controller
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'tipomovimientos'=>$this->Tipomovimiento_model->getTipoMovimientos($id),
-			'cuentacontables'=>$this->Plancuenta_model->getPlancuentas(),
+			'cuentacontables'=>$this->Plancuenta_model->getPlancuentas(true),
 			'tipomovidetalles'=> $this->Tipomovimiento_model->getTipomovidetalle($id)
 		);
 		// echo "<pre>";

@@ -13,8 +13,8 @@ class Movimientos extends CI_Controller
 		if (!$this->session->userdata("login")){
 			redirect(base_url());
 		}
-        // $this->date = new Datetime();
-		$this->date = new Datetime('2021-12-01');
+        $this->date = new Datetime();
+		// $this->date = new Datetime('2021-12-01');
 		$this->load->model("Empleados_model");
 		$this->load->model("Movimientos_model");
 		$this->load->model("Usuarios_model");
@@ -32,13 +32,12 @@ class Movimientos extends CI_Controller
 	{
 		$this->comprobacionRoles();	
 		//cargamos un array usando el modelo
-		$fecha = strftime("%B, %Y", $this->date->getTimestamp());
-		$mes =strftime("%m", $this->date->getTimestamp());
-		$anho = strftime("%Y", $this->date->getTimestamp());
+		// $fecha = strftime("%B, %Y", $this->date->getTimestamp());
+		// $mes =strftime("%m", $this->date->getTimestamp());
+		// $anho = strftime("%Y", $this->date->getTimestamp());
 		$data = array(
-			'movimientos'=> $this->Movimientos_model->getMovimientosCabecera($mes, $anho),
-			'empleados'=>$this->Empleados_model->getEmpleados(),
-			'mes'=> $fecha
+			'movimientos'=> $this->Movimientos_model->getMovimientosCabecera(),
+			'empleados'=>$this->Empleados_model->getEmpleados()
 		);
 		//llamamos a las vistas para mostrar
 		$this->load->view('template/head');

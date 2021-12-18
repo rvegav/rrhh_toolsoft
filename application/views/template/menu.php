@@ -71,7 +71,7 @@
         <ul class="nav child_menu">
           <li><a href="<?php echo base_url();?>plancuentas/plancuentas">Cuenta Contable</a></li>
           <li><a href="<?php echo base_url();?>informediarios/informediarios/add">Informe Diario</a></li>
-          <li><a href="chartjs2.html">Libro Diario detalle</a></li>
+          <li><a href="<?php echo base_url();?>lista_mayor">Libro Diario Mayor</a></li>
         </ul>
       </li>
     </ul>

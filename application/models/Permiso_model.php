@@ -43,7 +43,13 @@ class Permiso_model extends CI_Model {
 
 	}
 	public function update($idRol, $idPermiso, $data){
-		echo $idPermiso;
+		// echo $idPermiso;
+		echo "<pre>";
+		var_dump($data);
+		var_dump($idPermiso);
+		
+		echo "</pre>";
+
 		// die();
 		if ($idPermiso !='') {
 			$this->db->where('IDPERMISO', $idPermiso);

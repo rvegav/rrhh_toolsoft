@@ -99,3 +99,5 @@ $route['informe_sueldo'] = 'informes/informes/informeSueldo';
 $route['resumen_ocupado'] = 'informes/informes/informePersonasOcupadas';
 $route['store_user'] = 'Usuarios/Usuario/store';
 $route['generar_pass'] = 'Usuarios/Usuario/generarContrasena';
+$route['reporte_libro_mayor'] = 'informes/informes/informeMayor';
+$route['lista_mayor'] = 'informes/informes/listadoLibrosMayor';

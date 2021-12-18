@@ -382,14 +382,14 @@ public function getEmpleado1(){
 			return false;
 		}
 	}
-	public function getTotalMovimientoMes($fechaDesde, $fechaHasta){
+	public function getTotalMovimientoMes($fechaDesde, $fechaHasta, $sumaresta = false){
 		$this->db->select("(CASE WHEN SUM(ms.IMPORTE) IS NULL THEN 0 ELSE SUM(ms.IMPORTE) END) as IMPORTE, tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, p.DESCPLANCUENTA, tm.AGUINALDO");
 		$this->db->from('movisueldodetalle ms');
 		$this->db->join('movisueldo m', 'm.IDMOVI = ms.IDMOVI');
 		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
 		$this->db->join('plancuentas p', 'p.idPlancuenta = tm.idplancuenta', 'left');
 		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
-		$this->db->where('tm.SUMARESTA', '+');
+		$this->db->where('tm.SUMARESTA', $sumaresta);
 		$this->db->group_by('tm.DESTIPOMOV, tm.SUMARESTA, p.IDPLANCUENTA, tm.AGUINALDO');
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
@@ -405,6 +405,23 @@ public function getEmpleado1(){
 		$this->db->join('tipomovisueldo tm', 'tm.IDTIPOMOVISUELDO = m.IDTIPOMOVISUELDO');
 		$this->db->where('ms.IDEMPLEADO', $empleado);
 		$this->db->where('m.FECHAMOVI between \''.$fechaDesde. '\' and \''.$fechaHasta.'\'');
+		$resultados= $this->db->get();
+		if ($resultados->num_rows()>0) {
+			return $resultados->result();
+		} else {
+			return false;
+		}
+	}
+	public function getConceptoFijosActivos($desde, $hasta){
+		$this->db->select('C.IMPORTE, T.IDTIPOMOVISUELDO IDTIPO, e.IDEMPLEADO');
+		$this->db->from('CONCEPTOSFIJOS C');
+		$this->db->join('TIPOMOVISUELDO T', 'T.IDTIPOMOVISUELDO = C.IDTIPOMOVISUELDO');
+		$this->db->join('EMPLEADO E', 'E.IDEMPLEADO = C.IDEMPLEADO');
+		// $this->db->where('C.ESTADO', 'A');
+		$this->db->group_start();
+		$this->db->where('CONVERT( \''.$desde.'\', DATE) between C.FECDESDE and C.FECHASTA');
+		$this->db->or_where('CONVERT( \''.$hasta.'\', DATE) between C.FECDESDE and C.FECHASTA');
+        $this->db->group_end();
 		$resultados= $this->db->get();
 		if ($resultados->num_rows()>0) {
 			return $resultados->result();

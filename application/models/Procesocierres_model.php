@@ -390,4 +390,64 @@ public function getEmpleado1(){
 		return $resultado->result();
 	}
 
+	//Procesar horas extras
+	public function getMontoHorasExtras($fechaDesde, $fechaHasta, $idEmpleado){
+		//acá pegas tu query
+
+	$select ='select 
+				ifnull(((select 
+				sum(cast(trim((convert(horastrabajadas,char(10)) - convert(horascorresponden,char(10)))) as SIGNED)) horasextras
+				from (
+				select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+				ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+				from detallehorario s 
+				where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+				a.idempleado
+				from marcacionempleado a
+				inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+				where a.ENTRADAAM between "'.$fechaDesde.'" and "'.$fechaHasta.'") x
+				where x.idempleado = emp.idempleado) 
+				* round((ca.montoasignado / 30) / 8)),0) importehorasextras
+				from empleado emp
+				inner join categoria ca on ca.idcategoria = emp.idcategoria
+				where emp.idempleado = '.$idEmpleado;
+
+		$query = $this->db->query($select);
+		if ($query->num_rows()>0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
+	public function getHorasExtras($fechaDesde, $fechaHasta, $idEmpleado){
+		//acá pegas tu query
+
+	$select ='select 
+				ifnull((select 
+				sum(cast(trim((convert(horastrabajadas,char(10)) - convert(horascorresponden,char(10)))) as SIGNED)) horasextras
+				from (
+				select SEC_TO_TIME(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)) as horastrabajadas,
+				ifnull((select SEC_TO_TIME(TIMESTAMPDIFF(SECOND,s.entradaam,s.salidapm))
+				from detallehorario s 
+				where s.dianro = DAYOFWEEK(a.entradaam) and s.idhorario = em.idhorario),"00:00:00") as horascorresponden,
+				a.idempleado
+				from marcacionempleado a
+				inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
+				where a.ENTRADAAM between "'.$fechaDesde.'" and "'.$fechaHasta.'") x
+				where x.idempleado = emp.idempleado),0) horasextras
+				from empleado emp
+				inner join categoria ca on ca.idcategoria = emp.idcategoria
+				where emp.idempleado = '.$idEmpleado;
+
+
+		$query = $this->db->query($select);
+		if ($query->num_rows()>0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+
+	}
+
 }

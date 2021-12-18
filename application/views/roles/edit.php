@@ -149,8 +149,8 @@
 										<td><?php echo $permiso->DESPANTALLA ?></td>
 										<td><table class="table table-responsive">
 											<thead>
-												<input type="hidden" name="modulo[<?php echo $permiso->DESPANTALLA?>][IDPERMISO]" value="<?php echo $permiso->IDPERMISO ?>">
-												<input type="hidden" name="modulo[<?php echo $permiso->DESPANTALLA?>][pantalla]" value="<?php echo $permiso->IDPANTALLA ?>">
+												<input type="hidden" name="modulo[<?php echo str_replace(" ","",$permiso->DESPANTALLA)?>][IDPERMISO]" value="<?php echo $permiso->IDPERMISO ?>">
+												<input type="hidden" name="modulo[<?php echo str_replace(" ","",$permiso->DESPANTALLA)?>][pantalla]" value="<?php echo $permiso->IDPANTALLA ?>">
 												<td><input type="checkbox" class="flat" disabled id="insert_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA);?>][insert]" <?php if ($permiso->PERINSERT =='1'): ?> checked <?php endif ?>>Insert</td>
 												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA)?>][update]" <?php if ($permiso->PERUPDATE =='1'): ?> checked <?php endif ?>>Update</td>
 												<td><input type="checkbox" class="flat" disabled id="delete_detalle" name="modulo[<?php echo str_replace(' ','',$permiso->DESPANTALLA)?>][delete]" <?php if ($permiso->PERDELETE =='1'): ?> checked <?php endif ?>>Delete</td>

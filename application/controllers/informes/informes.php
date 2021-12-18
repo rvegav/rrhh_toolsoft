@@ -80,6 +80,16 @@ class informes extends CI_Controller {
 		$this->load->view('informes/lista_hijos', $data);
 		$this->load->view('template/footer');
 	}
+
+	public function listadoLibrosMayor(){
+		$data = array('empleados'=> $this->Empleados_model->getEmpleados(),
+			'sucursales'=> $this->Sucursal_model->getSucursales());
+		$this->load->view('template/head');
+		$this->load->view('template/menu');
+		$this->load->view('informes/lista_Mayor', $data);
+		$this->load->view('template/footer');
+	}
+
 	public function informeEmpleado(){
 		$archivo = 'reporte'.date('dmY');
 		$fecha = date("d/m/Y H:i:s");
@@ -267,6 +277,40 @@ class informes extends CI_Controller {
 		$cuerpo = $this->load->view('informes/reporte_personas_ocupadas', $data, TRUE);
 		$this->dompdf->load_html($cuerpo);
 		$this->dompdf->set_paper('Legal','portrait');
+
+		//portrait - VERTICAL
+		//landscape - horizontal
+
+		// $this->load->view('informes/prueba_pdf', $data);
+
+		$this->dompdf->render();
+
+
+		if ($stream=TRUE) {
+			$this->dompdf->stream("$archivo", array("Attachment" => 0));
+		} else {
+			return $this->dompdf->output();
+		}
+		
+	}
+
+	public function informeMayor(){
+		$archivo = 'reporte'.date('dmY');
+		$fecha = date("d/m/Y H:i:s");
+		$mesdesde = $this->input->post('FECHADESDE');
+		$meshasta = $this->input->post('FECHAHASTA');
+		$sucursal = $this->input->post('sucursal');
+		
+		// Acá se me manda las variables
+		$data = array('mayores'=> $this->Empleados_model->getLibroMayor($mesdesde,
+																		 $meshasta),
+			'fecha' =>$fecha);
+
+		//print_r($data); die();
+
+		$cuerpo = $this->load->view('informes/reporte_libro_mayor', $data, TRUE);
+		$this->dompdf->load_html($cuerpo);
+		$this->dompdf->set_paper('legal','portrait');
 
 		//portrait - VERTICAL
 		//landscape - horizontal

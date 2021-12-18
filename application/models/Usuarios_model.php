@@ -83,21 +83,40 @@ class Usuarios_model extends CI_Model {
 		$this->db->set('idpermirol', $id->MAXIMO);
 		return $this->db->insert('permiroles', $data);
 	}
-	public function comprobarPermiso($usuario, $idmodulo){
-		$this->db->select('PE.IDPANTALLA, PE.PERINSERT, PE.PERSELECT, PE.PERDELETE, PE.PERUPDATE, m.DESMODULO, m.IDMODULO, u.DESUSUARIO');
-		$this->db->from('roles r');
-		$this->db->join('permiroles p', 'p.idrol = r.idrol');
-		$this->db->join('usuario u', 'p.idusuario = u.IDUSUARIO');
-		$this->db->join('permisos pe', 'pe.IDROL = p.IDROL');
-		$this->db->join('pantalla pa', 'pa.IDPANTALLA = pe.IDPANTALLA');
-		$this->db->join('modulo m', ' m.IDMODULO = pa.IDMODULO');
-		$this->db->where('u.DESUSUARIO', $usuario);
-		$this->db->where('m.IDMODULO', $idmodulo);
-		$resultado = $this->db->get();
-		if($resultado->num_rows()>0){
-			return $resultado->result();
-		}else{
-			return false;
-		}
+	public function comprobarPermiso($parametros = false){
+		return true;
+		// $this->db->distinct();
+		// $this->db->select('PE.IDPANTALLA, PE.PERINSERT, PE.PERSELECT, PE.PERDELETE, PE.PERUPDATE, m.DESMODULO, m.IDMODULO, u.DESUSUARIO');
+		// $this->db->from('roles r');
+		// $this->db->join('permiroles p', 'p.idrol = r.idrol');
+		// $this->db->join('usuario u', 'p.idusuario = u.IDUSUARIO');
+		// $this->db->join('permisos pe', 'pe.IDROL = p.IDROL');
+		// $this->db->join('pantalla pa', 'pa.IDPANTALLA = pe.IDPANTALLA');
+		// $this->db->join('modulo m', ' m.IDMODULO = pa.IDMODULO');
+		// if ($parametros['idmodulo']!='') {
+		// 	$this->db->where('m.IDMODULO', $parametros['idmodulo']);
+		// }
+		// if ($parametros['idpantalla']!='') {
+		// 	$this->db->where('pa.IDPANTALLA', $parametros['idpantalla']);
+		// }
+		// if ($parametros['select']!='') {
+		// 	$this->db->where('PE.PERSELECT', '1');
+		// }
+		// if ($parametros['update']!='') {
+		// 	$this->db->where('PE.PERUPDATE', '1');
+		// }
+		// if ($parametros['delete']!='') {
+		// 	$this->db->where('PE.PERDELETE', '1');
+		// }
+		// if ($parametros['insert']!='') {
+		// 	$this->db->where('PE.PERINSERT', '1');
+		// }
+		// $this->db->where('u.DESUSUARIO', $parametros['usuario']);
+		// $resultado = $this->db->get();
+		// if($resultado->num_rows()>0){
+		// 	return $resultado->result();
+		// }else{
+		// 	return false;
+		// }
 	}
 }

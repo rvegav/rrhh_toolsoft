@@ -13,7 +13,7 @@ class Procesocierres extends CI_Controller
 
 		//$this->load->model("Empleados_model");
 		$this->load->model("Procesocierres_model");
-		$this->load->model(array('Procesocierres_model', 'Movimientos_model', 'Plancuenta_model'));
+		$this->load->model(array('Procesocierres_model', 'Movimientos_model', 'Plancuenta_model', 'Usuarios_model'));
 
 	}
 	public function comprobacionRoles(){
@@ -132,6 +132,38 @@ class Procesocierres extends CI_Controller
 					);
 					$this->Movimientos_model->save_detalle($data);
 				}
+
+				//GENERA HORAS EXTRAS
+				$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('HORAS EXTRAS');
+				$dataCabecera = array('IDTIPOMOVISUELDO'  => $tipoMovimiento->IDTIPOMOVISUELDO,//MIENTRAS
+					'FECHAMOVI'  => $fechaActual,
+					'IDEMPRESA' => 1,
+					'IDMONEDA' => 1);
+				$id_movimiento = $this->Movimientos_model->save($dataCabecera);
+
+				foreach ($empleados as $empleado ) {
+					$monto = $this->Procesocierres_model->getMontoHorasExtras($FECHADESDE, $FECHAHASTA,$empleado->IDEMPLEADO);
+					
+					$horasextras = $this->Procesocierres_model->getHorasExtras($FECHADESDE, $FECHAHASTA,$empleado->IDEMPLEADO);					
+					$data = array(
+						'idmovi' => $id_movimiento,
+						'idempleado' => $empleado->IDEMPLEADO,
+						'dias' => 0,
+						'horas' => $horasextras->horasextras,
+						'importe' => $monto->importehorasextras,
+						'FECGRABACION'=> $fechaActual
+						
+					);
+
+					if ($monto->importehorasextras > 0)
+					{
+						
+						$this->Movimientos_model->save_detalle($data);
+					}
+					
+				}
+
+
 				foreach ($empleados as $empleado) {
 					$movimientosEmpleado = $this->Movimientos_model->getMovimientosEmpleados($empleado->IDEMPLEADO, $FECHADESDE, $FECHAHASTA);
 					$tipoMovimiento = $this->Movimientos_model->getTipoMovimiento('IPS');
@@ -164,7 +196,32 @@ class Procesocierres extends CI_Controller
 					}
 				}
 				//se obitiene los tipos de movimientos presentes en el mes
-				$movimientos = $this->Movimientos_model->getTotalMovimientoMes($FECHADESDE, $FECHAHASTA);
+				$conceptosFijos = $this->Movimientos_model->getConceptoFijosActivos($FECHADESDE, $FECHAHASTA);
+				if ($conceptosFijos) {
+					$concepto_aux='';
+					foreach ($conceptosFijos as $concepto) {
+						if ($concepto_aux !=$concepto->IDTIPO) {
+							$tipoMovimiento = $concepto->IDTIPO;
+							$data = array('IDTIPOMOVISUELDO'  => $tipoMovimiento,//MIENTRAS
+								'FECHAMOVI'  => $fechaActual,
+								'IDEMPRESA' => 1,
+								'IDMONEDA' => 1);
+							$id_movimiento = $this->Movimientos_model->save($data);
+							$concepto_aux = $concepto->IDTIPO;
+						}
+						$data = array(
+							'idmovi' => $id_movimiento,
+							'idempleado' => $concepto->IDEMPLEADO,
+							'dias' => 0,
+							'horas' => 0,
+							'importe' => $concepto->IMPORTE,
+							'FECGRABACION'=> $fechaActual
+						);
+						$this->Movimientos_model->save_detalle($data);
+					}
+				}
+
+				$movimientos = $this->Movimientos_model->getTotalMovimientoMes($FECHADESDE, $FECHAHASTA, '+');
 
 				if ($movimientos) {
 					$data = array(
@@ -238,9 +295,52 @@ class Procesocierres extends CI_Controller
 
 					}
 				}
+				$movimientos = $this->Movimientos_model->getTotalMovimientoMes($FECHADESDE, $FECHAHASTA, '-');
+				if ($movimientos) {
+					$data = array(
+						'idempresa' =>1,
+						'idsucursal' =>1,
+						'idusuario' =>1,
+						'fechaasiento' => $fechaActual,
+						'cotizacion1' => 1,
+						'cotizacion2' => 1,
+						'generado' => 1,
+						'fechagrabacion'=>  $fechaActual
+					);
+					$id_asiento = $this->Procesocierres_model->saveAsiento($data);
+					foreach ($movimientos as $movimiento) {
+						$importedebe = 0;
+						$importehaber = $movimiento->IMPORTE;
+						$importedebe = 0;
+						$data = array(
+							'idplancuenta' =>$movimiento->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $movimiento->DESTIPOMOV,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+						$importedebe = $movimiento->IMPORTE;
+						$importehaber = 0;
+						$idPlancuenta = $this->Plancuenta_model->getPlancuenta(false,'CAJA');	
+
+						$data = array(
+							'idplancuenta' =>$idPlancuenta->IDPLANCUENTA,
+							'idasiento' =>$id_asiento,
+							'comentario' => $idPlancuenta->DESCPLANCUENTA,
+							'importedebe' => $importedebe,
+							'importeahaber' => $importehaber,
+							'eliminado'=>  $fechaActual
+						);
+						$this->Procesocierres_model->saveAsiento_detalle($data);
+					}
+				}
+				$this->session->set_flashdata('success', 'Se Generó con Exito');
+
 
 			}
-			echo "hizo todo bien";
+			redirect(base_url()."procesocierres/procesocierres/add","refresh");
+			
 		}
 
 	}
@@ -505,7 +605,7 @@ class Procesocierres extends CI_Controller
 
 	public function buscar()
 	{     
-	$this->comprobacionRoles();  
+		$this->comprobacionRoles();  
 		$search_data = $this->input->post('nombre');
 
 		$result = $this->Movimienros_model->get_autocomplete($search_data);

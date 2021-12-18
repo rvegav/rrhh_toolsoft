@@ -29,6 +29,11 @@ class Horario_model extends CI_Model {
 		return $this->db->insert("horario", $data);
 	}
 	
+	public function saveHorarioEmpleado($data)
+	{
+		return $this->db->insert("horarioempleado", $data);
+	}
+	
 	//esto es para actualizar los empleado
 	public function update($id, $data){
 		$this->db->where("IDHORARIO", $id);

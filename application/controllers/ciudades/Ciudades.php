@@ -14,17 +14,18 @@ class Ciudades extends CI_Controller
 		$this->load->model(array('Usuarios_model', 'Ciudad_model', 'Departamento_model'));
 
 	}
-	public function comprobacionRoles(){
-		$usuario = $this->session->userdata("DESUSUARIO");
-		$moduloid = 1;
-		if (!$this->Usuarios_model->comprobarPermiso($usuario, $moduloid)) {
-			redirect(base_url());
-		}
-	}
+	
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		$data = array(
 			'ciudades'=> $this->Ciudad_model->getCiudades()
 		);
@@ -39,7 +40,14 @@ class Ciudades extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '1';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		$data = array(			
 			'maximos' => $this->Ciudad_model->ObtenerCodigo(),
 			'departamentos' => $this->Departamento_model->getDepartamentos()
@@ -55,7 +63,14 @@ class Ciudades extends CI_Controller
 	//funcion vista
 	public function view($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		$data = array (
 			'ciudad'=> $this->Ciudad_model->getCiudad($id)
 		);
@@ -65,7 +80,14 @@ class Ciudades extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '1';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 
 		$mensajes= $this->data;
 		$empresa = $_SESSION["Empresa"];
@@ -111,7 +133,14 @@ class Ciudades extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '1';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 			//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -129,7 +158,14 @@ class Ciudades extends CI_Controller
 	
 	public function update()
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '';
+		$data['select'] = '';
+		$data['update'] = '1';
+		$this->comprobacionRoles($data);
 		$mensajes = $this->data;
 		$idCiudad= $this->input->post("idciudad");
 		$NumCiudad= $this->input->post("NumCiudad");
@@ -173,7 +209,14 @@ class Ciudades extends CI_Controller
 
 	public function delete($id)
 	{
-		$this->comprobacionRoles();
+		$data['idmodulo'] = '1';
+		$data['idpantalla'] = '2';
+		$data['usuario'] = $this->session->userdata("DESUSUARIO");
+		$data['insert'] = '';
+		$data['delete'] = '1';
+		$data['select'] = '';
+		$data['update'] = '';
+		$this->comprobacionRoles($data);
 		if($this->Ciudad_model->delete($id)){
 			$this->session->set_flashdata('success', 'Eliminado correctamente!');
 			redirect(base_url()."ciudades/Ciudades/", "refresh");
