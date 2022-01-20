@@ -45,6 +45,12 @@
 /*        #pagina:after {
             content: counter(page);
         }*/
+        th{
+            font-size: 15px;
+        }
+        td{
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>

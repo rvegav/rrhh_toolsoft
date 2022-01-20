@@ -15,14 +15,7 @@ class Departamentos extends CI_Controller
 	}
 	public function index()
 	{	
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
 		//cargamos un array usando el modelo
 		$data = array(
 			'departamentos'=> $this->Departamento_model->getDepartamentos()			
@@ -38,14 +31,6 @@ class Departamentos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '1';
-		$data['delete'] = '';
-		$data['select'] = '';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
 
 		$data = array(			
 			'maximos' => $this->Departamento_model->ObtenerCodigo(),
@@ -81,14 +66,7 @@ class Departamentos extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
 		//recibimos las variables
 
 		//print_r($_POST); die();
@@ -168,14 +146,7 @@ class Departamentos extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 
 		$data = array(
@@ -194,14 +165,7 @@ class Departamentos extends CI_Controller
 	
 	public function update()
 	{
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '';
-		$data['update'] = '1';
-		$this->comprobacionRoles($data);
+		
 		$idDepartamento= $this->input->post("idDepartamento");
 		$NumDepartamento= $this->input->post("NumDepartamento");
 		$desDepartamento= $this->input->post("desDepartamento");
@@ -246,14 +210,7 @@ class Departamentos extends CI_Controller
 
 	public function delete($id)
 	{
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '3';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
    	//print_r($id); die();
 		
 		if($this->Departamento_model->delete($id)){

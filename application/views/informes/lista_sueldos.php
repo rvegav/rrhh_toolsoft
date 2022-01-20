@@ -31,48 +31,9 @@
 				<div class="col-md-12">
 					<form id="frm_generar" name="frm_generar" data-parsley-validate="" class="form-horizontal form-label-left" method="POST" action="<?php echo base_url() ?>informe_sueldo" novalidate="">
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="movimiento">Empleado:</label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="movimiento">Periodo:</label>
 							<div class="col-md-4 col-sm-6 col-xs-12">
-								<select name="empleado" id="empleado" class="form-control">
-									<option value="">Seleccionar Empleado</option>
-									<?php foreach ($empleados as $empleado): ?>
-										<option value="<?php echo $empleado->IDEMPLEADO?>"><?php echo $empleado->NOMBRE ?></option>
-									<?php endforeach ?>
-								</select>
-							</div>
-						</div>
-						<div class="mensaje"></div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Mes Desde:</label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<select name="desde" id="desde" class="form-control">
-									<option value="">Seleccionar Mes</option>
-									<?php foreach ($meses as $mes): ?>
-										<option value="<?php echo $mes['id'] ?>"><?php echo $mes['NOMBRE'] ?></option>
-									<?php endforeach ?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Mes Hasta: </label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<select name="hasta" id="hasta" class="form-control">
-									<option value="">Seleccionar Mes</option>
-									<?php foreach ($meses as $mes): ?>
-										<option value="<?php echo $mes['id'] ?>"><?php echo $mes['NOMBRE'] ?></option>
-									<?php endforeach ?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Sucursal: </label>
-							<div class ="col-md-4 col-sm-6 col-xs-12">
-								<select name="sucursal" id="sucursal" class="form-control">
-									<option value="">Seleccionar Sucursal</option>
-									<?php foreach ($sucursales as $sucursal): ?>
-										<option value="<?php echo $sucursal->IDSUCURSAL?>"><?php echo $sucursal->DESCSUCURSAL ?></option>
-									<?php endforeach ?>
-								</select>
+								<input type="Text" name="Periodo" class="form-control">
 							</div>
 						</div>
 						<div class="ln_solid"></div>

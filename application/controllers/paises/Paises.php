@@ -19,14 +19,7 @@ class Paises extends CI_Controller
 	
 	public function index()
 	{	
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '1';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
 		//cargamos un array usando el modelo
 		$data = array(
 			'paises'=> $this->Pais_model->getPaises()

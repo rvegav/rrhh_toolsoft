@@ -56,13 +56,15 @@ class pagos extends CI_Controller {
 					$total_movimientos_resta = $this->Movimientos_model->getTotalMovimientosResta($empleado->IDEMPLEADO, $desde, $hasta);
 					$monto = $total_movimientos_suma->IMPORTE - $total_movimientos_resta->IMPORTE;
 					$nroCuenta = $empleado->NROCUENTA;
+
+
 				}
 				if ($concepto =='IPS') {
 					$monto = $this->Movimientos_model->getTotalMovimientos($empleado->IDEMPLEADO, $desde, $hasta, $concepto);
 					$monto = $monto->IMPORTE;
 					$nroCuenta = $empleado->NUMEROIPS;
 				}
-				if ($concepto=='AGUINALDO') {
+				if ($concepto=='AGUINALDO'){
 					$tipoMovimientos = $this->Movimientos_model->getTipoMovimientos(false, false, '+');
 					foreach ($tipoMovimientos as $tipoMovimiento) {
 						$concepto = $tipoMovimiento->DESC;
@@ -72,10 +74,13 @@ class pagos extends CI_Controller {
 					$nroCuenta = $empleado->NROCUENTA;
 					$concepto = 'AGUINALDO';
 				}
-				fwrite($file, $empleado->CEDULAIDENTIDAD.','.$nroCuenta.','.$monto.PHP_EOL);
+
+					fwrite($file, $empleado->CEDULAIDENTIDAD.','.$nroCuenta.','.$monto.PHP_EOL);
+				
+				
 			}
-			fclose($file);
-			$mensajes['correcto'] =$concepto;
+				fclose($file);
+				$mensajes['correcto'] =$concepto;
 		}
 		echo json_encode($mensajes);
 

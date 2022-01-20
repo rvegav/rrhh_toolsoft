@@ -24,6 +24,7 @@ class Empleados extends CI_Controller
 		$this->load->model("Cuentabancaria_model");
 		$this->load->model("Hijos_model");
 		$this->load->model("Usuarios_model");
+		$this->load->model("Horario_model");
 
 		$this->data = array('correcto'=>'','alerta'=>'','error'=>'', 'datos'=>'');
 
@@ -91,16 +92,10 @@ class Empleados extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$this->comprobacionRoles();
-		//recibimos las variables
-		$config['upload_path']          = './uploads/';
-		$config['allowed_types']        = 'gif|jpg|png';
-		$config['max_size']             = 100;
-		$config['max_width']            = 1024;
-		$config['max_height']           = 1080;
-		$config['overwrite']           = true;
+		
+		
 
-		$this->load->library('upload', $config);
+		//$this->load->library('upload', $config);
 		$numEmpleado = $this->input->post("CodEmpleado");
 		$nombre = $this->input->post("Nombre");
 		$apellido = $this->input->post('Apellido');
@@ -110,27 +105,19 @@ class Empleados extends CI_Controller
 		// //aqui se valida el formulario, reglas, primero el campo, segundo alias del campo, tercero la validacion
 		$this->form_validation->set_rules("Nombre", "Nombres", "required");
 		$this->form_validation->set_rules("Apellido", "Apellidos", "required");
-		$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
+		//$this->form_validation->set_rules("CodEmpleado", "Codigo Empleado", "required");
 		$this->form_validation->set_rules("Documento", "Documento de Identidad", "required");
 		$this->form_validation->set_rules("Celular", "Celular", "required");
 		$this->form_validation->set_rules("NumeroIPS", "Nro Ips", "required");
 		$this->form_validation->set_rules("NroCuenta", "Nro Cuenta", "required");
-		$this->form_validation->set_rules("Horario", "Horario", "required");
+		//$this->form_validation->set_rules("Horario", "Horario", "required");
 		if ($this->form_validation->run() == FALSE){
 			$mensajes['alerta'] = validation_errors('<b style="color:red"><ul><li>', '</ul></li></b>'); 
 			// $this->session->set_flashdata('error', validation_errors());
 			// redirect(base_url()."empleados/empleados/add", "refresh");
 
 		}else{
-			if ( ! $this->upload->do_upload('userfile')){
-				$error = array('error' => $this->upload->display_errors());
-				$perfil ="";
-			}else{
-				$perfil = $this->upload->data();
-				$data = file_get_contents('uploads/'.$perfil['file_name']);
-				$base64 = base64_encode($data);
-				$perfil = 'data:image/' . $perfil['image_type'] . ';base64,'.$base64;
-			}
+			
 			$documento = $this->input->post('Documento');
 			$direccion = $this->input->post("Direccion");
 			$telefono   = $this->input->post("Telefono");
@@ -160,11 +147,11 @@ class Empleados extends CI_Controller
 
 			$data = array(
 				// 'idEmpleado'  => $idEmpleado,
-				'numEmpleado'  => $numEmpleado,
+				'numEmpleado'  => $documento,
 				'nombre'  => $nombre,
 				'apellido' => $apellido, 
 				'observacion' => $observacion,
-				'perfil' => $perfil,
+				//'perfil' => $perfil,
 				'cedulaidentidad' => $documento,
 				'direccion'  => $direccion,
 				'telefono'  => $telefono, 
@@ -209,12 +196,12 @@ class Empleados extends CI_Controller
 						}
 					} 
 				}
-				$data= array(
-				 'idEmpleado'  => $idEmpleado,
-				 'idhorario'  => $horario,
-				 'idempresa' => 1,
-				 'fecgrabacion' => date("Y-m-d H:i:s")
-				);
+				$data = array(
+							'idempleado'=> $empleado->IDEMPLEADO,
+							'idhorario'=> $horario,
+							// 'fecgrabacion'=> date("Y-m-d H:i:s")
+
+						);
 
 				if ($this->Horario_model->saveHorarioEmpleado($data)) {
 							$correcto = "Se ha asociado correctamente los Horarios";	
@@ -264,15 +251,7 @@ class Empleados extends CI_Controller
 
 	public function update()
 	{
-		$this->comprobacionRoles();
-		$mensajes = $this->data;
-		$config['upload_path']          = './uploads/';
-		$config['allowed_types']        = 'gif|jpg|png';
-		$config['max_size']             = 100;
-		$config['max_width']            = 1024;
-		$config['max_height']           = 1080;
-		$config['overwrite']           = true;
-		$this->load->library('upload', $config);
+		
 		$idEmpleado = $this->input->post("CodEmpleado");
 		$numEmpleado = $this->input->post("Numero");
 		$nombre = $this->input->post("Nombre");

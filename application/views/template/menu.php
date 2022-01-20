@@ -64,7 +64,7 @@
           <li><a href="<?php echo base_url();?>listado_sueldos">Listado de Sueldos y Jornales</a></li>
           <li><a href="<?php echo base_url();?>resumen_ocupadas">Resumen de personas ocupadas</a></li>
           <li><a href="<?php echo base_url();?>listado_hijos">Listado de Hijos</a></li>
-          <li><a href="<?php echo base_url();?>resumen_sueldos">Salario Resumen</a></li>
+          <!-- <li><a href="<?php echo base_url();?>resumen_sueldos">Salario Resumen</a></li> -->
         </ul>
       </li>
       <li><a><i class="fa fa-bar-chart-o"></i>Gestionar Contabilidad <span class="fa fa-chevron-down"></span></a>

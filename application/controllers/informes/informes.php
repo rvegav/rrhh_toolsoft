@@ -145,16 +145,10 @@ class informes extends CI_Controller {
 	public function informeSueldo(){
 		$archivo = 'reporte'.date('dmY');
 		$fecha = date("d/m/Y H:i:s");
-		$empleado = $this->input->post('empleado');
-		$mesdesde = $this->input->post('desde');
-		$meshasta = $this->input->post('hasta');
-		$sucursal = $this->input->post('sucursal');
-		print_r($_POST); die();
+		$periodo = $this->input->post('Periodo');
+		//print_r($_POST); die();
 		// Acá se me manda las variables
-		$data = array('sueldos'=> $this->Empleados_model->getListadoSalarios($empleado,
-																			 $mesdesde,
-																			 $meshasta,
-																			 $sucursal),
+		$data = array('sueldos'=> $this->Empleados_model->getListadoSalarios($periodo),
 			'fecha' =>$fecha);
 
 		$cuerpo = $this->load->view('informes/reporte_listado_sueldos', $data, TRUE);
@@ -237,8 +231,8 @@ class informes extends CI_Controller {
 			$fecha = date("d/m/Y H:i:s");
 			$desde = $this->input->post('FECHADESDE', TRUE);
 			$hasta = $this->input->post('FECHAHASTA', TRUE);
-			$desde=date_format(date_create($desde),"d/m/Y");;
-			$hasta=date_format(date_create($hasta),"d/m/Y");;
+			// $desde=date_format(date_create($desde),"d/m/Y");;
+			// $hasta=date_format(date_create($hasta),"d/m/Y");;
 			$data = array('asientos'=> $this->Procesocierres_model->getAsiento($desde,$hasta),
 				'detallesasientos'=>$this->Procesocierres_model->getAsientoDetalle($desde, $hasta),
 				'fecha' =>$fecha,

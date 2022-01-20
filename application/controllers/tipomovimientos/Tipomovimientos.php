@@ -28,7 +28,7 @@ class Tipomovimientos extends CI_Controller
 	{
 
 		$usuario = $this->session->userdata("DESUSUARIO");
-		$this->comprobacionRoles($data);	
+		
 		//cargamos un array usando el modelo
 		$data = array(
 			'tipos'=> $this->Tipomovimiento_model->getTipoMovimientos_Copia(),
@@ -48,7 +48,7 @@ class Tipomovimientos extends CI_Controller
 	//funcion add para mostrar vistas
 	public function add()
 	{
-		$this->comprobacionRoles();
+		
 
 		$data = array(			
 			'maximo' => $this->Tipomovimiento_model->getIdMaximo(),
@@ -65,7 +65,7 @@ class Tipomovimientos extends CI_Controller
 	//funcion vista
 	public function view($idMovi)
 	{
-		$this->comprobacionRoles();
+		
 		$data = array (
 			'movimientos'=> $this->Movimientos_model->getMovimientoDetalle($idMovi),
 			'empleados'=>$this->Movimientos_model->getEmpleado()
@@ -78,7 +78,7 @@ class Tipomovimientos extends CI_Controller
 	//funcion para almacenar en la bd
 	public function store()
 	{
-		$this->comprobacionRoles();
+		
 		//recibimos las variables
 		$numTipoMov   = $this->input->post("NumTipoMovimiento");
 		$desTipoMov   = $this->input->post("desTipoMovimiento");
@@ -167,7 +167,7 @@ class Tipomovimientos extends CI_Controller
 	//metodo para editar
 	public function edit($id)
 	{
-		$this->comprobacionRoles();
+		
 		//recargamos datos en array, usando el modelo. ver en modelo, Servicios_model
 		$data = array(
 			'tipomovimientos'=>$this->Tipomovimiento_model->getTipoMovimientos($id),
@@ -186,7 +186,7 @@ class Tipomovimientos extends CI_Controller
 	}	
 	public function update()
 	{
-		$this->comprobacionRoles();
+		
 		// die();
 		$idTipoMovi = $this->input->post('IDTIPOMOVISUELDO', TRUE);
 		$numTipoMov   = $this->input->post("NumTipoMovimiento");

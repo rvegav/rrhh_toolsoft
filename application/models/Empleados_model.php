@@ -156,7 +156,7 @@ class Empleados_model extends CI_Model {
 			return false;
 		}
 	}
-	public function getListadoSalarios($empleado, $desde, $hasta, $sucursal){
+	public function getListadoSalarios($periodo){
 		//acá pegas tu query
 		$select ='select z.documento, z.formapago, z.importeunitario, 
 		z.h_ene, 
@@ -203,7 +203,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-01-01" and "2021-01-31") x
+		where a.ENTRADAAM between "'.$periodo.'-01-01" and "'.$periodo.'-01-31") x
 		where x.idempleado = l.idempleado) as h_ene,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -218,7 +218,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-02-01" and "2021-02-28") x
+		where a.ENTRADAAM between "'.$periodo.'-02-01" and "'.$periodo.'-02-28") x
 		where x.idempleado = l.idempleado) as h_feb,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -233,7 +233,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-03-01" and "2021-03-31") x
+		where a.ENTRADAAM between "'.$periodo.'-03-01" and "'.$periodo.'-03-31") x
 		where x.idempleado = l.idempleado) as h_mar,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -248,7 +248,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-04-01" and "2021-04-30") x
+		where a.ENTRADAAM between "'.$periodo.'-04-01" and "'.$periodo.'-04-30") x
 		where x.idempleado = l.idempleado) as h_abril,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -263,7 +263,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-05-01" and "2021-05-31") x
+		where a.ENTRADAAM between "'.$periodo.'-05-01" and "'.$periodo.'-05-31") x
 		where x.idempleado = l.idempleado) as h_may,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -278,7 +278,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-06-01" and "2021-06-30") x
+		where a.ENTRADAAM between "'.$periodo.'-06-01" and "'.$periodo.'-06-30") x
 		where x.idempleado = l.idempleado) as h_junio,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -293,7 +293,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-07-01" and "2021-07-31") x
+		where a.ENTRADAAM between "'.$periodo.'-07-01" and "'.$periodo.'-07-31") x
 		where x.idempleado = l.idempleado) as h_julio,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -308,7 +308,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-08-01" and "2021-08-31") x
+		where a.ENTRADAAM between "'.$periodo.'-08-01" and "'.$periodo.'-08-31") x
 		where x.idempleado = l.idempleado) as h_agosto,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -323,7 +323,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-09-01" and "2021-09-30") x
+		where a.ENTRADAAM between "'.$periodo.'-09-01" and "'.$periodo.'-09-30") x
 		where x.idempleado = l.idempleado) as h_sep,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -338,7 +338,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-10-01" and "2021-10-31") x
+		where a.ENTRADAAM between "'.$periodo.'-10-01" and "'.$periodo.'-10-31") x
 		where x.idempleado = l.idempleado) as h_oct,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -353,7 +353,7 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-11-01" and "2021-11-30") x
+		where a.ENTRADAAM between "'.$periodo.'-11-01" and "'.$periodo.'-11-30") x
 		where x.idempleado = l.idempleado) as h_nov,
 		(select 
 		ifnull(sum(cast((case when x.horastrabajadas > SEC_TO_TIME(x.horascorresponden) then x.horascorresponden
@@ -368,40 +368,44 @@ class Empleados_model extends CI_Model {
 		a.ENTRADAAM,a.SALIDAPM,a.idempleado
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-12-01" and "2021-12-31") x
+		where a.ENTRADAAM between "'.$periodo.'-12-01" and "'.$periodo.'-12-31") x
 		where x.idempleado = l.idempleado) as h_dic,
 		((select ifnull(sum(det.IMPORTE),0) from movisueldo mov
 		inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
 		inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
 		where tip.SUMARESTA = "+"
-		and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+		and mov.FECHAMOVI between "'.$periodo.'-01-01" and "'.$periodo.'-12-31"
 		and det.IDEMPLEADO = l.idempleado) / 12) as aguinaldo,
 		(select ifnull(sum(det.IMPORTE),0) from movisueldo mov
 		inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
 		inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
 		where tip.IDTIPOMOVISUELDO = 6
-		and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+		and mov.FECHAMOVI between "'.$periodo.'-01-01" and "'.$periodo.'-12-31"
 		and det.IDEMPLEADO = l.IDEMPLEADO) as bonificaciones,
 		"0" vacaciones,
 		(select (SEC_TO_TIME(sum(TIMESTAMPDIFF(SECOND, a.entradaam,a.salidapm)))) as horastrabajadas
 		from marcacionempleado a
 		inner join horarioempleado em on em.IDEMPLEADO = a.idempleado
-		where a.ENTRADAAM between "2021-01-01" and "2021-12-31"
+		where a.ENTRADAAM between "'.$periodo.'-01-01" and "'.$periodo.'-12-31"
 		and a.idempleado = l.IDEMPLEADO) as total_h,
 		(select ifnull(sum(det.IMPORTE),0) from movisueldo mov
 		inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
 		inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
 		where tip.IDTIPOMOVISUELDO = 4
-		and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+		and mov.FECHAMOVI between "'.$periodo.'-01-01" and "'.$periodo.'-12-31"
 		and det.IDEMPLEADO = l.IDEMPLEADO) total_s,
 		(select ifnull(sum(det.IMPORTE),0) from movisueldo mov
 		inner join movisueldodetalle det on mov.IDMOVI = det.IDMOVI
 		inner join tipomovisueldo tip on tip.IDTIPOMOVISUELDO = mov.IDTIPOMOVISUELDO
 		where tip.SUMARESTA = "+"
-		and mov.FECHAMOVI between "2021-01-01" and "2021-12-31"
+		and mov.FECHAMOVI between "'.$periodo.'-01-01" and "'.$periodo.'-12-31"
 		and det.IDEMPLEADO = l.idempleado) totalgeneral
 		from empleado l
 		inner join categoria ca on ca.IDCATEGORIA = l.IDCATEGORIA) z';
+
+
+		//echo $select; die();
+
 		$query = $this->db->query($select);
 		if ($query->num_rows()>0) {
 			return $query->result();
@@ -417,21 +421,29 @@ class Empleados_model extends CI_Model {
 		from empleado e
 		inner join categoria s on e.idcategoria = e.idcategoria
 		where s.DESCATEGORIA in("SUPERVISOR", "GERENTE")
-		and e.ESTADOEMPLEADO = 1 and e.sexo = "M") as supjefesvarones,
+		and e.ESTADOEMPLEADO = 1 and e.sexo = "M"
+		and e.FECHAINGRESO <= "'.$periodo.'-12-31") as supjefesvarones,
 		(select count(1)
 		from empleado e
 		inner join categoria s on e.idcategoria = e.idcategoria
 		where s.DESCATEGORIA in("SUPERVISOR", "GERENTE")
-		and e.ESTADOEMPLEADO = 1 and e.sexo = "F") as supjefesmujeres,
-		(select count(1) from empleado s where  s.sexo = "M" and s.ESTADOEMPLEADO = 1) empleadosvarones,
-		(select count(1) from empleado s where  s.sexo = "F" and s.ESTADOEMPLEADO = 1) empleadosmujeres,
+		and e.ESTADOEMPLEADO = 1 and e.sexo = "F"
+		and e.FECHAINGRESO <="'.$periodo.'-12-31") as supjefesmujeres,
+		(select count(1) from empleado s where  s.sexo = "M" and s.ESTADOEMPLEADO = 1
+		and s.FECHAINGRESO <="'.$periodo.'-12-31") empleadosvarones,
+		(select count(1) from empleado s where  s.sexo = "F" and s.ESTADOEMPLEADO = 1
+		and s.FECHAINGRESO <="'.$periodo.'-12-31") empleadosmujeres,
 		0 obrerosvarones, 0 obrerosmujeres,
 		(select count(1) from empleado s where 
 		ifnull(TIMESTAMPDIFF(YEAR,s.FECNACIMIENTO,CURDATE()),0) < 18
-		and s.sexo = "M" and s.ESTADOEMPLEADO = 1) as menoresvarones,
+		and s.sexo = "M" and s.ESTADOEMPLEADO = 1 and s.FECHAINGRESO <="'.$periodo.'-12-31") as menoresvarones,
 		(select count(1) from empleado s where 
 		ifnull(TIMESTAMPDIFF(YEAR,s.FECNACIMIENTO,CURDATE()),0) < 18
-		and s.sexo = "F" and s.ESTADOEMPLEADO = 1) as menoresmujeres;';
+		and s.sexo = "F" and s.ESTADOEMPLEADO = 1 and s.FECHAINGRESO <="'.$periodo.'-12-31") as menoresmujeres;';
+
+
+	
+		
 		$query = $this->db->query($select);
 		if ($query->num_rows()>0) {
 			return $query->result();

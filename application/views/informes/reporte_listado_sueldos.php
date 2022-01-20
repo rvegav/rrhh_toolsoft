@@ -10,7 +10,7 @@
         }
         
 
-        /** Define now the real margins of every page in the PDF **/
+        /* Define now the real margins of every page in the PDF */
         body {
             margin-top: 3cm;
             margin-left: 2cm;
@@ -19,7 +19,7 @@
 
         }
 
-        /** Define the header rules **/
+        /* Define the header rules */
         header {
             position: fixed;
             top: 1cm;
@@ -27,10 +27,10 @@
             right: 1cm;
             height: 2cm;
             text-align: center;
-            /*margin-bottom: 1cm;*/
+            /margin-bottom: 1cm;/
         }
 
-        /** Define the footer rules **/
+        /* Define the footer rules */
         footer {
             position: fixed; 
             bottom: 0cm; 
@@ -51,7 +51,7 @@
     <!-- Define header and footer blocks before your content -->
     <header>
         <img src="<?php echo base_url().'assets/img/logo1.png'?>" width="70">
-        <h3 style="margin-top: -5px">Listado de Hijos</h3>
+        <h3 style="margin-top: -5px">Listado de Sueldos y Jornales</h3>
         <hr>
     </header>
 
@@ -76,35 +76,82 @@
         <table id="tb_empleado" style="margin-top: 10px" class="" width="100%">
             <thead class="bg-gray">
                 <tr>
-                    <th>Id Empleado</th>
-                    <th>Documento del Empleado</th>
-                    <th>Nombre Empleado</th>
-                    <th>Nombre Hijo</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Edad</th>
+                    <th style="font-size: 11px">Documento</th>
+                    <th style="font-size: 11px">Forma de Pago</th>
+                    <th style="font-size: 11px">Importe Unitario</th>
+                    <th style="font-size: 11px">H_ene</th>
+                    <th style="font-size: 11px">S_ene</th>
+                    <th style="font-size: 11px">H_feb</th>
+                    <th style="font-size: 11px">S_feb</th>
+                    <th style="font-size: 11px">H_marzo</th>
+                    <th style="font-size: 11px">S_marzo</th>
+                    <th style="font-size: 11px">H_abril</th>
+                    <th style="font-size: 11px">S_abril</th>
+                    <th style="font-size: 11px">H_mayo</th>
+                    <th style="font-size: 11px">S_mayo</th>
+                    <th style="font-size: 11px">H_junio</th>
+                    <th style="font-size: 11px">S_junio</th>
+                    <th style="font-size: 11px">H_julio</th>
+                    <th style="font-size: 11px">S_julio</th>
+                    <th style="font-size: 11px">H_agosto</th>
+                    <th style="font-size: 11px">S_agosto</th>
+                    <th style="font-size: 11px">H_sep</th>
+                    <th style="font-size: 11px">S_sep</th>
+                    <th style="font-size: 11px">H_oct</th>
+                    <th style="font-size: 11px">S_oct</th>
+                    <th style="font-size: 11px">H_nov</th>
+                    <th style="font-size: 11px">S_nov</th>
+                    <th style="font-size: 11px">H_dic</th>
+                    <th style="font-size: 11px">S_dic</th>                    
+                    <th style="font-size: 11px">Aguinaldo</th>
+                    <th style="font-size: 11px">Bonificacion</th>
+                    <th style="font-size: 11px">Vacaciones</th>
+                    <th style="font-size: 11px">Total_H</th>
+                    <th style="font-size: 11px">Total_S</th>
+                    <th style="font-size: 11px">Total General</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- aca  recorres tu select segun la variable que mandaste en el controlador Informes.php-->
                 <?php
-                if(!empty($hijos)):?>
+                if(!empty($sueldos)):?>
                     <?php
-                    foreach($hijos as $hijo):?>
-                        <?php 
-                        $time = time();
-                        $fechaActual = date("Y-m-d H:i:s",$time);
-                        $dateDifference = abs(strtotime($hijo->FECHA_NACIMIENTO_HIJO) - strtotime($fechaActual));
-                        $years  = floor($dateDifference / (365 * 60 * 60 * 24));
-                        ?>
+                    foreach($sueldos as $sueldo):?>
                         <tr>
-                            <td><?php echo $hijo->IDEMPLEADO;?></td>
-                            <td><?php echo $hijo->CEDULA_PADRE;?></td>
-                            <td><?php echo $hijo->NOMBRE_PADRE;?></td>
-                            <td><?php echo $hijo->NOMBRE_HIJO;?></td>
-                            <td><?php echo $hijo->FECHA_NACIMIENTO_HIJO;?></td>
-                            <td><?php echo $years;?></td>
-
-                        </tr>
+                            <td style="font-size: 11px"><?php echo $sueldo->documento;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->formapago;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->importeunitario;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_ene;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_ene;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_feb;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_feb;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_mar;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_mar;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_abril;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_abril;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_may;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_may;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_junio;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_junio;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_julio;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_julio;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_agosto;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_agosto;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_sep;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_sep;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_oct;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_oct;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_nov;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_nov;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->h_dic;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->s_dic;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->aguinaldo;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->bonificaciones;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->vacaciones;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->total_h;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->total_s;?></td>
+                            <td style="font-size: 11px"><?php echo $sueldo->totalgeneral;?></td>
+               style="font-size: 15px"          </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
 

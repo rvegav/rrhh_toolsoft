@@ -380,12 +380,15 @@ public function getEmpleado1(){
 		$this->db->from('asiento a');
 		$this->db->join('asientodetalle ad', 'a.idasiento = ad.idasiento');
 		$this->db->join('plancuentas p', 'ad.idplancuenta = p.idplancuenta');
+		$this->db->where('a.fechaasiento between \''.$desde.'\' and \''.$hasta.'\'');
+
 		$resultado = $this->db->get();
 		return $resultado->result();
 	}
 	public function getAsiento($desde,$hasta){
 		$this->db->select('a.idasiento, a.numasiento, DATE_FORMAT(fechaasiento,\'%d/%m/%Y\') fechaasiento');
 		$this->db->from('asiento a');
+		$this->db->where('a.fechaasiento between \''.$desde.'\' and \''.$hasta.'\'');
 		$resultado = $this->db->get();
 		return $resultado->result();
 	}

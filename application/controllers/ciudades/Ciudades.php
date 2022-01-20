@@ -18,14 +18,7 @@ class Ciudades extends CI_Controller
 	//esta funcion es la primera que se cargar
 	public function index()
 	{	
-		$data['idmodulo'] = '1';
-		$data['idpantalla'] = '2';
-		$data['usuario'] = $this->session->userdata("DESUSUARIO");
-		$data['insert'] = '';
-		$data['delete'] = '';
-		$data['select'] = '1';
-		$data['update'] = '';
-		$this->comprobacionRoles($data);
+		
 		$data = array(
 			'ciudades'=> $this->Ciudad_model->getCiudades()
 		);
